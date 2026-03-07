@@ -1,0 +1,5 @@
+# Para el entorno virtual de Python
+venv/
+.env/
+env/
+__pycache__/
