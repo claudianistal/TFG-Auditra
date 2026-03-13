@@ -1,0 +1,30 @@
+{
+  "sidebar": {
+    "eyebrow": "Auditra",
+    "title": "Forensic audio analysis"
+  },
+  "menu": {
+    "aria_label": "Main navigation",
+    "dashboard": {
+      "label": "Dashboard",
+      "description": "General application overview"
+    },
+    "metadata": {
+      "label": "Metadata",
+      "description": "Metadata analysis and queries"
+    }
+  },
+  "header": {
+    "badge": "Active sidebar"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Main panel",
+      "description": "This space can show the analysis summary, quick access shortcuts and the overall audio processing status."
+    },
+    "metadata": {
+      "title": "Metadata module",
+      "description": "Here you can centralise forms, results and tools related to audio metadata analysis."
+    }
+  }
+}

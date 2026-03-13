@@ -1,0 +1,30 @@
+{
+  "sidebar": {
+    "eyebrow": "Auditra",
+    "title": "Análisis forense de audio"
+  },
+  "menu": {
+    "aria_label": "Navegación principal",
+    "dashboard": {
+      "label": "Dashboard",
+      "description": "Vista general de la aplicación"
+    },
+    "metadata": {
+      "label": "Metadatos",
+      "description": "Análisis y consulta de metadatos"
+    }
+  },
+  "header": {
+    "badge": "Panel lateral activo"
+  },
+  "pages": {
+    "dashboard": {
+      "title": "Panel principal",
+      "description": "Este espacio puede mostrar el resumen del análisis, accesos rápidos y el estado general del procesamiento de audio."
+    },
+    "metadata": {
+      "title": "Módulo de metadatos",
+      "description": "Aquí puedes centralizar formularios, resultados y herramientas relacionadas con el análisis de metadatos del audio."
+    }
+  }
+}
