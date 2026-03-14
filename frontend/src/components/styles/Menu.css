@@ -1,30 +1,46 @@
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
 }
 
 .menu__item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.95rem 1rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: rgba(248, 251, 255, 0.9);
-  background: rgba(255, 255, 255, 0.03);
-  transition: all 160ms ease;
+  padding: 1rem 1.5rem;
+  border-radius: 0;
+  border: none;
+  color: rgba(248, 251, 255, 0.95);
+  background: rgba(255, 255, 255, 0.07);
+  transition: all 120ms ease;
   text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .menu__item:hover {
-  transform: translateX(4px);
-  background: rgba(255, 255, 255, 0.08);
+  transform: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(248, 251, 255, 1);
+}
+
+.menu__item:active {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .menu__item--active {
-  background: linear-gradient(135deg, rgba(39, 113, 231, 0.35), rgba(52, 153, 255, 0.16));
-  border-color: rgba(127, 178, 255, 0.5);
+  background: linear-gradient(135deg, rgba(39, 113, 231, 0.6), rgba(52, 153, 255, 0.4));
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.menu__item--active .menu__description {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .menu__label {
@@ -34,5 +50,5 @@
 
 .menu__description {
   font-size: 0.88rem;
-  color: rgba(238, 245, 255, 0.64);
+  color: rgba(238, 245, 255, 0.7);
 }
