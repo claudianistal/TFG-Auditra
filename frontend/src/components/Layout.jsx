@@ -16,10 +16,10 @@ const Layout = () => {
 		<div className="app-shell">
 			<aside className="sidebar">
 				<div className="sidebar__brand">
+					<img src="/LogoSinFondo.png" alt="Auditra Logo" className="sidebar__logo" />
 					<p className="sidebar__eyebrow">{t('sidebar.eyebrow')}</p>
-					<h1 className="sidebar__title">{t('sidebar.title')}</h1>
 				</div>
-
+				<h1 className="sidebar__title">{t('sidebar.title')}</h1>
 				<Menu items={menuItems} />
 
 				<LanguageSwitcher />

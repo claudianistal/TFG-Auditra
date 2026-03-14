@@ -19,8 +19,17 @@
 
 .sidebar__brand {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sidebar__logo {
+  max-height: 130px;
+  max-width: 130px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 
 .sidebar__eyebrow {
