@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
+import '../styles/Switchers.css';
 
 const ThemeSwitcher = () => {
   const { t } = useTranslation();

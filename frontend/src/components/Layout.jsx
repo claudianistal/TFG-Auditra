@@ -5,6 +5,7 @@ import Header from './Header';
 import Menu from './Menu';
 import LanguageSwitcher from './switchers/LanguageSwitcher';
 import { menuItems } from '../constants/menuItems';
+import './styles/Layout.css';
 
 const Layout = () => {
 	const { t } = useTranslation();

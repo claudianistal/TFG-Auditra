@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import './Common.css'
 
 const MetadataPage = () => {
 	const { t } = useTranslation();

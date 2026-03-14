@@ -1,5 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import '../styles/Switchers.css';
+
 
 const LANGUAGES = [
   { code: 'es', label: 'ES' },

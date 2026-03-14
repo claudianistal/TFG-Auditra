@@ -1,0 +1,43 @@
+:root {
+  /* Tipografía */
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+  /* Fondos y Textos principales */
+  --bg-main: radial-gradient(circle at top left, rgba(31, 111, 235, 0.16), transparent 34%),
+             linear-gradient(180deg, #f5f8fc 0%, #ecf1f8 100%);
+  --text-main: #172033;
+  --text-muted: #55637b;
+  --header-title: #0f1f3d;
+
+  /* Cards y Contenedores */
+  --card-bg: rgba(255, 255, 255, 0.74);
+  --card-border: rgba(30, 66, 124, 0.1);
+  --card-shadow: rgba(20, 46, 89, 0.08);
+
+  /* Sidebar (Fija para ambos modos) */
+  --sidebar-bg: linear-gradient(180deg, rgba(7, 18, 40, 0.98) 0%, rgba(12, 30, 66, 0.98) 100%),
+                linear-gradient(135deg, #0a1e4f 0%, #14387a 100%);
+}
+
+[data-theme='dark'] {
+  --bg-main: radial-gradient(circle at top left, rgba(31, 111, 235, 0.1), transparent 34%),
+             linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  --text-main: #f8fbff;
+  --text-muted: #94a3b8;
+  --header-title: #f1f5f9;
+  
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--text-main);
+  background: var(--bg-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}

@@ -1,0 +1,25 @@
+.layout__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.layout__header h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--header-title);
+  transition: color 0.3s ease;
+}
+
+.layout__header p {
+  margin: 0.45rem 0 0;
+  color: var(--text-muted);
+}
+
+.layout__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

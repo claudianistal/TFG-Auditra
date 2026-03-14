@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import { initializeTheme } from './context/ThemeContext.jsx'
 import './i18n'
-import './styles/app.css'
+import './styles/variables.css'
 
 initializeTheme()
 

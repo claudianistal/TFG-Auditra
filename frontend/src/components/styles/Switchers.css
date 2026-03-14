@@ -1,0 +1,45 @@
+/* Language Switcher */
+.lang-switcher {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lang-switcher__btn {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(248, 251, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Theme Switcher */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-switcher__indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffcc00;
+}
+
+.theme-switcher__indicator--dark {
+  background: #a5b4fc;
+}

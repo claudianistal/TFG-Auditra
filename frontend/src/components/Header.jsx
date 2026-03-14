@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ThemeSwitcher from './switchers/ThemeSwitcher';
+import './styles/Header.css'
 
 const Header = ({ title, description }) => {
   const { t } = useTranslation();
