@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import Menu from './Menu';
-import LanguageSwitcher from './LanguageSwitcher';
+import LanguageSwitcher from './switchers/LanguageSwitcher';
 import { menuItems } from '../constants/menuItems';
 
 const Layout = () => {

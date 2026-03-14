@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import ThemeSwitcher from './switchers/ThemeSwitcher';
 
 const Header = ({ title, description }) => {
   const { t } = useTranslation();
@@ -10,7 +11,9 @@ const Header = ({ title, description }) => {
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
-      <span className="layout__badge">{t('header.badge')}</span>
+      <div className="layout__header-actions">
+        <ThemeSwitcher />
+      </div>
     </header>
   );
 };

@@ -1,8 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import { initializeTheme } from './context/ThemeContext.jsx'
 import './i18n'
 import './styles/app.css'
+
+initializeTheme()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

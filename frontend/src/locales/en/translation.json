@@ -17,6 +17,12 @@
   "header": {
     "badge": "Active sidebar"
   },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "toggle": "Switch theme to {{theme}}"
+  },
   "pages": {
     "dashboard": {
       "title": "Main panel",

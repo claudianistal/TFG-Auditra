@@ -17,6 +17,12 @@
   "header": {
     "badge": "Panel lateral activo"
   },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "toggle": "Cambiar tema a {{theme}}"
+  },
   "pages": {
     "dashboard": {
       "title": "Panel principal",
