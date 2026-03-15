@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { uploadAudioFile } from '../api/audioService';
-import DropZone from '../components/dashboard/DropZone';
-import ProcessingQueue from '../components/dashboard/ProcessingQueue';
-import AnalysisTips from '../components/dashboard/AnalysisTips';
-import './Dashboard.css';
+import DropZone from '../components/audioIngestion/DropZone';
+import ProcessingQueue from '../components/audioIngestion/ProcessingQueue';
+import AnalysisTips from '../components/audioIngestion/AnalysisTips';
+import './AudioIngestion.css';
 
-const Dashboard = () => {
+const AudioIngestion = () => {
 	const { t } = useTranslation();
 	const [uploadedFiles, setUploadedFiles] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -68,14 +68,14 @@ const Dashboard = () => {
 	};
 
 	return (
-		<div className="dashboard">
-			<div className="dashboard__header">
-				<h1 className="dashboard__title">{t('pages.dashboard.title')}</h1>
-				<p className="dashboard__description">{t('pages.dashboard.description')}</p>
+		<div className="audio-ingestion">
+			<div className="audio-ingestion__header">
+				<h1 className="audio-ingestion__title">{t('pages.audioIngestion.title')}</h1>
+				<p className="audio-ingestion__description">{t('pages.audioIngestion.description')}</p>
 			</div>
 
-			<div className="dashboard__content">
-				<div className="dashboard__main">
+			<div className="audio-ingestion__content">
+				<div className="audio-ingestion__main">
 					<DropZone onFilesSelected={processFiles} isLoading={loading} />
 					<ProcessingQueue files={uploadedFiles} onRemoveFile={removeFile} />
 				</div>
@@ -86,4 +86,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default AudioIngestion;

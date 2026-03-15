@@ -10,9 +10,9 @@ const ProcessingQueue = ({ files, onRemoveFile }) => {
 	return (
 		<div className="processing-queue">
 			<div className="processing-queue__header">
-				<h3 className="processing-queue__title">{t('pages.dashboard.processingQueue')}</h3>
+				<h3 className="processing-queue__title">{t('pages.audioIngestion.processingQueue')}</h3>
 				<span className="processing-queue__badge">
-					{files.length} {t('pages.dashboard.active')}
+					{files.length} {t('pages.audioIngestion.active')}
 				</span>
 			</div>
 

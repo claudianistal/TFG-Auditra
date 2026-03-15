@@ -5,9 +5,9 @@
   },
   "menu": {
     "aria_label": "Navegación principal",
-    "dashboard": {
-      "label": "Dashboard",
-      "description": "Vista general de la aplicación"
+    "audioIngestion": {
+      "label": "Ingesta de Audio",
+      "description": "Carga e ingiere archivos de audio forense"
     },
     "metadata": {
       "label": "Metadatos",
@@ -31,7 +31,7 @@
     "toggle": "Cambiar tema a {{theme}}"
   },
   "pages": {
-    "dashboard": {
+    "audioIngestion": {
       "title": "Ingerir evidencia de audio",
       "description": "Carga y cataloga de forma segura archivos de audio forense para autenticación y mejora.",
       "dragDrop": "Arrastra y suelta archivos de audio aquí",

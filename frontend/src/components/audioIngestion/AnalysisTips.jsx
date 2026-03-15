@@ -7,19 +7,19 @@ const AnalysisTips = () => {
 
 	const tips = [
 		{
-			title: t('pages.dashboard.highNoiseDetection'),
-			text: t('pages.dashboard.highNoiseText'),
+			title: t('pages.audioIngestion.highNoiseDetection'),
+			text: t('pages.audioIngestion.highNoiseText'),
 		},
 		{
-			title: t('pages.dashboard.batchProcessing'),
-			text: t('pages.dashboard.batchText'),
+			title: t('pages.audioIngestion.batchProcessing'),
+			text: t('pages.audioIngestion.batchText'),
 		},
 	];
 
 	return (
 		<aside className="analysis-tips">
 			<div className="analysis-tips__header">
-				<h3 className="analysis-tips__title">{t('pages.dashboard.analysisTips')}</h3>
+				<h3 className="analysis-tips__title">{t('pages.audioIngestion.analysisTips')}</h3>
 			</div>
 
 			<div className="analysis-tips__list">

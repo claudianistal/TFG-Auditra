@@ -46,10 +46,10 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 		>
 			<div className="drop-zone__content">
 				<div className="drop-zone__header">
-					<h2 className="drop-zone__title">{t('pages.dashboard.dragDrop')}</h2>
+					<h2 className="drop-zone__title">{t('pages.audioIngestion.dragDrop')}</h2>
 				</div>
 				
-				<p className="drop-zone__description">{t('pages.dashboard.supportedFormats')}</p>
+				<p className="drop-zone__description">{t('pages.audioIngestion.supportedFormats')}</p>
 
 				<div className="drop-zone__buttons">
 					<button
@@ -57,7 +57,7 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 						onClick={handleBrowseClick}
 						disabled={isLoading}
 					>
-						{t('pages.dashboard.browseFiles')}
+						{t('pages.audioIngestion.browseFiles')}
 					</button>
 				</div>
 
@@ -72,13 +72,13 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 
 				<div className="drop-zone__specs">
 					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.dashboard.encryption')}</span>
+						<span className="drop-zone__spec-label">{t('pages.audioIngestion.encryption')}</span>
 					</div>
 					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.dashboard.chainOfCustody')}</span>
+						<span className="drop-zone__spec-label">{t('pages.audioIngestion.chainOfCustody')}</span>
 					</div>
 					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.dashboard.maxPerFile')}</span>
+						<span className="drop-zone__spec-label">{t('pages.audioIngestion.maxPerFile')}</span>
 					</div>
 				</div>
 			</div>

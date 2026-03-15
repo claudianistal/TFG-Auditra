@@ -5,9 +5,9 @@
   },
   "menu": {
     "aria_label": "Main navigation",
-    "dashboard": {
-      "label": "Dashboard",
-      "description": "General application overview"
+    "audioIngestion": {
+      "label": "Audio Ingestion",
+      "description": "Upload and ingest forensic audio files"
     },
     "metadata": {
       "label": "Metadata",
@@ -31,7 +31,7 @@
     "toggle": "Switch theme to {{theme}}"
   },
   "pages": {
-    "dashboard": {
+    "audioIngestion": {
       "title": "Ingest Audio Evidence",
       "description": "Securely upload and catalog forensic audio files for authentication and enhancement.",
       "dragDrop": "Drag and drop audio files here",

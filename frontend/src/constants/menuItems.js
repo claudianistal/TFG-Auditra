@@ -1,4 +1,4 @@
 export const menuItems = [
-  { id: 'dashboard', path: '/' },
+  { id: 'audioIngestion', path: '/' },
   { id: 'metadata', path: '/metadata' },
 ];
