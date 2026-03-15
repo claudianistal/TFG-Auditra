@@ -1,11 +1,11 @@
 import uvicorn
 import webview
 import threading
-import sys
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+from app.api import endpoints
+from app.utils import ensure_upload_dir
 
 # --- APP CONFIGURATION ---
 app = FastAPI()
@@ -17,23 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/api/analizar")
-async def analizar_audio():
-    return {
-        "archivo": "evidencia_001.wav",
-        "resultado": "Sintético (IA)",
-        "probabilidad": 0.94,
-        "metadatos": {
-            "encoder": "ElevenLabs",
-            "bitrate": "128kbps",
-            "hash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        }
-    }
+# Include API routes
+app.include_router(endpoints.router, prefix="/api")
 
 # --- FASTAPI SERVER ---
 
 def run_fastapi():
-    # Lauch FastAPI server on localhost:8000
+    # Ensure uploads directory exists before starting server
+    ensure_upload_dir()
+    # Launch FastAPI server on localhost:8000
     uvicorn.run(app, host="127.0.0.1", port=8000, log_level="info")
 
 if __name__ == "__main__":

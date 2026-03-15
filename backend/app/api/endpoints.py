@@ -1,12 +1,28 @@
-from fastapi import APIRouter, UploadFile
+from fastapi import APIRouter, UploadFile, File
+from app.services import FileUploadService
+from app.models import FileUploadResponse
 from app.core.engine import ForensicEngine
 
 router = APIRouter()
-engine = ForensicEngine() # Instanciamos el motor
+engine = ForensicEngine()  # Instancia global del motor de análisis
+file_service = FileUploadService(engine)  # Servicio de gestión de archivos
 
-@router.post("/analyze")
-async def analyze_audio(file: UploadFile):
-    # 1. Guardar archivo temporalmente
-    # 2. engine.analyze_file(ruta_temporal)
-    # 3. Retornar JSON al Frontend (React)
-    return engine.analyze_file("ruta/al/archivo")
+
+@router.post("/upload", response_model=FileUploadResponse)
+async def upload_audio(file: UploadFile = File(...)):
+    """
+    Handle audio file upload.
+    
+    Receives an audio file (WAV, MP3, FLAC, AIFF), validates it,
+    saves it to disk, and returns metadata with a unique file ID.
+    
+    Args:
+        file (UploadFile): Audio file from the frontend
+        
+    Returns:
+        FileUploadResponse: File ID, filename, size, and status
+        
+    Raises:
+        HTTPException: 400 if validation fails, 500 if save fails
+    """
+    return await file_service.upload_file(file)

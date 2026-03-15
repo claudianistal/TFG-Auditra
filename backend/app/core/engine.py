@@ -1,3 +1,9 @@
+"""
+Forensic analysis engine for audio files.
+"""
+from app.core.strategies.pattern.padding_strategy import PaddingStrategy
+
+
 class ForensicEngine:
     def __init__(self):
         # Aquí puedes cargar tus estrategias (podrías leerlas del JSON)
