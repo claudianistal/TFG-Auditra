@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../styles/DropZone.css';
 
-const DropZone = ({ onFilesSelected, isLoading }) => {
+const DropZone = ({ onFilesSelected, isLoading, hasActiveFile }) => {
 	const { t } = useTranslation();
 	const [dragActive, setDragActive] = useState(false);
 	const fileInputRef = useRef(null);

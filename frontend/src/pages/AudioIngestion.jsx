@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { uploadAudioFile } from '../api/audioService';
+import { uploadAudioFile, deleteAudioFile } from '../api/audioService';
 import DropZone from '../components/audioIngestion/DropZone';
 import ProcessingQueue from '../components/audioIngestion/ProcessingQueue';
 import AnalysisTips from '../components/audioIngestion/AnalysisTips';
@@ -27,6 +27,17 @@ const AudioIngestion = () => {
 	};
 
 	const processFiles = async (files) => {
+		// Validar: solo permitir 1 archivo a la vez
+		if (uploadedFiles.length > 0) {
+			alert(t('errors.onlyOneFileAtATime') || 'Se está procesando un archivo. Espera a que termine.');
+			return;
+		}
+
+		if (files.length > 1) {
+			alert(t('errors.onlyOneFile') || 'Solo puedes cargar un archivo a la vez.');
+			return;
+		}
+
 		setLoading(true);
 		const validFiles = [];
 
@@ -51,7 +62,9 @@ const AudioIngestion = () => {
 					id: response.data.id || Date.now(),
 					name: file.name,
 					progress: 100,
-					status: 'ready'
+					status: 'ready',
+					hash: response.data.hash,
+					hashAlgorithm: response.data.hash_algorithm
 				};
 				setUploadedFiles((prev) => [...prev, newFile]);
 			}
@@ -63,8 +76,17 @@ const AudioIngestion = () => {
 		}
 	};
 
-	const removeFile = (fileId) => {
-		setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+	const removeFile = async (fileId) => {
+		try {
+			// Eliminar archivo del backend
+			await deleteAudioFile(fileId);
+			// Eliminar de la cola del frontend
+			setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+		} catch (error) {
+			console.error('Error deleting file:', error);
+			// Aun así lo removemos del frontend para mejor UX
+			setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+		}
 	};
 
 	return (
@@ -93,7 +115,7 @@ const AudioIngestion = () => {
 
 			<div className="audio-ingestion__content">
 				<div className="audio-ingestion__main">
-					<DropZone onFilesSelected={processFiles} isLoading={loading} />
+					<DropZone onFilesSelected={processFiles} isLoading={loading} hasActiveFile={uploadedFiles.length > 0} />
 					<ProcessingQueue files={uploadedFiles} onRemoveFile={removeFile} />
 				</div>
 

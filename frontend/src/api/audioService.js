@@ -12,6 +12,10 @@ export const uploadAudioFile = async (formData) => {
   });
 };
 
+export const deleteAudioFile = async (fileId) => {
+  return api.delete(`/upload/${fileId}`);
+};
+
 export const getProcessingQueue = async () => {
   return api.get('/queue');
 };

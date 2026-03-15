@@ -1,8 +1,7 @@
-"""
-File handling utilities for audio file uploads.
-"""
+"""File handling utilities for audio file uploads."""
 import uuid
 import os
+import hashlib
 from pathlib import Path
 from typing import Tuple
 from fastapi import UploadFile
@@ -10,7 +9,20 @@ from fastapi import UploadFile
 # Configuración de formatos y tamaños
 ALLOWED_EXTENSIONS = {'.wav', '.mp3', '.flac', '.aiff'}
 MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024  # 2GB en bytes
-UPLOAD_DIR = Path(__file__).parent.parent.parent / "uploads"
+
+
+def get_upload_dir() -> Path:
+    """
+    Get the upload directory path. Uses Documents folder for easy access.
+    Compatible with PyInstaller and all Python distributions.
+    
+    Returns:
+        Path: Path to the uploads directory
+    """
+    # Use Documents folder - easily accessible and works with PyInstaller
+    uploads_dir = Path.home() / 'Documents' / 'TFG_Auditra_Uploads'
+    
+    return uploads_dir
 
 
 def ensure_upload_dir() -> Path:
@@ -21,44 +33,63 @@ def ensure_upload_dir() -> Path:
     Returns:
         Path: Path to the uploads directory
     """
-    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-    return UPLOAD_DIR
+    upload_dir = get_upload_dir()
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    return upload_dir
 
 
-def validate_file(file: UploadFile) -> Tuple[bool, str]:
+def validate_file(filename: str, file_size: int = None) -> Tuple[bool, str]:
     """
-    Validate the uploaded file.
+    Validate the uploaded file (extension and optionally size).
     
     Args:
-        file (UploadFile): The file to validate
+        filename (str): The name of the file
+        file_size (int, optional): Size of the file in bytes. If provided, size is validated.
         
     Returns:
         Tuple[bool, str]: (is_valid, error_message)
     """
     # Validar extensión
-    filename = file.filename or ""
     file_ext = Path(filename).suffix.lower()
     
     if file_ext not in ALLOWED_EXTENSIONS:
         allowed = ", ".join(ALLOWED_EXTENSIONS)
         return False, f"Formato no soportado. Formatos permitidos: {allowed}"
     
-    # Validar tamaño (se valida al leer el contenido)
-    # Aquí solo checkeamos si el archivo es demasiado grande
-    # FastAPI no proporciona tamaño antes de lectura, así que lo verificaremos al guardar
+    # Validar tamaño si se proporciona
+    if file_size is not None and file_size > MAX_FILE_SIZE:
+        size_gb = file_size / (1024 * 1024 * 1024)
+        max_gb = MAX_FILE_SIZE / (1024 * 1024 * 1024)
+        return False, f"Archivo demasiado grande ({size_gb:.2f}GB). Máximo permitido: {max_gb:.2f}GB"
     
     return True, ""
 
 
-async def save_file(file: UploadFile) -> Tuple[str, int, str]:
+def calculate_file_hash(file_content: bytes, algorithm: str = 'sha256') -> str:
     """
-    Save the uploaded file to disk.
+    Calculate the hash of file content.
+    
+    Args:
+        file_content (bytes): The content of the file to hash
+        algorithm (str): Hash algorithm to use (default: sha256)
+        
+    Returns:
+        str: Hexadecimal hash string
+    """
+    hash_obj = hashlib.new(algorithm)
+    hash_obj.update(file_content)
+    return hash_obj.hexdigest()
+
+
+async def save_file(file: UploadFile) -> Tuple[str, int, str, str]:
+    """
+    Save the uploaded file to disk and calculate its hash.
     
     Args:
         file (UploadFile): The file to save
         
     Returns:
-        Tuple[str, int, str]: (file_id, file_size, filename)
+        Tuple[str, int, str, str]: (file_id, file_size, original_filename, file_hash)
         
     Raises:
         ValueError: If file is too large or cannot be saved
@@ -74,33 +105,36 @@ async def save_file(file: UploadFile) -> Tuple[str, int, str]:
     upload_dir = ensure_upload_dir()
     file_path = upload_dir / f"{file_id}{file_ext}"
     
-    # Leer y guardar arquivo
+    # Asegurarse de que la ruta es absoluta
+    file_path = file_path.resolve()
+    
+    # Leer y guardar archivo
     file_size = 0
+    file_hash = ""
     try:
-        # Leer contenido del archivo (chequear tamaño durante lectura)
+        # Leer contenido del archivo
         content = await file.read()
         file_size = len(content)
         
-        # Validar tamaño
-        if file_size > MAX_FILE_SIZE:
-            size_gb = file_size / (1024 * 1024 * 1024)
-            max_gb = MAX_FILE_SIZE / (1024 * 1024 * 1024)
-            raise ValueError(
-                f"Archivo demasiado grande ({size_gb:.2f}GB). "
-                f"Máximo permitido: {max_gb:.2f}GB"
-            )
+        # Validar tamaño (y extensión como double-check)
+        original_filename = file.filename or "audio"
+        is_valid, error_msg = validate_file(original_filename, file_size)
+        if not is_valid:
+            raise ValueError(error_msg)
+        
+        # Calcular hash del archivo
+        file_hash = calculate_file_hash(content, 'sha256')
         
         # Guardar contenido en disco
         with open(file_path, 'wb') as f:
             f.write(content)
             
-    except ValueError:
-        # Re-raise validation errors
+    except ValueError as ve:
         raise
     except Exception as e:
         raise ValueError(f"Error al guardar archivo: {str(e)}")
     
-    return file_id, file_size, original_filename
+    return file_id, file_size, original_filename, file_hash
 
 
 def delete_file(file_id: str, file_ext: str = None) -> bool:
@@ -115,7 +149,7 @@ def delete_file(file_id: str, file_ext: str = None) -> bool:
     Returns:
         bool: True if deleted, False if not found
     """
-    upload_dir = ensure_upload_dir()
+    upload_dir = get_upload_dir()
     
     if file_ext:
         file_path = upload_dir / f"{file_id}{file_ext}"
@@ -144,7 +178,7 @@ def get_file_path(file_id: str, file_ext: str = None) -> Path:
     Returns:
         Path: Full path to the file (may or may not exist)
     """
-    upload_dir = ensure_upload_dir()
+    upload_dir = get_upload_dir()
     
     if file_ext:
         return upload_dir / f"{file_id}{file_ext}"

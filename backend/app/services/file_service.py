@@ -37,34 +37,38 @@ class FileUploadService:
         This method:
         1. Validates the file (extension, size, format)
         2. Saves the file to disk with a unique ID
-        3. Returns metadata about the uploaded file
+        3. Calculates the SHA-256 hash for verification
+        4. Returns metadata about the uploaded file
         
         Args:
             file (UploadFile): The uploaded file from the frontend
             
         Returns:
-            FileUploadResponse: Model containing file ID, filename, size, and status
+            FileUploadResponse: Model containing file ID, filename, size, hash, and status
             
         Raises:
             HTTPException: If validation fails (400) or save fails (500)
         """
         try:
-            # 1. Validate file
-            is_valid, error_msg = validate_file(file)
+            # 1. Validate file extension (before reading)
+            original_filename = file.filename or ""
+            is_valid, error_msg = validate_file(original_filename)
             if not is_valid:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=error_msg
                 )
             
-            # 2. Save file to disk
-            file_id, file_size, original_filename = await save_file(file)
+            # 2. Save file to disk and calculate hash (includes full validation)
+            file_id, file_size, original_filename, file_hash = await save_file(file)
             
-            # 3. Return response model (FastAPI serializes to JSON automatically)
+            # 3. Return response model with hash
             return FileUploadResponse(
                 id=file_id,
                 filename=original_filename,
                 size=file_size,
+                hash=file_hash,
+                hash_algorithm="SHA-256",
                 status="received"
             )
             

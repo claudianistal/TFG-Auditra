@@ -22,7 +22,9 @@
     "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 2GB"
   },
   "errors": {
-    "uploadFailed": "Error al cargar el archivo. Por favor, intenta de nuevo."
+    "uploadFailed": "Error al cargar el archivo. Por favor, intenta de nuevo.",
+    "onlyOneFile": "Solo puedes cargar un archivo a la vez.",
+    "onlyOneFileAtATime": "Se está procesando un archivo. Por favor, espera a que termine antes de subir otro."
   },
   "theme": {
     "label": "Tema",

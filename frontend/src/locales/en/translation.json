@@ -22,7 +22,9 @@
     "fileTooLarge": "File is too large. Maximum file size is 2GB"
   },
   "errors": {
-    "uploadFailed": "Failed to upload file. Please try again."
+    "uploadFailed": "Failed to upload file. Please try again.",
+    "onlyOneFile": "You can only upload one file at a time.",
+    "onlyOneFileAtATime": "A file is being processed. Please wait until it finishes before uploading another one."
   },
   "theme": {
     "label": "Theme",
