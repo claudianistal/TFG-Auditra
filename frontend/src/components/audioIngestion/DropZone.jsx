@@ -33,6 +33,8 @@ const DropZone = ({ onFilesSelected, isLoading, hasActiveFile }) => {
 		const files = e.target.files;
 		if (files) {
 			onFilesSelected(files);
+			// Reset input file para permitir seleccionar el mismo archivo nuevamente
+			e.target.value = '';
 		}
 	};
 
@@ -55,13 +57,11 @@ const DropZone = ({ onFilesSelected, isLoading, hasActiveFile }) => {
 					<button
 						className="btn btn--primary"
 						onClick={handleBrowseClick}
-						disabled={isLoading}
+						disabled={isLoading || hasActiveFile}
 					>
 						{t('pages.audioIngestion.browseFiles')}
 					</button>
 				</div>
-
-				
 
 				<input
 					ref={fileInputRef}
