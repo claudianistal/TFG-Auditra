@@ -48,9 +48,9 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 				<div className="drop-zone__header">
 					<h2 className="drop-zone__title">{t('pages.audioIngestion.dragDrop')}</h2>
 				</div>
-				
-				<p className="drop-zone__description">{t('pages.audioIngestion.supportedFormats')}</p>
 
+				<p className="drop-zone__info">{t('pages.audioIngestion.uploadInfo')}</p>
+				
 				<div className="drop-zone__buttons">
 					<button
 						className="btn btn--primary"
@@ -61,6 +61,8 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 					</button>
 				</div>
 
+				
+
 				<input
 					ref={fileInputRef}
 					type="file"
@@ -69,18 +71,6 @@ const DropZone = ({ onFilesSelected, isLoading }) => {
 					onChange={handleFileInputChange}
 					style={{ display: 'none' }}
 				/>
-
-				<div className="drop-zone__specs">
-					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.audioIngestion.encryption')}</span>
-					</div>
-					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.audioIngestion.chainOfCustody')}</span>
-					</div>
-					<div className="drop-zone__spec-item">
-						<span className="drop-zone__spec-label">{t('pages.audioIngestion.maxPerFile')}</span>
-					</div>
-				</div>
 			</div>
 		</div>
 	);

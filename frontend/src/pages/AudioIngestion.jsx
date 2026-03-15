@@ -70,8 +70,25 @@ const AudioIngestion = () => {
 	return (
 		<div className="audio-ingestion">
 			<div className="audio-ingestion__header">
-				<h1 className="audio-ingestion__title">{t('pages.audioIngestion.title')}</h1>
-				<p className="audio-ingestion__description">{t('pages.audioIngestion.description')}</p>
+					<div className="audio-ingestion__info-group">
+						<p className="audio-ingestion__info-label">{t('pages.audioIngestion.supportedFormatsInfo')}</p>
+						<p className="audio-ingestion__info-value">{t('pages.audioIngestion.formatsLabel')}</p>
+					</div>
+					<div className="audio-ingestion__separator"></div>
+					<div className="audio-ingestion__info-group">
+						<p className="audio-ingestion__info-label">{t('pages.audioIngestion.maxFileSize')}</p>
+						<p className="audio-ingestion__info-value">{t('pages.audioIngestion.maxPerFile')}</p>
+					</div>
+					<div className="audio-ingestion__separator"></div>
+					<div className="audio-ingestion__info-group">
+						<p className="audio-ingestion__info-label">{t('pages.audioIngestion.analysisMethod')}</p>
+						<p className="audio-ingestion__info-value">{t('pages.audioIngestion.analysisMethodLabel')}</p>
+					</div>
+					<div className="audio-ingestion__separator"></div>
+					<div className="audio-ingestion__info-group">
+						<p className="audio-ingestion__info-label">{t('pages.audioIngestion.securityLabel')}</p>
+						<p className="audio-ingestion__info-value">{t('pages.audioIngestion.encryption')}</p>
+					</div>
 			</div>
 
 			<div className="audio-ingestion__content">
