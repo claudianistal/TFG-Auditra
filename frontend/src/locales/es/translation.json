@@ -17,6 +17,13 @@
   "header": {
     "badge": "Panel lateral activo"
   },
+  "validation": {
+    "unsupportedFormat": "Formato de audio no compatible. Formatos soportados: WAV, MP3, FLAC, AIFF",
+    "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 2GB"
+  },
+  "errors": {
+    "uploadFailed": "Error al cargar el archivo. Por favor, intenta de nuevo."
+  },
   "theme": {
     "label": "Tema",
     "light": "Claro",
@@ -25,8 +32,25 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Panel principal",
-      "description": "Este espacio puede mostrar el resumen del análisis, accesos rápidos y el estado general del procesamiento de audio."
+      "title": "Ingerir evidencia de audio",
+      "description": "Carga y cataloga de forma segura archivos de audio forense para autenticación y mejora.",
+      "dragDrop": "Arrastra y suelta archivos de audio aquí",
+      "supportedFormats": "Carga de forma segura formatos WAV, MP3, FLAC o AIFF. Los archivos se cifran en tránsito y en reposo.",
+      "browseFiles": "Examinar archivos",
+      "importCloud": "Importar desde la nube",
+      "encryption": "AES DE 256 BITS",
+      "chainOfCustody": "CADENA DE CUSTODIA",
+      "maxPerFile": "MÁX 2GB/ARCHIVO",
+      "processingQueue": "Cola de procesamiento",
+      "active": "Activo",
+      "analysisTips": "Consejos de análisis",
+      "highNoiseDetection": "Detección de ruido alto",
+      "highNoiseText": "El sistema ha detectado ruido de fondo alto. Usa la herramienta de sustracción espectral para mayor claridad.",
+      "batchProcessing": "Procesamiento por lotes",
+      "batchText": "Puedes cargar múltiples archivos simultáneamente para ejecutar en paralelo la autenticación de voz.",
+      "noFiles": "Ningún archivo cargado aún",
+      "fileName": "Nombre del archivo",
+      "progress": "Progreso"
     },
     "metadata": {
       "title": "Módulo de metadatos",

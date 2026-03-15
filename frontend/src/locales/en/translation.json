@@ -17,6 +17,13 @@
   "header": {
     "badge": "Active sidebar"
   },
+  "validation": {
+    "unsupportedFormat": "Unsupported audio format. Supported formats: WAV, MP3, FLAC, AIFF",
+    "fileTooLarge": "File is too large. Maximum file size is 2GB"
+  },
+  "errors": {
+    "uploadFailed": "Failed to upload file. Please try again."
+  },
   "theme": {
     "label": "Theme",
     "light": "Light",
@@ -25,8 +32,25 @@
   },
   "pages": {
     "dashboard": {
-      "title": "Main panel",
-      "description": "This space can show the analysis summary, quick access shortcuts and the overall audio processing status."
+      "title": "Ingest Audio Evidence",
+      "description": "Securely upload and catalog forensic audio files for authentication and enhancement.",
+      "dragDrop": "Drag and drop audio files here",
+      "supportedFormats": "Securely upload WAV, MP3, FLAC, or AIFF formats. Files are encrypted during transit and at rest.",
+      "browseFiles": "Browse Files",
+      "importCloud": "Import from Cloud",
+      "encryption": "256-BIT AES",
+      "chainOfCustody": "CHAIN OF CUSTODY",
+      "maxPerFile": "MAX 2GB/FILE",
+      "processingQueue": "Processing Queue",
+      "active": "Active",
+      "analysisTips": "Analysis Tips",
+      "highNoiseDetection": "High Noise Detection",
+      "highNoiseText": "System has detected high background noise. Use the Spectral Subtraction tool for better clarity.",
+      "batchProcessing": "Batch Processing",
+      "batchText": "You can upload multiple files simultaneously to run in parallel voice print authentication.",
+      "noFiles": "No files uploaded yet",
+      "fileName": "File name",
+      "progress": "Progress"
     },
     "metadata": {
       "title": "Metadata module",
