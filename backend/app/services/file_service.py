@@ -6,9 +6,11 @@ validation, and coordination with the forensic engine.
 """
 from fastapi import UploadFile, HTTPException, status
 from app.utils import validate_file, save_file, get_file_path, delete_file
+from app.utils.metadata_extractor import extract_metadata
 from app.core.engine import ForensicEngine
 from app.models import FileUploadResponse
 from pathlib import Path
+from datetime import datetime
 
 
 class FileUploadService:
@@ -97,3 +99,65 @@ class FileUploadService:
             bool: True if deleted, False if not found
         """
         return delete_file(file_id, file_ext)
+    
+    def get_file_metadata(self, file_id: str) -> dict:
+        """
+        Extract metadata from an uploaded audio file.
+        
+        Args:
+            file_id (str): The UUID of the file
+            
+        Returns:
+            dict: Dictionary with extracted metadata and file info
+                  Structure: {
+                      "file_id": str,
+                      "filename": str,
+                      "metadata": {
+                          "title": str or None,
+                          "artist": str or None,
+                          ... (all audio metadata fields)
+                      },
+                      "extracted_at": ISO datetime string
+                  }
+                  
+        Raises:
+            HTTPException: 404 if file not found, 400 for unsupported format, 500 for extraction errors
+        """
+        try:
+            # Find the file in uploads directory
+            file_path = get_file_path(file_id)
+            
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"File with ID {file_id} not found"
+                )
+            
+            # Extract metadata from the file
+            metadata = extract_metadata(str(file_path))
+            
+            # Return structured response
+            return {
+                "file_id": file_id,
+                "filename": file_path.name,
+                "metadata": metadata,
+                "extracted_at": datetime.utcnow().isoformat() + "Z"
+            }
+            
+        except HTTPException:
+            raise
+        except FileNotFoundError as e:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"File not found: {str(e)}"
+            )
+        except ValueError as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Unsupported file format or corrupted file: {str(e)}"
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error extracting metadata: {str(e)}"
+            )

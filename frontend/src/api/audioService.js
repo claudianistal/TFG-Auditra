@@ -24,4 +24,8 @@ export const getAnalysisStatus = async (fileId) => {
   return api.get(`/status/${fileId}`);
 };
 
+export const getMetadata = async (fileId) => {
+  return api.get(`/metadata/${fileId}`);
+};
+
 export default api;

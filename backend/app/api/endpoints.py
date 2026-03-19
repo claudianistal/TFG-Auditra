@@ -58,3 +58,30 @@ async def delete_audio(file_id: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error deleting file: {str(e)}"
         )
+
+
+@router.get("/metadata/{file_id}")
+async def get_metadata(file_id: str):
+    """
+    Extract and return metadata from an uploaded audio file.
+    
+    Analyzes the audio file and extracts all available metadata
+    including title, artist, album, genre, duration, bitrate, etc.
+    
+    Args:
+        file_id (str): The UUID of the file to analyze
+        
+    Returns:
+        dict: {
+            "file_id": str,
+            "filename": str,
+            "metadata": {
+                ... (all extracted metadata fields)
+            },
+            "extracted_at": ISO 8601 timestamp
+        }
+        
+    Raises:
+        HTTPException: 404 if file not found, 400 if unsupported format, 500 on errors
+    """
+    return file_service.get_file_metadata(file_id)
