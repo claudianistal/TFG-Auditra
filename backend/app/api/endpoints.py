@@ -13,7 +13,7 @@ async def upload_audio(file: UploadFile = File(...)):
     """
     Handle audio file upload.
     
-    Receives an audio file (WAV, MP3, FLAC, AIFF), validates it,
+    Receives an audio file (WAV, MP3, M4A), validates it,
     saves it to disk, and returns metadata with a unique file ID.
     
     Args:

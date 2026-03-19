@@ -18,7 +18,7 @@
     "badge": "Panel lateral activo"
   },
   "validation": {
-    "unsupportedFormat": "Formato de audio no compatible. Formatos soportados: WAV, MP3, FLAC, AIFF",
+    "unsupportedFormat": "Formato de audio no compatible. Formatos soportados: WAV, MP3, M4A",
     "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 2GB"
   },
   "errors": {

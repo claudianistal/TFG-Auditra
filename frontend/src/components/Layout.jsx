@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import Menu from './Menu';
 import LanguageSwitcher from './switchers/LanguageSwitcher';
+import { FileProvider } from '../context/FileContext';
 import { menuItems } from '../constants/menuItems';
 import './styles/Layout.css';
 
-const Layout = () => {
+const LayoutContent = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
 	const currentItem = menuItems.find((item) => item.path === location.pathname) ?? menuItems[0];
@@ -34,6 +35,14 @@ const Layout = () => {
 				<Outlet />
 			</main>
 		</div>
+	);
+};
+
+const Layout = () => {
+	return (
+		<FileProvider>
+			<LayoutContent />
+		</FileProvider>
 	);
 };
 

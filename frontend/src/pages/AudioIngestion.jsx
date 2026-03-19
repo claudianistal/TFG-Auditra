@@ -4,14 +4,15 @@ import { uploadAudioFile, deleteAudioFile } from '../api/audioService';
 import DropZone from '../components/audioIngestion/DropZone';
 import ProcessingQueue from '../components/audioIngestion/ProcessingQueue';
 import AnalysisTips from '../components/audioIngestion/AnalysisTips';
+import { useFiles } from '../context/FileContext';
 import './AudioIngestion.css';
 
 const AudioIngestion = () => {
 	const { t } = useTranslation();
-	const [uploadedFiles, setUploadedFiles] = useState([]);
+	const { files, addFiles, removeFile: removeFileFromContext } = useFiles();
 	const [loading, setLoading] = useState(false);
 
-	const SUPPORTED_FORMATS = ['audio/wav', 'audio/mpeg', 'audio/flac', 'audio/aiff', 'audio/aiff-c'];
+	const SUPPORTED_FORMATS = ['audio/wav', 'audio/mpeg', 'audio/mp4'];
 	const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
 
 	const validateFile = (file) => {
@@ -26,14 +27,14 @@ const AudioIngestion = () => {
 		return true;
 	};
 
-	const processFiles = async (files) => {
+	const processFiles = async (filesToProcess) => {
 		// Validar: solo permitir 1 archivo a la vez
-		if (uploadedFiles.length > 0) {
+		if (files.length > 0) {
 			alert(t('errors.onlyOneFileAtATime') || 'Se está procesando un archivo. Espera a que termine.');
 			return;
 		}
 
-		if (files.length > 1) {
+		if (filesToProcess.length > 1) {
 			alert(t('errors.onlyOneFile') || 'Solo puedes cargar un archivo a la vez.');
 			return;
 		}
@@ -41,7 +42,7 @@ const AudioIngestion = () => {
 		setLoading(true);
 		const validFiles = [];
 
-		for (let file of files) {
+		for (let file of filesToProcess) {
 			if (validateFile(file)) {
 				validFiles.push(file);
 			}
@@ -53,6 +54,7 @@ const AudioIngestion = () => {
 		}
 
 		try {
+			const newFilesArray = [];
 			for (let file of validFiles) {
 				const formData = new FormData();
 				formData.append('file', file);
@@ -66,8 +68,9 @@ const AudioIngestion = () => {
 					hash: response.data.hash,
 					hashAlgorithm: response.data.hash_algorithm
 				};
-				setUploadedFiles((prev) => [...prev, newFile]);
+				newFilesArray.push(newFile);
 			}
+			addFiles(newFilesArray);
 		} catch (error) {
 			console.error('Error uploading file:', error);
 			alert(t('errors.uploadFailed') || 'Error al cargar el archivo');
@@ -80,12 +83,12 @@ const AudioIngestion = () => {
 		try {
 			// Eliminar archivo del backend
 			await deleteAudioFile(fileId);
-			// Eliminar de la cola del frontend
-			setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+			// Eliminar del contexto global
+			removeFileFromContext(fileId);
 		} catch (error) {
 			console.error('Error deleting file:', error);
 			// Aun así lo removemos del frontend para mejor UX
-			setUploadedFiles((prev) => prev.filter((f) => f.id !== fileId));
+			removeFileFromContext(fileId);
 		}
 	};
 
@@ -115,8 +118,8 @@ const AudioIngestion = () => {
 
 			<div className="audio-ingestion__content">
 				<div className="audio-ingestion__main">
-					<DropZone onFilesSelected={processFiles} isLoading={loading} hasActiveFile={uploadedFiles.length > 0} />
-					<ProcessingQueue files={uploadedFiles} onRemoveFile={removeFile} />
+					<DropZone onFilesSelected={processFiles} isLoading={loading} hasActiveFile={files.length > 0} />
+					<ProcessingQueue files={files} onRemoveFile={removeFile} />
 				</div>
 
 				<AnalysisTips />

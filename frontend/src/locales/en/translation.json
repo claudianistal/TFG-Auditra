@@ -18,7 +18,7 @@
     "badge": "Active sidebar"
   },
   "validation": {
-    "unsupportedFormat": "Unsupported audio format. Supported formats: WAV, MP3, FLAC, AIFF",
+    "unsupportedFormat": "Unsupported audio format. Supported formats: WAV, MP3, M4A",
     "fileTooLarge": "File is too large. Maximum file size is 2GB"
   },
   "errors": {

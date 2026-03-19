@@ -7,7 +7,7 @@ from typing import Tuple
 from fastapi import UploadFile
 
 # Configuración de formatos y tamaños
-ALLOWED_EXTENSIONS = {'.wav', '.mp3', '.flac', '.aiff'}
+ALLOWED_EXTENSIONS = {'.wav', '.mp3', '.m4a'}
 MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024  # 2GB en bytes
 
 

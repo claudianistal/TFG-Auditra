@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trash2, Copy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import '../styles/ProcessingQueue.css';
 
@@ -25,8 +26,9 @@ const ProcessingQueue = ({ files, onRemoveFile }) => {
 								className="queue-item__remove"
 								onClick={() => onRemoveFile(file.id)}
 								title="Remove file"
+								aria-label="Eliminar archivo"
 							>
-								×
+								<Trash2 size={18} strokeWidth={2} />
 							</button>
 						</div>
 						<div className="queue-item__progress-bar">
@@ -45,8 +47,9 @@ const ProcessingQueue = ({ files, onRemoveFile }) => {
 									className="queue-item__copy-hash"
 									onClick={() => navigator.clipboard.writeText(file.hash)}
 									title="Copy hash"
+									aria-label="Copiar hash"
 								>
-									📋
+									<Copy size={16} strokeWidth={2} />
 								</button>
 							</div>
 						</div>

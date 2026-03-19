@@ -67,7 +67,7 @@ const DropZone = ({ onFilesSelected, isLoading, hasActiveFile }) => {
 					ref={fileInputRef}
 					type="file"
 					multiple
-					accept=".wav,.mp3,.flac,.aiff"
+					accept=".wav,.mp3,.m4a"
 					onChange={handleFileInputChange}
 					style={{ display: 'none' }}
 				/>

@@ -1,4 +1,4 @@
-# TFG-Auditra 
+# Auditra 
 **Detector de Audio Generado por IA** - Aplicación de escritorio para detectar y analizar audio sintético/generado artificialmente a partir de sus metadatos y posibles patrones
 
 ---
@@ -19,7 +19,7 @@
 
 ## 📝 Descripción
 
-**TFG-Auditra** es una herramienta forense de audio diseñada para **detectar y analizar audio generado mediante inteligencia artificial** (deepfakes, síntesis de voz, etc.). La aplicación proporciona un análisis detallado de las características de audio para identificar patrones anómalos típicos del audio sintético.
+**Auditra** es una herramienta forense de audio diseñada para **detectar y analizar audio generado mediante inteligencia artificial** (deepfakes, síntesis de voz, etc.). La aplicación proporciona un análisis detallado de las características de audio para identificar patrones anómalos típicos del audio sintético.
 
 ### ¿Por qué es importante?
 
@@ -28,22 +28,7 @@ El audio generado con IA (deepfakes de audio, síntesis de voz) representa un ri
 - 📰 **Desinformación** - Contenido falso que se viraliza rápidamente
 - 💰 **Fraude de voz** - Estafas telefónicas y suplantaciones avanzadas
 
-**TFG-Auditra** proporciona herramientas forenses profesionales para identificar y autenticar la autenticidad del contenido de audio, siendo especialmente útil para investigadores, forenses digitales y profesionales de seguridad.
-
----
-
-## ✨ Características
-
-- ✅ **Carga de archivos de audio** - Soporta múltiples formatos (MP3, WAV, etc.)
-- ✅ **Análisis IA en tiempo real** - Detecta características de audio generado
-- ✅ **Análisis metadata** - Extrae información forense del archivo
-- ✅ **Reportes detallados** - Genera análisis comprensivos del audio
-- ✅ **Interfaz moderna** - Dashboard intuitivo y responsivo
-- ✅ **Internacionalización** - Soporte multi-idioma (ES/EN)
-- ✅ **Aplicación nativa** - Experiencia de escritorio con webview
-- ✅ **Portátil** - Un único ejecutable sin dependencias externas
-
----
+**Auditra** proporciona herramientas forenses profesionales para identificar y autenticar la autenticidad del contenido de audio, siendo especialmente útil para investigadores, forenses digitales y profesionales de seguridad.
 
 ## ⚙️ Requisitos previos
 
@@ -212,4 +197,4 @@ Este proyecto es parte de un TFG (Trabajo de Fin de Grado)
 ---
 
 ## 👤 Autora
-Claudia Nistal García - Detector de Audio IA (TFG)
+Claudia Nistal Martínez - Detector de Audio IA (TFG)
