@@ -6,11 +6,12 @@ validation, and coordination with the forensic engine.
 """
 from fastapi import UploadFile, HTTPException, status
 from app.utils import validate_file, save_file, get_file_path, delete_file
-from app.utils.metadata_extractor import extract_metadata
 from app.core.engine import ForensicEngine
 from app.models import FileUploadResponse
 from pathlib import Path
 from datetime import datetime
+
+from app.metadata import MetadataFactory
 
 
 class FileUploadService:
@@ -102,29 +103,10 @@ class FileUploadService:
     
     def get_file_metadata(self, file_id: str) -> dict:
         """
-        Extract metadata from an uploaded audio file.
-        
-        Args:
-            file_id (str): The UUID of the file
-            
-        Returns:
-            dict: Dictionary with extracted metadata and file info
-                  Structure: {
-                      "file_id": str,
-                      "filename": str,
-                      "metadata": {
-                          "title": str or None,
-                          "artist": str or None,
-                          ... (all audio metadata fields)
-                      },
-                      "extracted_at": ISO datetime string
-                  }
-                  
-        Raises:
-            HTTPException: 404 if file not found, 400 for unsupported format, 500 for extraction errors
+        Extract raw forensic metadata from an uploaded file using the MetadataFactory.
         """
         try:
-            # Find the file in uploads directory
+            # 1. Locate the file
             file_path = get_file_path(file_id)
             
             if not file_path.exists():
@@ -133,10 +115,14 @@ class FileUploadService:
                     detail=f"File with ID {file_id} not found"
                 )
             
-            # Extract metadata from the file
-            metadata = extract_metadata(str(file_path))
+            # 2. Get the appropriate extractor via Factory
+            # The factory handles the logic of which format to use
+            extractor = MetadataFactory.get_extractor(str(file_path))
             
-            # Return structured response
+            # 3. Extract all metadata (including raw/null values for forensic value)
+            metadata = extractor.get_all_metadata()
+            
+            # 4. Return structured response
             return {
                 "file_id": file_id,
                 "filename": file_path.name,
@@ -146,18 +132,14 @@ class FileUploadService:
             
         except HTTPException:
             raise
-        except FileNotFoundError as e:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"File not found: {str(e)}"
-            )
         except ValueError as e:
+            # Catch unsupported format errors from the Factory
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Unsupported file format or corrupted file: {str(e)}"
+                detail=str(e)
             )
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error extracting metadata: {str(e)}"
+                detail=f"Error during forensic metadata extraction: {str(e)}"
             )

@@ -12,11 +12,12 @@ const AudioIngestion = () => {
 	const { files, addFiles, removeFile: removeFileFromContext } = useFiles();
 	const [loading, setLoading] = useState(false);
 
-	const SUPPORTED_FORMATS = ['audio/wav', 'audio/mpeg', 'audio/mp4'];
+	const SUPPORTED_EXTENSIONS = ['.wav', '.mp3', '.m4a'];
 	const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
 
 	const validateFile = (file) => {
-		if (!SUPPORTED_FORMATS.includes(file.type)) {
+		const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+		if (!SUPPORTED_EXTENSIONS.includes(fileExtension)) {
 			alert(`${file.name} - ${t('validation.unsupportedFormat')}`);
 			return false;
 		}

@@ -65,6 +65,25 @@ const MetadataTable = ({ metadata, loading, error }) => {
 	const formatValue = (key, value) => {
 		if (!value && value !== 0) return 'N/A';
 
+		// Handle arrays (convert to formatted string)
+		if (Array.isArray(value)) {
+			if (value.length === 0) return 'N/A';
+			// For complex objects in arrays, show a summary
+			if (typeof value[0] === 'object') {
+				return `[${value.length} items]`;
+			}
+			return value.join(', ');
+		}
+
+		// Handle objects (convert to formatted string)
+		if (typeof value === 'object') {
+			try {
+				return JSON.stringify(value);
+			} catch {
+				return '[Complex Object]';
+			}
+		}
+
 		switch (key) {
 			case 'duration':
 				return formatDuration(value);
@@ -80,6 +99,11 @@ const MetadataTable = ({ metadata, loading, error }) => {
 	// Get all metadata entries dynamically
 	const metadataEntries = Object.entries(metadata)
 		.filter(([, value]) => value !== undefined && value !== null && value !== '') // Exclude undefined, null, empty values
+		.filter(([key]) => {
+			// Exclude highly complex nested structures that don't provide user-friendly info
+			const complexKeys = ['container_layout', 'atom_structure_error'];
+			return !complexKeys.includes(key);
+		})
 		.map(([key, value]) => ({
 			key,
 			label: formatLabel(key),
