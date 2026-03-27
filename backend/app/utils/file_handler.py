@@ -1,6 +1,7 @@
 """File handling utilities for audio file uploads."""
 import uuid
 import os
+import sys
 import hashlib
 from pathlib import Path
 from typing import Tuple
@@ -189,3 +190,26 @@ def get_file_path(file_id: str, file_ext: str = None) -> Path:
             if file_path.exists():
                 return file_path
         return upload_dir / f"{file_id}"  # Return default if not found
+
+def get_binary_path(binary_name: str) -> str:
+    """
+    Get the absolute path to a binary tool (e.g., exiftool.exe, ffprobe.exe).
+    Works in both development mode and PyInstaller frozen mode.
+    
+    Args:
+        binary_name (str): The name of the binary
+        
+    Returns:
+        str: Absolute path to the binary
+    """
+    if getattr(sys, 'frozen', False):
+        # Si estamos ejecutando desde el .exe generado por PyInstaller
+        base_path = Path(sys._MEIPASS)
+    else:
+        # En modo desarrollo, la carpeta bin está en backend/bin
+        # __file__ es backend/app/utils/file_handler.py
+        base_path = Path(__file__).parent.parent.parent
+
+    bin_path = base_path / 'bin' / binary_name
+    return str(bin_path.resolve())
+

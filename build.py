@@ -20,6 +20,8 @@ def build():
     
     # Rutas para incluir datos
     frontend_dist = os.path.join(project_root, "frontend", "dist")
+    bin_dir = os.path.join(backend_path, "bin")
+    exiftool_files_dir = os.path.join(bin_dir, "exiftool_files")
     
     # Comando de PyInstaller
     cmd = [
@@ -27,11 +29,13 @@ def build():
         "-m",
         "PyInstaller",
         "--onefile",
-        "--windowed",
+        "--console",  # TEMPORALMENTE cambiado para detectar bugs. Luego cambiar de nuevo a --windowed
         "--name=Auditra",
         f"--icon={icon_path}",
         f"--paths={backend_path}",
         f"--add-data={frontend_dist}{os.pathsep}frontend/dist",  # Usar os.pathsep para Windows/Linux compatibility
+        f"--add-data={bin_dir}{os.pathsep}bin",
+        f"--add-data={exiftool_files_dir}{os.pathsep}bin/exiftool_files",
         "--collect-all=fastapi",
         "--collect-all=uvicorn",
         "--collect-all=pywebview",

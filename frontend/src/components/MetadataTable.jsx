@@ -75,6 +75,11 @@ const MetadataTable = ({ metadata, loading, error }) => {
 			return value.join(', ');
 		}
 
+		// Handle booleans (React will crash if we try to render true/false directly)
+		if (typeof value === 'boolean') {
+			return value ? 'Yes' : 'No';
+		}
+
 		// Handle objects (convert to formatted string)
 		if (typeof value === 'object') {
 			try {
