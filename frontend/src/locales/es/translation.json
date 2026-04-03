@@ -12,6 +12,10 @@
     "metadata": {
       "label": "Metadatos",
       "description": "Análisis y consulta de metadatos"
+    },
+    "patterns": {
+      "label": "Patrones",
+      "description": "Análisis de patrones binarios y relleno"
     }
   },
   "header": {
@@ -63,6 +67,11 @@
     "metadata": {
       "title": "Módulo de metadatos",
       "description": "Aquí puedes centralizar formularios, resultados y herramientas relacionadas con el análisis de metadatos del audio."
+    },
+    "patterns": {
+      "title": "Análisis de Patrones",
+      "description": "Analiza patrones binarios y relleno en archivos de audio. Ajusta el ancho del mapa de bits para observar patrones en diferentes escalas.",
+      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero."
     }
   }
 }

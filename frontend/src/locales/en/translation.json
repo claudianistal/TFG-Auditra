@@ -12,6 +12,10 @@
     "metadata": {
       "label": "Metadata",
       "description": "Metadata analysis and queries"
+    },
+    "patterns": {
+      "label": "Patterns",
+      "description": "Binary pattern and padding analysis"
     }
   },
   "header": {
@@ -63,6 +67,11 @@
     "metadata": {
       "title": "Metadata module",
       "description": "Here you can centralise forms, results and tools related to audio metadata analysis."
+    },
+    "patterns": {
+      "title": "Pattern Analysis",
+      "description": "Analyze binary patterns and padding in audio files. Adjust the bitmap width to observe different pattern scales.",
+      "noFileMessage": "Load a file in the audio ingestion section first."
     }
   }
 }

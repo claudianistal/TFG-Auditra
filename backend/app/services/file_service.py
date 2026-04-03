@@ -2,36 +2,33 @@
 Service layer for file upload and forensic analysis operations.
 
 This module contains the business logic for handling file uploads,
-validation, and coordination with the forensic engine.
+validation, and extraction of file metadata and patterns.
 """
 from fastapi import UploadFile, HTTPException, status
 from app.utils import validate_file, save_file, get_file_path, delete_file
-from app.core.engine import ForensicEngine
 from app.models import FileUploadResponse
 from pathlib import Path
 from datetime import datetime
+import base64
 
 from app.metadata import MetadataFactory
+from app.utils.pattern_analyzer import generate_bitmap, extract_hex_dumps
 
 
 class FileUploadService:
     """
-    Service for handling file uploads
+    Service for handling file uploads and analysis.
     
     This class encapsulates the business logic for:
     - Validating uploaded files
     - Saving files to disk
+    - Extracting metadata
+    - Analyzing binary patterns
     """
     
-    def __init__(self, engine: ForensicEngine = None):
-        """
-        Initialize the FileUploadService.
-        
-        Args:
-            engine (ForensicEngine, optional): Instance of ForensicEngine for analysis.
-                                             If None, a new instance is created.
-        """
-        self.engine = engine or ForensicEngine()
+    def __init__(self):
+        """Initialize the FileUploadService."""
+        pass
     
     async def upload_file(self, file: UploadFile) -> FileUploadResponse:
         """
@@ -142,4 +139,60 @@ class FileUploadService:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Error during forensic metadata extraction: {str(e)}"
+            )
+    
+    def get_patterns(self, file_id: str, width: int = 512) -> dict:
+        """
+        Analyze file patterns: generate bitmap visualization and hex dumps.
+        
+        Args:
+            file_id (str): The UUID of the file to analyze
+            width (int): Width of bitmap in bytes
+            
+        Returns:
+            dict: Bitmap as base64 PNG + formatted hex dumps
+            
+        Raises:
+            HTTPException: If file not found or analysis fails
+        """
+        try:
+            # 1. Locate the file
+            file_path = get_file_path(file_id)
+            
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"File with ID {file_id} not found"
+                )
+            
+            # 2. Generate bitmap
+            png_bytes = generate_bitmap(str(file_path), width=width)
+            image_base64 = base64.b64encode(png_bytes).decode('utf-8')
+            
+            # 3. Extract hex dumps
+            hex_data = extract_hex_dumps(str(file_path), num_bytes=1024)
+            
+            # 4. Return structured response
+            return {
+                "file_id": file_id,
+                "filename": file_path.name,
+                "image_base64": image_base64,
+                "hex_start": hex_data["hex_start"],
+                "hex_end": hex_data["hex_end"],
+                "total_file_size": hex_data["total_file_size"],
+                "width_used": width,
+                "generated_at": datetime.utcnow().isoformat() + "Z"
+            }
+            
+        except HTTPException:
+            raise
+        except ValueError as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e)
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error analyzing patterns: {str(e)}"
             )

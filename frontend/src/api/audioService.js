@@ -28,4 +28,10 @@ export const getMetadata = async (fileId) => {
   return api.get(`/metadata/${fileId}`);
 };
 
+export const getPatterns = async (fileId, width = 512) => {
+  return api.get(`/patterns/${fileId}`, {
+    params: { width },
+  });
+};
+
 export default api;
