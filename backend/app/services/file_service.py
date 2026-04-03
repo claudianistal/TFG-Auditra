@@ -196,3 +196,97 @@ class FileUploadService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Error analyzing patterns: {str(e)}"
             )
+    
+    def get_autosimilarity(self, file_id: str, width: int = 512) -> dict:
+        """
+        Generate only the bitmap visualization (autosimilarity analysis).
+        
+        Args:
+            file_id (str): The UUID of the file to analyze
+            width (int): Width of bitmap in bytes
+            
+        Returns:
+            dict: Bitmap as base64 PNG
+            
+        Raises:
+            HTTPException: If file not found or analysis fails
+        """
+        try:
+            # 1. Locate the file
+            file_path = get_file_path(file_id)
+            
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"File with ID {file_id} not found"
+                )
+            
+            # 2. Generate bitmap only
+            png_bytes = generate_bitmap(str(file_path), width=width)
+            image_base64 = base64.b64encode(png_bytes).decode('utf-8')
+            
+            # 3. Return structured response
+            return {
+                "file_id": file_id,
+                "filename": file_path.name,
+                "image_base64": image_base64,
+                "width_used": width,
+                "generated_at": datetime.utcnow().isoformat() + "Z"
+            }
+            
+        except HTTPException:
+            raise
+        except ValueError as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e)
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error analyzing autosimilarity: {str(e)}"
+            )
+    
+    def get_padding(self, file_id: str) -> dict:
+        """
+        Extract only the hex dumps (padding detection analysis).
+        
+        Args:
+            file_id (str): The UUID of the file to analyze
+            
+        Returns:
+            dict: Hex dumps from start and end of file
+            
+        Raises:
+            HTTPException: If file not found or analysis fails
+        """
+        try:
+            # 1. Locate the file
+            file_path = get_file_path(file_id)
+            
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"File with ID {file_id} not found"
+                )
+            
+            # 2. Extract hex dumps only
+            hex_data = extract_hex_dumps(str(file_path), num_bytes=1024)
+            
+            # 3. Return structured response
+            return {
+                "file_id": file_id,
+                "filename": file_path.name,
+                "hex_start": hex_data["hex_start"],
+                "hex_end": hex_data["hex_end"],
+                "total_file_size": hex_data["total_file_size"],
+                "generated_at": datetime.utcnow().isoformat() + "Z"
+            }
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error analyzing padding: {str(e)}"
+            )

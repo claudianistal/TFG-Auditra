@@ -19,7 +19,7 @@ const MetadataPage = () => {
 
 	const handleAnalyzeMetadata = async () => {
 		if (!currentFile) {
-			setError('No file loaded');
+			setError(t('pages.metadata.noFileLoaded') || 'No file loaded');
 			return;
 		}
 
@@ -71,13 +71,13 @@ const MetadataPage = () => {
 								<Music size={20} />
 								<span>{currentFile.name}</span>
 							</div>
-							<button
-								className={'metadata-analyze-button ' + (loading ? 'metadata-analyze-button--loading' : '')}
-								onClick={handleAnalyzeMetadata}
-								disabled={loading}
-							>
-								{loading ? 'Analizando...' : 'Analizar Metadatos'}
-							</button>
+						<button
+							className={'metadata-analyze-button ' + (loading ? 'metadata-analyze-button--loading' : '')}
+							onClick={handleAnalyzeMetadata}
+							disabled={loading}
+						>
+							{loading ? t('pages.metadata.analyzing') || 'Analyzing...' : t('pages.metadata.analyzeButton') || 'Analyze Metadata'}
+						</button>
 						</div>
 
 						{/* Error message if extraction failed */}

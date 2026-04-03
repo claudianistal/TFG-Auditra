@@ -34,4 +34,14 @@ export const getPatterns = async (fileId, width = 512) => {
   });
 };
 
+export const getAutosimilarity = async (fileId, width = 512) => {
+  return api.get(`/patterns/autosimilarity/${fileId}`, {
+    params: { width },
+  });
+};
+
+export const getPadding = async (fileId) => {
+  return api.get(`/patterns/padding/${fileId}`);
+};
+
 export default api;

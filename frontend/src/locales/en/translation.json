@@ -66,15 +66,23 @@
     },
     "metadata": {
       "title": "Metadata module",
-      "description": "Here you can centralise forms, results and tools related to audio metadata analysis."
+      "description": "Here you can centralise forms, results and tools related to audio metadata analysis.",
+      "noFileMessage": "Load a file in the audio ingestion section first.",
+      "noFileLoaded": "No file loaded",
+      "analyzeButton": "Analyze Metadata",
+      "analyzing": "Analyzing..."
     },
     "patterns": {
       "title": "Pattern Analysis",
       "description": "Analyze binary patterns and padding in audio files. Adjust the bitmap width to observe different pattern scales.",
       "noFileMessage": "Load a file in the audio ingestion section first.",
+      "noFileLoaded": "No file loaded",
       "resolution": "Resolution (bytes per row)",
       "analyzeButton": "Analyze Patterns",
       "analyzing": "Analyzing...",
+      "recalculate": "Recalculate",
+      "recalculateTooltip": "Recalculate with new width",
+      "invalidWidth": "Width must be between 128 and 2048 bytes",
       "downloadPNG": "Download PNG",
       "noBitmapData": "No bitmap data available",
       "width": "Width",

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, Music } from 'lucide-react';
+import { AlertCircle, Music, RefreshCw } from 'lucide-react';
 import FileBar from '../components/FileBar';
 import BitmapViewer from '../components/BitmapViewer';
 import HexDumpViewer from '../components/HexDumpViewer';
 import { useFiles } from '../context/FileContext';
-import { getPatterns } from '../api/audioService';
+import { getAutosimilarity, getPadding } from '../api/audioService';
 import './Common.css';
 import './PatternsPage.css';
 
@@ -13,22 +13,24 @@ const PatternsPage = () => {
 	const { t } = useTranslation();
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
+	const [recalculatingWidth, setRecalculatingWidth] = useState(false);
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
+	const [analyzed, setAnalyzed] = useState(false);
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
 
+	// Reset analyzed state when file changes
+	useEffect(() => {
+		setAnalyzed(false);
+		setError(null);
+	}, [currentFile?.id]);
+
 	const handleAnalyzePatterns = async () => {
 		if (!currentFile) {
-			setError('No file loaded');
-			return;
-		}
-
-		// Validate width
-		if (width < 128 || width > 2048) {
-			setError('Width must be between 128 and 2048 bytes');
+			setError(t('pages.patterns.noFileLoaded') || 'No file loaded');
 			return;
 		}
 
@@ -36,8 +38,14 @@ const PatternsPage = () => {
 		setError(null);
 
 		try {
-			const response = await getPatterns(currentFile.id, width);
-			const { image_base64, hex_start, hex_end, total_file_size, width_used } = response.data;
+			// Make both requests in parallel
+			const [autosimilarityResponse, paddingResponse] = await Promise.all([
+				getAutosimilarity(currentFile.id, width),
+				getPadding(currentFile.id),
+			]);
+
+			const { image_base64, width_used } = autosimilarityResponse.data;
+			const { hex_start, hex_end, total_file_size } = paddingResponse.data;
 
 			// Update the file in context with patterns
 			updateFile(currentFile.id, {
@@ -51,6 +59,9 @@ const PatternsPage = () => {
 				patternsLoading: false,
 				patternsError: null,
 			});
+
+			// Mark as analyzed after successful analysis
+			setAnalyzed(true);
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error analyzing patterns';
 			setError(errorMessage);
@@ -60,6 +71,47 @@ const PatternsPage = () => {
 			});
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleRecalculateAutosimilarity = async () => {
+		if (!currentFile) {
+			setError(t('pages.patterns.noFileLoaded') || 'No file loaded');
+			return;
+		}
+
+		// Validate width
+		if (width < 128 || width > 2048) {
+			setError(t('pages.patterns.invalidWidth') || 'Width must be between 128 and 2048 bytes');
+			return;
+		}
+
+		setRecalculatingWidth(true);
+		setError(null);
+
+		try {
+			const response = await getAutosimilarity(currentFile.id, width);
+			const { image_base64, width_used } = response.data;
+
+			// Update only the bitmap, keep hex dumps
+			updateFile(currentFile.id, {
+				patterns: {
+					...currentFile.patterns,
+					image_base64,
+					width_used,
+				},
+				patternsLoading: false,
+				patternsError: null,
+			});
+		} catch (err) {
+			const errorMessage = err.response?.data?.detail || 'Error recalculating autosimilarity';
+			setError(errorMessage);
+			updateFile(currentFile.id, {
+				patternsError: errorMessage,
+				patternsLoading: false,
+			});
+		} finally {
+			setRecalculatingWidth(false);
 		}
 	};
 
@@ -97,28 +149,11 @@ const PatternsPage = () => {
 								<span>{currentFile.name}</span>
 							</div>
 
-							{/* Width selector */}
-							<div className="patterns-width-selector">
-								<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>
-								<div className="patterns-width-presets">
-									{widthPresets.map((preset) => (
-										<button
-											key={preset}
-											className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
-											onClick={() => setWidth(preset)}
-											disabled={loading}
-										>
-											{preset}
-										</button>
-									))}
-								</div>
-							</div>
-
 							{/* Analyze button */}
 							<button
 								className={`patterns-analyze-button ${loading ? 'patterns-analyze-button--loading' : ''}`}
 								onClick={handleAnalyzePatterns}
-								disabled={loading || !currentFile}
+							disabled={loading || !currentFile || analyzed}
 							>
 								{loading ? t('pages.patterns.analyzing') || 'Analyzing...' : t('pages.patterns.analyzeButton') || 'Analyze Patterns'}
 							</button>
@@ -161,17 +196,46 @@ const PatternsPage = () => {
 													{t('pages.patterns.autosimilarityDesc') || 'Autosimilitude analysis: Grayscale representation of byte values. Patterns reveal the statistical structure and characteristics of the audio data.'}
 												</p>
 											</div>
-											<BitmapViewer
-												imageBase64={currentFile.patterns.image_base64}
-												filename={currentFile.name}
-												width={currentFile.patterns.width_used}
-											/>
-										</div>
-									</div>
-								)}
 
-								{/* Tab content: Padding */}
-								{activeTab === 'padding' && (
+											{/* Width selector - only visible in autosimilarity tab */}
+											<div className="patterns-width-selector">
+												<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>
+											<div className="patterns-width-controls">
+												<div className="patterns-width-presets">
+													{widthPresets.map((preset) => (
+														<button
+															key={preset}
+															className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
+															onClick={() => setWidth(preset)}
+															disabled={recalculatingWidth}
+														>
+															{preset}
+														</button>
+													))}
+												</div>
+												<button
+													className={`recalculate-btn ${recalculatingWidth ? 'recalculate-btn--loading' : ''}`}
+													onClick={handleRecalculateAutosimilarity}
+													disabled={recalculatingWidth}
+													title={t('pages.patterns.recalculateTooltip') || 'Recalculate with new width'}
+												>
+													<RefreshCw size={16} />
+													{t('pages.patterns.recalculate') || 'Recalculate'}
+												</button>
+											</div>
+										</div>
+
+										<BitmapViewer
+											imageBase64={currentFile.patterns.image_base64}
+											filename={currentFile.name}
+											width={currentFile.patterns.width_used}
+										/>
+									</div>
+								</div>
+							)}
+
+							{/* Tab content: Padding */}
+							{activeTab === 'padding' && (
 									<div className="patterns-tab-content">
 										<div className="analysis-section analysis-section--padding">
 											<div className="analysis-section__header">

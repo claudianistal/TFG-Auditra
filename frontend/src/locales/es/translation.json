@@ -66,15 +66,23 @@
     },
     "metadata": {
       "title": "Módulo de metadatos",
-      "description": "Aquí puedes centralizar formularios, resultados y herramientas relacionadas con el análisis de metadatos del audio."
+      "description": "Aquí puedes centralizar formularios, resultados y herramientas relacionadas con el análisis de metadatos del audio.",
+      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "noFileLoaded": "Ningún archivo cargado",
+      "analyzeButton": "Analizar Metadatos",
+      "analyzing": "Analizando..."
     },
     "patterns": {
       "title": "Análisis de Patrones",
       "description": "Analiza patrones binarios y relleno en archivos de audio. Ajusta el ancho del mapa de bits para observar patrones en diferentes escalas.",
       "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
       "analyzeButton": "Analizar Patrones",
       "analyzing": "Analizando...",
+      "recalculate": "Recalcular",
+      "recalculateTooltip": "Recalcular con nuevo ancho",
+      "invalidWidth": "El ancho debe estar entre 128 y 2048 bytes",
       "downloadPNG": "Descargar PNG",
       "noBitmapData": "No hay datos de mapa de bits disponibles",
       "width": "Ancho",

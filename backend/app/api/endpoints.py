@@ -85,6 +85,61 @@ async def get_metadata(file_id: str):
     return file_service.get_file_metadata(file_id)
 
 
+@router.get("/patterns/autosimilarity/{file_id}")
+async def get_autosimilarity(file_id: str, width: int = 512):
+    """
+    Generate only the bitmap visualization (autosimilarity analysis).
+    
+    Args:
+        file_id (str): The UUID of the file to analyze
+        width (int): Width of bitmap in bytes (default 512, range: 128-2048)
+        
+    Returns:
+        dict: {
+            "file_id": str,
+            "filename": str,
+            "image_base64": base64-encoded PNG image,
+            "width_used": int,
+            "generated_at": ISO 8601 timestamp
+        }
+        
+    Raises:
+        HTTPException: 404 if file not found, 400 if validation fails, 500 on errors
+    """
+    # Validate width parameter
+    if width < 128 or width > 2048:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Width must be between 128 and 2048 bytes"
+        )
+    
+    return file_service.get_autosimilarity(file_id, width)
+
+
+@router.get("/patterns/padding/{file_id}")
+async def get_padding(file_id: str):
+    """
+    Extract only the hex dumps (padding detection analysis).
+    
+    Args:
+        file_id (str): The UUID of the file to analyze
+        
+    Returns:
+        dict: {
+            "file_id": str,
+            "filename": str,
+            "hex_start": [list of formatted hex dump lines],
+            "hex_end": [list of formatted hex dump lines],
+            "total_file_size": int,
+            "generated_at": ISO 8601 timestamp
+        }
+        
+    Raises:
+        HTTPException: 404 if file not found, 500 on errors
+    """
+    return file_service.get_padding(file_id)
+
+
 @router.get("/patterns/{file_id}")
 async def get_patterns(file_id: str, width: int = 512):
     """

@@ -70,10 +70,19 @@
 	color: var(--text-main);
 }
 
+.patterns-width-controls {
+	display: flex;
+	gap: 0.75rem;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
 .patterns-width-presets {
 	display: flex;
 	gap: 0.5rem;
 	flex-wrap: wrap;
+	flex: 1;
+	min-width: 250px;
 }
 
 .preset-btn {
@@ -103,6 +112,42 @@
 .preset-btn:disabled {
 	opacity: 0.5;
 	cursor: not-allowed;
+}
+
+/* Recalculate button */
+.recalculate-btn {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	background: rgba(76, 175, 80, 0.08);
+	border: 2px solid rgba(76, 175, 80, 0.2);
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: rgba(76, 175, 80, 0.9);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+.recalculate-btn:hover:not(:disabled) {
+	background: rgba(76, 175, 80, 0.12);
+	border-color: rgba(76, 175, 80, 0.4);
+}
+
+.recalculate-btn:disabled,
+.recalculate-btn--loading {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.recalculate-btn svg {
+	flex-shrink: 0;
+}
+
+.recalculate-btn--loading svg {
+	animation: spin 0.8s linear infinite;
 }
 
 /* Analyze button */
