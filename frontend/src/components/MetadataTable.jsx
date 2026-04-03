@@ -1,8 +1,10 @@
-import React from 'react';
-import { AlertCircle, Loader } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, Loader, Copy, Check } from 'lucide-react';
 import './styles/MetadataTable.css';
 
 const MetadataTable = ({ metadata, loading, error }) => {
+	const [copied, setCopied] = useState(false);
+
 	// Format duration from seconds to HH:MM:SS
 	const formatDuration = (seconds) => {
 		if (!seconds || seconds === null) return 'N/A';
@@ -115,8 +117,43 @@ const MetadataTable = ({ metadata, loading, error }) => {
 			value,
 		}));
 
+	// Handle copy to clipboard
+	const handleCopyMetadata = async () => {
+		const textToCopy = metadataEntries
+			.map(entry => `${entry.label}: ${formatValue(entry.key, entry.value)}`)
+			.join('\n');
+		
+		try {
+			await navigator.clipboard.writeText(textToCopy);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch (err) {
+			console.error('Failed to copy metadata:', err);
+		}
+	};
+
 	return (
 		<div className="metadata-table-container">
+			<div className="metadata-table-header">
+				<h3>Metadatos</h3>
+				<button 
+					className="metadata-copy-btn"
+					onClick={handleCopyMetadata}
+					title={copied ? 'Copiado!' : 'Copiar metadatos'}
+				>
+					{copied ? (
+						<>
+							<Check size={18} />
+							<span>Copiado!</span>
+						</>
+					) : (
+						<>
+							<Copy size={18} />
+							<span>Copiar</span>
+						</>
+					)}
+				</button>
+			</div>
 			<table className="metadata-table">
 				<thead>
 					<tr>
