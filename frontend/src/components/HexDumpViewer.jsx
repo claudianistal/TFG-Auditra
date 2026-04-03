@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
+  const { t } = useTranslation();
   /**
    * HexDumpViewer Component
    * 
@@ -22,13 +24,6 @@ const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
 
   return (
     <div className="hex-dump-viewer">
-      <div className="hex-dump-viewer__info">
-        <h4>Hex Dump Analysis</h4>
-        <p className="hex-dump-viewer__subtitle">
-          Inspect file boundaries for padding (0x00 or 0xFF) | Total size: {formatBytes(totalFileSize)}
-        </p>
-      </div>
-
       {/* Start of file section */}
       <div className="hex-dump-section">
         <div
@@ -38,7 +33,7 @@ const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
           <div className="hex-dump-section__toggle">
             {expandedStart ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </div>
-          <h5>Start of File (First 1024 bytes)</h5>
+          <h5>{t('pages.patterns.startOfFile') || 'Start of File'} ({t('pages.patterns.first1024Bytes') || 'First 1024 bytes'})</h5>
         </div>
 
         {expandedStart && (
@@ -59,7 +54,7 @@ const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
           <div className="hex-dump-section__toggle">
             {expandedEnd ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </div>
-          <h5>End of File (Last 1024 bytes)</h5>
+          <h5>{t('pages.patterns.endOfFile') || 'End of File'} ({t('pages.patterns.last1024Bytes') || 'Last 1024 bytes'}) — {t('pages.patterns.total') || 'Total'}: {formatBytes(totalFileSize)}</h5>
         </div>
 
         {expandedEnd && (

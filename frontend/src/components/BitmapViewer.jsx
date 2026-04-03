@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Download, AlertCircle } from 'lucide-react';
 
 const BitmapViewer = ({ imageBase64, filename, width }) => {
+  const { t } = useTranslation();
   /**
    * BitmapViewer Component
    * 
@@ -13,7 +15,7 @@ const BitmapViewer = ({ imageBase64, filename, width }) => {
     return (
       <div className="bitmap-viewer--empty">
         <AlertCircle size={24} />
-        <p>No bitmap data available</p>
+        <p>{t('pages.patterns.noBitmapData') || 'No bitmap data available'}</p>
       </div>
     );
   }
@@ -40,13 +42,6 @@ const BitmapViewer = ({ imageBase64, filename, width }) => {
 
   return (
     <div className="bitmap-viewer">
-      <div className="bitmap-viewer__header">
-        <h4>Binary Content Visualization</h4>
-        <p className="bitmap-viewer__subtitle">
-          Grayscale representation of byte values (0-255) | Width: {width} bytes
-        </p>
-      </div>
-
       <div className="bitmap-viewer__container">
         <img
           src={`data:image/png;base64,${imageBase64}`}
@@ -56,9 +51,10 @@ const BitmapViewer = ({ imageBase64, filename, width }) => {
       </div>
 
       <div className="bitmap-viewer__footer">
+        <p className="bitmap-viewer__info">{t('pages.patterns.width') || 'Width'}: {width} {t('pages.patterns.bytesPerRow') || 'bytes per row'}</p>
         <button className="btn btn-primary" onClick={handleDownload}>
           <Download size={18} />
-          Download PNG
+          {t('pages.patterns.downloadPNG') || 'Download PNG'}
         </button>
       </div>
     </div>

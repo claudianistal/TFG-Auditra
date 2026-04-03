@@ -71,7 +71,27 @@
     "patterns": {
       "title": "Pattern Analysis",
       "description": "Analyze binary patterns and padding in audio files. Adjust the bitmap width to observe different pattern scales.",
-      "noFileMessage": "Load a file in the audio ingestion section first."
+      "noFileMessage": "Load a file in the audio ingestion section first.",
+      "resolution": "Resolution (bytes per row)",
+      "analyzeButton": "Analyze Patterns",
+      "analyzing": "Analyzing...",
+      "downloadPNG": "Download PNG",
+      "noBitmapData": "No bitmap data available",
+      "width": "Width",
+      "bytesPerRow": "bytes per row",
+      "startOfFile": "Start of File",
+      "first1024Bytes": "First 1024 bytes",
+      "endOfFile": "End of File",
+      "last1024Bytes": "Last 1024 bytes",
+      "total": "Total",
+      "tabs": {
+        "autosimilarity": "Autosimilarity",
+        "padding": "Padding"
+      },
+      "autosimilarityTitle": "Audio Content Visualization",
+      "autosimilarityDesc": "Autosimilitude analysis: Grayscale representation of byte values. Patterns reveal the statistical structure and characteristics of the audio data.",
+      "paddingTitle": "Padding & File Boundaries",
+      "paddingDesc": "Inspect the first and last 1024 bytes of the file to detect padding (0x00 or 0xFF) that may indicate file manipulation or encoding artifacts."
     }
   }
 }

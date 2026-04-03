@@ -71,7 +71,27 @@
     "patterns": {
       "title": "Análisis de Patrones",
       "description": "Analiza patrones binarios y relleno en archivos de audio. Ajusta el ancho del mapa de bits para observar patrones en diferentes escalas.",
-      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero."
+      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "resolution": "Resolución (bytes por fila)",
+      "analyzeButton": "Analizar Patrones",
+      "analyzing": "Analizando...",
+      "downloadPNG": "Descargar PNG",
+      "noBitmapData": "No hay datos de mapa de bits disponibles",
+      "width": "Ancho",
+      "bytesPerRow": "bytes por fila",
+      "startOfFile": "Inicio del Archivo",
+      "first1024Bytes": "Primeros 1024 bytes",
+      "endOfFile": "Final del Archivo",
+      "last1024Bytes": "Últimos 1024 bytes",
+      "total": "Total",
+      "tabs": {
+        "autosimilarity": "Autosimilitud",
+        "padding": "Relleno"
+      },
+      "autosimilarityTitle": "Visualización del Contenido de Audio",
+      "autosimilarityDesc": "Análisis de autosimilitud: Representación en escala de grises de los valores de bytes. Los patrones revelan la estructura estadística y las características de los datos de audio.",
+      "paddingTitle": "Relleno y Límites de Archivo",
+      "paddingDesc": "Inspecciona los primeros y últimos 1024 bytes del archivo para detectar relleno (0x00 o 0xFF) que pueda indicar manipulación de archivo o artefactos de codificación."
     }
   }
 }

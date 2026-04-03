@@ -15,6 +15,7 @@ const PatternsPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
+	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
@@ -98,33 +99,18 @@ const PatternsPage = () => {
 
 							{/* Width selector */}
 							<div className="patterns-width-selector">
-								<label htmlFor="width-input">Bitmap Width (bytes):</label>
-								<div className="patterns-width-inputs">
-									{/* Presets */}
-									<div className="patterns-width-presets">
-										{widthPresets.map((preset) => (
-											<button
-												key={preset}
-												className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
-												onClick={() => setWidth(preset)}
-												disabled={loading}
-											>
-												{preset}
-											</button>
-										))}
-									</div>
-									{/* Custom input */}
-									<input
-										id="width-input"
-										type="number"
-										min="128"
-										max="2048"
-										step="128"
-										value={width}
-										onChange={(e) => setWidth(parseInt(e.target.value) || 512)}
-										disabled={loading}
-										className="patterns-width-input"
-									/>
+								<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>
+								<div className="patterns-width-presets">
+									{widthPresets.map((preset) => (
+										<button
+											key={preset}
+											className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
+											onClick={() => setWidth(preset)}
+											disabled={loading}
+										>
+											{preset}
+										</button>
+									))}
 								</div>
 							</div>
 
@@ -134,7 +120,7 @@ const PatternsPage = () => {
 								onClick={handleAnalyzePatterns}
 								disabled={loading || !currentFile}
 							>
-								{loading ? 'Analyzing...' : 'Analyze Patterns'}
+								{loading ? t('pages.patterns.analyzing') || 'Analyzing...' : t('pages.patterns.analyzeButton') || 'Analyze Patterns'}
 							</button>
 						</div>
 
@@ -149,17 +135,59 @@ const PatternsPage = () => {
 						{/* Display visualizations if available */}
 						{currentFile.patterns && !loading && !error && (
 							<div className="patterns-results">
-								<BitmapViewer
-									imageBase64={currentFile.patterns.image_base64}
-									filename={currentFile.name}
-									width={currentFile.patterns.width_used}
-								/>
+								{/* Tab navigation */}
+								<div className="patterns-tabs">
+									<button
+										className={`patterns-tab ${activeTab === 'autosimilarity' ? 'patterns-tab--active' : ''}`}
+										onClick={() => setActiveTab('autosimilarity')}
+									>
+										{t('pages.patterns.tabs.autosimilarity') || 'Autosimilarity'}
+									</button>
+									<button
+										className={`patterns-tab ${activeTab === 'padding' ? 'patterns-tab--active' : ''}`}
+										onClick={() => setActiveTab('padding')}
+									>
+										{t('pages.patterns.tabs.padding') || 'Padding'}
+									</button>
+								</div>
 
-								<HexDumpViewer
-									hexStart={currentFile.patterns.hex_start}
-									hexEnd={currentFile.patterns.hex_end}
-									totalFileSize={currentFile.patterns.total_file_size}
-								/>
+								{/* Tab content: Autosimilarity */}
+								{activeTab === 'autosimilarity' && (
+									<div className="patterns-tab-content">
+										<div className="analysis-section analysis-section--bitmap">
+											<div className="analysis-section__header">
+												<h4>{t('pages.patterns.autosimilarityTitle') || 'Audio Content Visualization'}</h4>
+												<p className="analysis-section__description">
+													{t('pages.patterns.autosimilarityDesc') || 'Autosimilitude analysis: Grayscale representation of byte values. Patterns reveal the statistical structure and characteristics of the audio data.'}
+												</p>
+											</div>
+											<BitmapViewer
+												imageBase64={currentFile.patterns.image_base64}
+												filename={currentFile.name}
+												width={currentFile.patterns.width_used}
+											/>
+										</div>
+									</div>
+								)}
+
+								{/* Tab content: Padding */}
+								{activeTab === 'padding' && (
+									<div className="patterns-tab-content">
+										<div className="analysis-section analysis-section--padding">
+											<div className="analysis-section__header">
+												<h4>{t('pages.patterns.paddingTitle') || 'Padding & File Boundaries'}</h4>
+												<p className="analysis-section__description">
+													{t('pages.patterns.paddingDesc') || 'Inspect the first and last 1024 bytes of the file to detect padding (0x00 or 0xFF) that may indicate file manipulation or encoding artifacts.'}
+												</p>
+											</div>
+											<HexDumpViewer
+												hexStart={currentFile.patterns.hex_start}
+												hexEnd={currentFile.patterns.hex_end}
+												totalFileSize={currentFile.patterns.total_file_size}
+											/>
+										</div>
+									</div>
+								)}
 							</div>
 						)}
 
@@ -167,7 +195,7 @@ const PatternsPage = () => {
 						{loading && (
 							<div className="patterns-loading">
 								<div className="spinner"></div>
-								<p>Analyzing patterns...</p>
+								<p>{t('pages.patterns.analyzing') || 'Analyzing patterns...'}</p>
 							</div>
 						)}
 					</div>
