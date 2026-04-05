@@ -12,7 +12,7 @@ from datetime import datetime
 import base64
 
 from app.metadata import MetadataFactory
-from app.utils.pattern_analyzer import generate_bitmap, extract_hex_dumps
+from app.patterns import PatternAnalyzer
 
 
 class FileUploadService:
@@ -166,11 +166,11 @@ class FileUploadService:
                 )
             
             # 2. Generate bitmap
-            png_bytes = generate_bitmap(str(file_path), width=width)
+            png_bytes = PatternAnalyzer.generate_bitmap(str(file_path), width=width)
             image_base64 = base64.b64encode(png_bytes).decode('utf-8')
             
             # 3. Extract hex dumps
-            hex_data = extract_hex_dumps(str(file_path), num_bytes=1024)
+            hex_data = PatternAnalyzer.extract_hex_dumps(str(file_path), num_bytes=1024)
             
             # 4. Return structured response
             return {
@@ -222,7 +222,7 @@ class FileUploadService:
                 )
             
             # 2. Generate bitmap only
-            png_bytes = generate_bitmap(str(file_path), width=width)
+            png_bytes = PatternAnalyzer.generate_bitmap(str(file_path), width=width)
             image_base64 = base64.b64encode(png_bytes).decode('utf-8')
             
             # 3. Return structured response
@@ -271,7 +271,7 @@ class FileUploadService:
                 )
             
             # 2. Extract hex dumps only
-            hex_data = extract_hex_dumps(str(file_path), num_bytes=1024)
+            hex_data = PatternAnalyzer.extract_hex_dumps(str(file_path), num_bytes=1024)
             
             # 3. Return structured response
             return {

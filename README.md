@@ -1,24 +1,6 @@
 # Auditra 
 **Detector de Audio Generado por IA** - Herramienta forense de escritorio para detectar y analizar audio sintético mediante análisis de metadatos y patrones visuales
 
----
-
-## 📋 Tabla de contenidos
-- [Descripción](#descripción)
-- [Características](#características)
-- [Módulos de análisis](#módulos-de-análisis)
-- [Requisitos previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Ejecución](#ejecución)
-  - [Modo desarrollo](#modo-desarrollo)
-  - [Compilación a .exe](#compilación-a-exe)
-  - [Ejecución del .exe](#ejecución-del-exe)
-- [API REST](#api-rest)
-- [Estructura del proyecto](#estructura-del-proyecto)
-- [Tecnologías utilizadas](#tecnologías-utilizadas)
-
----
-
 ## 📝 Descripción
 
 **Auditra** es una herramienta forense de audio diseñada para **detectar y analizar audio generado mediante inteligencia artificial** (deepfakes, síntesis de voz, etc.). La aplicación proporciona un análisis detallado de las características de audio mediante múltiples métodos forenses para identificar patrones anómalos típicos del audio sintético.
