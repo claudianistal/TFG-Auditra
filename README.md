@@ -1,17 +1,19 @@
 # Auditra 
-**Detector de Audio Generado por IA** - Aplicación de escritorio para detectar y analizar audio sintético/generado artificialmente a partir de sus metadatos y posibles patrones
+**Detector de Audio Generado por IA** - Herramienta forense de escritorio para detectar y analizar audio sintético mediante análisis de metadatos y patrones visuales
 
 ---
 
 ## 📋 Tabla de contenidos
 - [Descripción](#descripción)
 - [Características](#características)
+- [Módulos de análisis](#módulos-de-análisis)
 - [Requisitos previos](#requisitos-previos)
 - [Instalación](#instalación)
 - [Ejecución](#ejecución)
   - [Modo desarrollo](#modo-desarrollo)
   - [Compilación a .exe](#compilación-a-exe)
   - [Ejecución del .exe](#ejecución-del-exe)
+- [API REST](#api-rest)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Tecnologías utilizadas](#tecnologías-utilizadas)
 
@@ -19,16 +21,55 @@
 
 ## 📝 Descripción
 
-**Auditra** es una herramienta forense de audio diseñada para **detectar y analizar audio generado mediante inteligencia artificial** (deepfakes, síntesis de voz, etc.). La aplicación proporciona un análisis detallado de las características de audio para identificar patrones anómalos típicos del audio sintético.
+**Auditra** es una herramienta forense de audio diseñada para **detectar y analizar audio generado mediante inteligencia artificial** (deepfakes, síntesis de voz, etc.). La aplicación proporciona un análisis detallado de las características de audio mediante múltiples métodos forenses para identificar patrones anómalos típicos del audio sintético.
 
-### ¿Por qué es importante?
+## 🔬 Módulos de análisis
 
-El audio generado con IA (deepfakes de audio, síntesis de voz) representa un riesgo significativo en la sociedad moderna:
-- 🎭 **Suplantación de identidad** - Robo y clonación de identidad vocal
-- 📰 **Desinformación** - Contenido falso que se viraliza rápidamente
-- 💰 **Fraude de voz** - Estafas telefónicas y suplantaciones avanzadas
+Auditra proporciona **3 módulos independientes y complementarios** para un análisis integral:
 
-**Auditra** proporciona herramientas forenses profesionales para identificar y autenticar la autenticidad del contenido de audio, siendo especialmente útil para investigadores, forenses digitales y profesionales de seguridad.
+### 1️⃣ **Cargar Audio** (Ingesta)
+- Carga segura de archivos WAV, MP3, M4A (máx 2GB)
+- Validación de formato y tamaño
+- Cálculo de hash SHA-256 para integridad de cadena de custodia
+- Cola de procesamiento (un archivo a la vez para garantizar integridad)
+- Punto de entrada para los otros dos módulos
+
+### 2️⃣ **Análisis de Metadatos**
+**Extrae información técnica completa** del archivo usando herramientas forenses avanzadas:
+
+- **Campos extraídos:**
+  - Información básica: título, artista, álbum, género, duración
+  - Codificación: codec, bitrate, sample rate, canales
+  - Contenedor: formato, tamaño, timestamps
+  - Librerías de codificación: software usado originalmente
+  - Histogramas de distribución
+
+- **Indicadores de manipulación:**
+  - Discrepancias de bitrate (re-codificación)
+  - Inconsistencias en metadatos (síntesis de voz)
+  - Rastros de software de terceros (editores, herramientas IA)
+  - Anomalías en arquitectura del contenedor
+
+### 3️⃣ **Análisis de Patrones**
+**Visualización de estructura interna** mediante bitmap de bytes y análisis de bordes:
+
+**Dos pestañas complementarias:**
+
+- **Autosimilitud (Mapa de Contenido)**
+  - Cada píxel = un byte (escala de grises 0x00-0xFF)
+  - Audio natural: transiciones graduales y variadas
+  - Audio sintético: patrones regulares, repetitivos, bloques uniformes
+  - Ajusta resolución (128-2048 bytes/fila) para diferentes escalas
+
+- **Relleno (Análisis de Bordes)**
+  - Examina primeros y últimos 1024 bytes
+  - Detecta bytes repetidos (0x00, 0xFF) que indican:
+    - Re-codificación incompleta
+    - Exportación con relleno de IA
+    - Manipulación posterior
+  - Hexdump formateado para análisis detallado
+
+---
 
 ## ⚙️ Requisitos previos
 
@@ -37,13 +78,14 @@ El audio generado con IA (deepfakes de audio, síntesis de voz) representa un ri
 **Backend:**
 - Python 3.8 o superior
 - pip (gestor de paquetes de Python)
+- ExifTool (incluido en `/backend/bin/exiftool_files/`)
 
 **Frontend:**
 - Node.js (v16+)
 - npm o yarn
 
 **Para compilar a .exe:**
-- PyInstaller
+- PyInstaller (`pip install pyinstaller`)
 - Todo lo anterior
 
 ---
@@ -132,62 +174,59 @@ dist/Auditra.exe
 - Se abre directamente una ventana de escritorio sin necesidad de terminal
 
 
-
-
-
-
-
 ## 🛠️ Tecnologías utilizadas
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
-| **Backend** | Python | 3.8+ |
-| | FastAPI | Latest |
-| | Uvicorn | - |
-| | PyWebView | - |
-| **Frontend** | React | 18+ |
-| | Vite | - |
-| | CSS Modules | - |
-| | i18n (Internacionalización) | - |
-| **Deployment** | PyInstaller | - |
-| **Package Manager** | pip (Python) / npm (Node.js) | - |
+| Capa | Tecnología | Propósito |
+|------|-----------|----------|
+| **Backend** | Python 3.8+ | Lenguaje principal |
+| | FastAPI | Framework API REST |
+| | Uvicorn | Servidor ASGI |
+| | PyWebView | Ventana de escritorio integrada |
+| | Mutagen | Extracción de metadatos (MP3, M4A) |
+| | Wave | Extracción de metadatos (WAV) |
+| | ExifTool | Herramienta forense de metadatos |
+| | FFprobe | Análisis multimedia avanzado |
+| | Pillow | Generación de imágenes (bitmap) |
+| | NumPy | Procesamiento de datos numéricos |
+| **Frontend** | React 18+ | Framework UI |
+| | Vite | Build tool y dev server |
+| | i18next | Internacionalización (ES/EN) |
+| | CSS3 | Estilos (variables, grid, flexbox) |
+| **Deployment** | PyInstaller | Compilación a .exe |
+| **Package Managers** | pip | Dependencias Python |
+| | npm | Dependencias Node.js |
+
+## 🔍 Métodos de análisis forense
+
+### 1. Análisis de Metadatos
+**Investigadores:** Mutagen, Wave, ExifTool, FFprobe
+- Extrae información de cabeceras y contenedores
+- Identifica herramientas de creación original
+- Detecta discrepancias en bitrate y re-codificación
+
+### 2. Análisis de Patrones Visuales
+**Método de bitmap (autosimilitud):**
+- Visualiza estructura de bytes como imagen
+- Audio natural: transiciones graduales
+- Audio sintético: patrones regulares y bloques uniformes
+
+### 3. Análisis de Bordes (Padding)
+**Detección de relleno:**
+- Examina primeros y últimos 1024 bytes
+- Audio sintético a menudo contiene relleno (0x00, 0xFF)
+- Indica re-codificación incompleta o manipulación
 
 ---
 
-## 🔧 Configuración
+## 📝 Notas importantes
 
-### Puertos y URLs (centralizados en `backend/app/core/config.py`)
-
-```python
-Config.BACKEND_HOST = "127.0.0.1"
-Config.BACKEND_PORT = 8000
-Config.FRONTEND_DEV_PORT = 5173
-Config.FRONTEND_DEV_URL = "http://localhost:5173"
-```
-
-Para cambiar estos valores, edita `backend/app/core/config.py`
-
----
-
-## � Estrategias de análisis
-
-La aplicación implementa múltiples estrategias para detectar audio generado por IA:
-
-- **Metadata Analysis** - Análisis de metadatos del archivo
-- **Pattern Detection** - Detección de patrones anómalos en la señal
-- **Spectral Analysis** - Análisis del espectrograma
-- **Feature Extraction** - Extracción de características acústicas
-
----
-
-## �📝 Notas importantes
-
-- **Desarrollo**: Backend y frontend se ejecutan en procesos separados con hot-reload
-- **Producción (.exe)**: Todo se ejecuta en un único proceso con interfaz integrada
-- **Primera ejecución**: La aplicación creará automáticamente directorios necesarios
-- **Encoding**: Soporta caracteres Unicode y acentos sin problemas
-- **Limpieza**: Los archivos subidos se almacenan temporalmente en `backend/uploads/`
-- **Detección**: Las estrategias de análisis se pueden extender con nuevos modelos IA
+- **Desarrollo**: Backend y frontend se ejecutan en procesos separados con hot-reload activo
+- **Producción (.exe)**: Todo se ejecuta en un único proceso con interfaz integrada y sin consola visible
+- **Primera ejecución**: La aplicación crea automáticamente la carpeta de uploads en Documentos
+- **Encoding**: Soporta caracteres Unicode y acentos sin problemas (español, caracteres especiales)
+- **Almacenamiento temporal**: Los archivos subidos se almacenan en `C:\Users\[Usuario]\Documents\TFG_Auditra_Uploads\`
+- **Integridad**: Cada archivo recibe un UUID único para garantizar cadena de custodia
+- **Extensibilidad**: Las estrategias de análisis se pueden extender con nuevos modelos IA o librerías de análisis
 
 ---
 
