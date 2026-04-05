@@ -34,13 +34,15 @@
 /* Controls area */
 .patterns-controls {
 	display: flex;
-	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
 	gap: 1rem;
 	padding: 1rem 1.25rem;
 	background: rgba(31, 111, 235, 0.04);
 	border: 1px solid var(--card-border);
 	border-radius: 8px;
 	margin-bottom: 1rem;
+	flex-wrap: wrap;
 }
 
 .patterns-file-info {
@@ -152,7 +154,7 @@
 
 /* Analyze button */
 .patterns-analyze-button {
-	align-self: flex-start;
+	flex-shrink: 0;
 	padding: 0.625rem 1.25rem;
 	background: linear-gradient(135deg, rgba(31, 111, 235, 0.9), rgba(31, 111, 235, 0.8));
 	color: white;
