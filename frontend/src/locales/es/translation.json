@@ -6,8 +6,8 @@
   "menu": {
     "aria_label": "Navegación principal",
     "audioIngestion": {
-      "label": "Ingesta de Audio",
-      "description": "Carga e ingiere archivos de audio forense"
+      "label": "Cargar Audio",
+      "description": "Carga evidencias de audio de forma segura"
     },
     "metadata": {
       "label": "Metadatos",
@@ -26,9 +26,9 @@
     "fileTooLarge": "El archivo es demasiado grande. El tamaño máximo es 2GB"
   },
   "errors": {
-    "uploadFailed": "Error al cargar el archivo. Por favor, intenta de nuevo.",
+    "uploadFailed": "Error al cargar el archivo. Por favor, inténtelo de nuevo.",
     "onlyOneFile": "Solo puedes cargar un archivo a la vez.",
-    "onlyOneFileAtATime": "Se está procesando un archivo. Por favor, espera a que termine antes de subir otro."
+    "onlyOneFileAtATime": "Se está analizando un archivo. Por favor, elimine el actual antes de subir otro."
   },
   "theme": {
     "label": "Tema",
@@ -38,10 +38,10 @@
   },
   "pages": {
     "audioIngestion": {
-      "title": "Ingerir evidencia de audio",
-      "description": "Carga y cataloga de forma segura archivos de audio forense para autenticación y mejora.",
+      "title": "Cargar evidencia de audio",
+      "description": "Carga y cataloga de forma segura evidencias de audio.",
       "dragDrop": "Arrastra y suelta archivos de audio aquí",
-      "uploadInfo": "Los archivos se analizarán automáticamente mediante análisis forense de patrones y metadatos para detectar audio potencialmente generado o manipulado por IA. El análisis se ejecuta en segundo plano sin afectar la velocidad de carga.",
+      "uploadInfo": "Podrá analizar el archivo para detectar si contiene audio generado por IA. Solo puede cargar un archivo a la vez. Una vez cargado, podrá eliminarlo para cargar otro. Todo el análisis de la evidencia se realiza sobre una copia de la evidencia original, que permanece inalterada para garantizar la integridad de la cadena de custodia.",
       "browseFiles": "Examinar archivos",
       "importCloud": "Importar desde la nube",
       "encryption": "Hash SHA-256",
@@ -49,11 +49,11 @@
       "maxPerFile": "MÁX 2GB/ARCHIVO",
       "processingQueue": "Cola de procesamiento",
       "active": "Activo",
-      "analysisTips": "Métodos de Detección de IA",
+      "analysisTips": "Métodos de Detección",
       "highNoiseDetection": "Análisis de Patrones",
-      "highNoiseText": "Detecta secuencias de relleno y patrones de nulos que revelan procesado sintético. Identifica repeticiones micro-estructurales en la señal características de motores de IA.",
-      "batchProcessing": "Análisis Forense de Metadatos",
-      "batchText": "Inspecciona inconsistencias en registros internos y arquitectura del contenedor que indiquen manipulación, re-codificación o software de terceros.",
+      "highNoiseText": "Visualiza patrones de autosimilitud en la cadena de bytes y detecta secuencias de relleno (padding) o nulos en los offsets iniciales y finales, revelando la huella digital de motores de síntesis.",
+      "batchProcessing": "Análisis de Metadatos",
+      "batchText": "Inspecciona registros internos, librerías de codificación y discrepancias en el bitrate. Identifica rastros de software de terceros y anomalías en la arquitectura del archivo mediante análisis multi-librería.",
       "supportedFormatsInfo": "Formatos soportados",
       "formatsLabel": "MP3, WAV, M4A",
       "maxFileSize": "Tamaño máximo",
@@ -65,8 +65,8 @@
       "progress": "Progreso"
     },
     "metadata": {
-      "title": "Módulo de metadatos",
-      "description": "Aquí puedes centralizar formularios, resultados y herramientas relacionadas con el análisis de metadatos del audio.",
+      "title": "Análisis de Metadatos",
+      "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias de bitrate y anomalías en la arquitectura del archivo que indiquen generación o alteración por IA.",
       "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "analyzeButton": "Analizar Metadatos",
@@ -74,7 +74,7 @@
     },
     "patterns": {
       "title": "Análisis de Patrones",
-      "description": "Analiza patrones binarios y relleno en archivos de audio. Ajusta el ancho del mapa de bits para observar patrones en diferentes escalas.",
+      "description": "Visualiza la estructura interna del archivo de audio como un mapa de bits. Cada píxel representa el valor de un byte, mostrado en escala de grises. Detecta patrones anómalos, discontinuidades y secuencias de relleno que indiquen generación o manipulación por IA. Ajusta la resolución para analizar diferentes escalas.",
       "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
@@ -96,10 +96,10 @@
         "autosimilarity": "Autosimilitud",
         "padding": "Relleno"
       },
-      "autosimilarityTitle": "Visualización del Contenido de Audio",
-      "autosimilarityDesc": "Análisis de autosimilitud: Representación en escala de grises de los valores de bytes. Los patrones revelan la estructura estadística y las características de los datos de audio.",
-      "paddingTitle": "Relleno y Límites de Archivo",
-      "paddingDesc": "Inspecciona los primeros y últimos 1024 bytes del archivo para detectar relleno (0x00 o 0xFF) que pueda indicar manipulación de archivo o artefactos de codificación."
+      "autosimilarityTitle": "Mapa de Contenido",
+      "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: colores oscuros son valores bajos (0x00), colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. Audio natural muestra transiciones graduales y variadas, mientras que audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
+      "paddingTitle": "Análisis de Bordes",
+      "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. Audio legítimo tiene datos audio hasta el final. Audio sospechoso a menudo contiene relleno (bytes repetidos como 0x00 o 0xFF) en los bordes, indicando re-codificación, exportación incompleta o manipulación por software de síntesis de voz."
     }
   }
 }

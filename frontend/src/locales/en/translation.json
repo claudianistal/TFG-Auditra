@@ -1,17 +1,17 @@
 {
   "sidebar": {
     "eyebrow": "Auditra",
-    "title": "Forensic audio analysis"
+    "title": "Audio Forensic Analysis"
   },
   "menu": {
     "aria_label": "Main navigation",
     "audioIngestion": {
-      "label": "Audio Ingestion",
-      "description": "Upload and ingest forensic audio files"
+      "label": "Upload Audio",
+      "description": "Securely upload audio evidence"
     },
     "metadata": {
       "label": "Metadata",
-      "description": "Metadata analysis and queries"
+      "description": "Metadata analysis and inspection"
     },
     "patterns": {
       "label": "Patterns",
@@ -19,16 +19,16 @@
     }
   },
   "header": {
-    "badge": "Active sidebar"
+    "badge": "Sidebar active"
   },
   "validation": {
     "unsupportedFormat": "Unsupported audio format. Supported formats: WAV, MP3, M4A",
-    "fileTooLarge": "File is too large. Maximum file size is 2GB"
+    "fileTooLarge": "The file is too large. Maximum size is 2GB"
   },
   "errors": {
-    "uploadFailed": "Failed to upload file. Please try again.",
+    "uploadFailed": "Failed to upload the file. Please try again.",
     "onlyOneFile": "You can only upload one file at a time.",
-    "onlyOneFileAtATime": "A file is being processed. Please wait until it finishes before uploading another one."
+    "onlyOneFileAtATime": "A file is currently being analyzed. Please remove it before uploading another."
   },
   "theme": {
     "label": "Theme",
@@ -38,44 +38,44 @@
   },
   "pages": {
     "audioIngestion": {
-      "title": "Ingest Audio Evidence",
-      "description": "Securely upload and catalog forensic audio files for authentication and enhancement.",
+      "title": "Upload Audio Evidence",
+      "description": "Securely upload and catalog audio evidence.",
       "dragDrop": "Drag and drop audio files here",
-      "uploadInfo": "Files will be automatically analyzed using pattern and metadata forensics to detect potential AI-generated or manipulated audio. Analysis runs in the background without affecting upload speed.",
-      "browseFiles": "Browse Files",
-      "importCloud": "Import from Cloud",
+      "uploadInfo": "You will be able to analyze the file to detect whether it contains AI-generated audio. Only one file can be uploaded at a time. Once uploaded, you can remove it to upload another. All evidence analysis is performed on a copy of the original file, which remains unchanged to ensure chain of custody integrity.",
+      "browseFiles": "Browse files",
+      "importCloud": "Import from cloud",
       "encryption": "SHA-256 Hash",
       "chainOfCustody": "CHAIN OF CUSTODY",
       "maxPerFile": "MAX 2GB/FILE",
-      "processingQueue": "Processing Queue",
+      "processingQueue": "Processing queue",
       "active": "Active",
-      "analysisTips": "AI Detection Methods",
+      "analysisTips": "Detection Methods",
       "highNoiseDetection": "Pattern Analysis",
-      "highNoiseText": "Detects padding sequences and null patterns that reveal synthetic processing. Identifies micro-structural repetitions characteristic of AI voice engines.",
-      "batchProcessing": "Metadata Forensics",
-      "batchText": "Inspects inconsistencies in internal records and container architecture indicating manipulation, re-encoding, or third-party software use.",
+      "highNoiseText": "Visualizes self-similarity patterns in the byte stream and detects padding or null sequences at the beginning and end offsets, revealing the fingerprint of synthesis engines.",
+      "batchProcessing": "Metadata Analysis",
+      "batchText": "Inspects internal records, encoding libraries, and bitrate discrepancies. Identifies traces of third-party software and anomalies in file architecture through multi-library analysis.",
       "supportedFormatsInfo": "Supported formats",
       "formatsLabel": "MP3, WAV, M4A",
-      "maxFileSize": "Max file size",
+      "maxFileSize": "Maximum file size",
       "analysisMethod": "Analysis method",
-      "analysisMethodLabel": "Pattern & Metadata Forensics",
+      "analysisMethodLabel": "Pattern and Metadata Analysis",
       "securityLabel": "Security",
       "noFiles": "No files uploaded yet",
       "fileName": "File name",
       "progress": "Progress"
     },
     "metadata": {
-      "title": "Metadata module",
-      "description": "Here you can centralise forms, results and tools related to audio metadata analysis.",
-      "noFileMessage": "Load a file in the audio ingestion section first.",
+      "title": "Metadata Analysis",
+      "description": "This module extracts complete technical information from your file using advanced forensic tools such as Mutagen, Wave, ExifTool, and FFprobe. View all extracted metadata to identify traces of manipulation, specific software, bitrate inconsistencies, and anomalies in the file architecture that may indicate AI generation or alteration.",
+      "noFileMessage": "Upload a file in the audio ingestion section first.",
       "noFileLoaded": "No file loaded",
       "analyzeButton": "Analyze Metadata",
       "analyzing": "Analyzing..."
     },
     "patterns": {
       "title": "Pattern Analysis",
-      "description": "Analyze binary patterns and padding in audio files. Adjust the bitmap width to observe different pattern scales.",
-      "noFileMessage": "Load a file in the audio ingestion section first.",
+      "description": "Visualize the internal structure of the audio file as a bitmap. Each pixel represents the value of a byte, displayed in grayscale. Detect anomalous patterns, discontinuities, and padding sequences that may indicate AI generation or manipulation. Adjust the resolution to analyze at different scales.",
+      "noFileMessage": "Upload a file in the audio ingestion section first.",
       "noFileLoaded": "No file loaded",
       "resolution": "Resolution (bytes per row)",
       "analyzeButton": "Analyze Patterns",
@@ -93,13 +93,13 @@
       "last1024Bytes": "Last 1024 bytes",
       "total": "Total",
       "tabs": {
-        "autosimilarity": "Autosimilarity",
+        "autosimilarity": "Self-similarity",
         "padding": "Padding"
       },
-      "autosimilarityTitle": "Audio Content Visualization",
-      "autosimilarityDesc": "Autosimilitude analysis: Grayscale representation of byte values. Patterns reveal the statistical structure and characteristics of the audio data.",
-      "paddingTitle": "Padding & File Boundaries",
-      "paddingDesc": "Inspect the first and last 1024 bytes of the file to detect padding (0x00 or 0xFF) that may indicate file manipulation or encoding artifacts."
+      "autosimilarityTitle": "Content Map",
+      "autosimilarityDesc": "Each pixel represents the value of a byte in the file: darker colors are low values (0x00), lighter colors are high values (0xFF). Self-similarity reveals repetition patterns in the data. Natural audio shows gradual and varied transitions, while AI-generated synthetic audio tends to show more regular, repetitive patterns or uniform blocks that reveal its artificial processing.",
+      "paddingTitle": "Edge Analysis",
+      "paddingDesc": "Examines the first and last 1024 bytes of the file. Legitimate audio contains data until the very end. Suspicious audio often contains padding (repeated bytes such as 0x00 or 0xFF) at the edges, indicating re-encoding, incomplete export, or manipulation by speech synthesis software."
     }
   }
 }
