@@ -1,6 +1,6 @@
 .app-shell {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 290px 1fr;
   min-height: 100vh;
 }
 
@@ -20,13 +20,13 @@
 .sidebar__brand {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-end;
+  gap: 0.2rem; 
 }
 
 .sidebar__logo {
-  max-height: 130px;
-  max-width: 130px;
+  height: 75px;
+  width: auto;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
@@ -34,16 +34,17 @@
 
 .sidebar__eyebrow {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
   color: #7fb2ff;
+  white-space: nowrap;
 }
 
 .sidebar__title {
   margin: 0;
-  font-size: 1.9rem;
+  font-size: 1.5rem;
   line-height: 1.05;
 }
 

@@ -52,7 +52,7 @@ if __name__ == "__main__":
     
     # 4. Create the webview window pointing to the frontend
     webview.create_window(
-        'TFG: Analizador Forense de Audio IA', 
+        'AUDITRA', 
         frontend_url,
         width=1200,
         height=800,
