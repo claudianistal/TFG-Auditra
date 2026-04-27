@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react';
 
 const RiskScoreCard = ({ score, likelihood, color, percentile }) => {
+	const { t } = useTranslation();
 	return (
 		<div className={`risk-score-card risk-score-card--${color}`}>
 			<div className="risk-score-card__content">
-				<h4 className="risk-score-card__title">Puntuación General</h4>
+				<h4 className="risk-score-card__title">{t('components.riskScoreCard.title')}</h4>
 				
 				<div className="risk-score-card__score-display">
 					<div className="risk-score-card__score-number">{score}</div>
@@ -22,15 +24,15 @@ const RiskScoreCard = ({ score, likelihood, color, percentile }) => {
 
 				<div className="risk-score-card__info">
 					<div className="risk-score-card__likelihood">
-						<span className="risk-score-card__label">Riesgo:</span>
+						<span className="risk-score-card__label">{t('components.riskScoreCard.riskLabel')}</span>
 						<span className={`risk-score-card__value risk-score-card__value--${color}`}>
-							{likelihood === 'bajo' && 'Bajo'}
-							{likelihood === 'medio' && 'Medio'}
-							{likelihood === 'alto' && 'Alto'}
+							{likelihood === 'bajo' && t('components.conclusionBox.lowRisk')}
+							{likelihood === 'medio' && t('components.conclusionBox.mediumRisk')}
+							{likelihood === 'alto' && t('components.conclusionBox.highRisk')}
 						</span>
 					</div>
 					<div className="risk-score-card__percentile">
-						<span className="risk-score-card__label">Percentil:</span>
+						<span className="risk-score-card__label">{t('components.riskScoreCard.percentileLabel')}</span>
 						<span className="risk-score-card__value">{percentile}</span>
 					</div>
 				</div>

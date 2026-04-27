@@ -39,7 +39,7 @@ class FileSizeIndicator(BaseIndicator):
                     'details': {
                         'reason': 'Faltan datos: duración, bitrate o tamaño'
                     },
-                    'reasoning': 'No se puede determinar anomalía sin duración, bitrate y tamaño'
+                    'reasoning_key': 'indicators.file_size.reasoning_error'
                 }
             
             # Calculate expected size: (bitrate in bps × duration in seconds) / 8 bits per byte
@@ -63,26 +63,31 @@ class FileSizeIndicator(BaseIndicator):
             # Determine if anomaly exists and severity
             detected = deviation > tolerance
             
+            # Initialize variables
+            risk_level = "low"
+            weight = 0
+            confidence = 0.0
+            reasoning_key = 'indicators.file_size.reasoning_ok'
+            
             if detected:
                 if deviation_percentage > 30:
                     # Large deviation: HIGH risk
                     risk_level = "high"
                     weight = 50
                     confidence = min(deviation, 1.0)
+                    reasoning_key = 'indicators.file_size.reasoning_high_deviation'
                 elif deviation_percentage > 20:
                     # Medium deviation: MEDIUM risk
                     risk_level = "medium"
                     weight = 35
                     confidence = 0.7
+                    reasoning_key = 'indicators.file_size.reasoning_medium_deviation'
                 else:
                     # Small deviation: LOW risk
                     risk_level = "low"
                     weight = 20
                     confidence = 0.5
-            else:
-                risk_level = "low"
-                weight = 0
-                confidence = 0.0
+                    reasoning_key = 'indicators.file_size.reasoning_low_deviation'
             
             return {
                 'detected': detected,
@@ -97,7 +102,7 @@ class FileSizeIndicator(BaseIndicator):
                     'deviation_percentage': round(deviation_percentage, 2),
                     'tolerance_percentage': tolerance * 100,
                 },
-                'reasoning': f'Tamaño desviado {round(deviation_percentage, 1)}% de lo esperado ({weight} peso). Fórmula: ({bitrate} bps × {duration:.1f}s) / 8 = {int(expected_size)} bytes'
+                'reasoning_key': reasoning_key
             }
             
         except Exception as e:
@@ -105,5 +110,5 @@ class FileSizeIndicator(BaseIndicator):
                 'detected': False,
                 'confidence': 0.0,
                 'details': {'error': str(e)},
-                'reasoning': f'Error al verificar tamaño: {str(e)}'
+                'reasoning_key': 'indicators.file_size.reasoning_error'
             }

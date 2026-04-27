@@ -56,7 +56,7 @@ class PaddingPatternIndicator(BaseIndicator):
                 'padding_percentage': round(padding_percentage, 2),
                 'total_file_size': total_file_size
             },
-            'reasoning': 'Relleno excesivo con ceros es indicador fuerte de procesamiento automático de audio IA'
+            'reasoning_key': 'indicators.padding_pattern.reasoning'
         }
     
     @staticmethod

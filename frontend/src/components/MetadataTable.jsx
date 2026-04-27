@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AlertCircle, Loader, Copy, Check } from 'lucide-react';
 import './styles/MetadataTable.css';
 
 const MetadataTable = ({ metadata, loading, error }) => {
+	const { t } = useTranslation();
 	const [copied, setCopied] = useState(false);
 
 	// Format duration from seconds to HH:MM:SS
@@ -35,7 +37,7 @@ const MetadataTable = ({ metadata, loading, error }) => {
 		return (
 			<div className="metadata-loading">
 				<Loader className="metadata-loading__spinner" size={40} />
-				<p>Extrayendo metadatos...</p>
+				<p>{t('components.metadataTable.loading')}</p>
 			</div>
 		);
 	}
@@ -65,11 +67,11 @@ const MetadataTable = ({ metadata, loading, error }) => {
 
 	// Utility function to format value based on key type
 	const formatValue = (key, value) => {
-		if (!value && value !== 0) return 'N/A';
+		if (!value && value !== 0) return t('components.metadataTable.notAvailable');
 
 		// Handle arrays (convert to formatted string)
 		if (Array.isArray(value)) {
-			if (value.length === 0) return 'N/A';
+			if (value.length === 0) return t('components.metadataTable.notAvailable');
 			// For complex objects in arrays, show a summary
 			if (typeof value[0] === 'object') {
 				return `[${value.length} items]`;
@@ -79,7 +81,7 @@ const MetadataTable = ({ metadata, loading, error }) => {
 
 		// Handle booleans (React will crash if we try to render true/false directly)
 		if (typeof value === 'boolean') {
-			return value ? 'Yes' : 'No';
+			return value ? t('components.metadataTable.yes') : t('components.metadataTable.no');
 		}
 
 		// Handle objects (convert to formatted string)
@@ -87,7 +89,7 @@ const MetadataTable = ({ metadata, loading, error }) => {
 			try {
 				return JSON.stringify(value);
 			} catch {
-				return '[Complex Object]';
+				return t('components.metadataTable.complexObject');
 			}
 		}
 
@@ -135,21 +137,21 @@ const MetadataTable = ({ metadata, loading, error }) => {
 	return (
 		<div className="metadata-table-container">
 			<div className="metadata-table-header">
-				<h3>Metadatos</h3>
+				<h3>{t('components.metadataTable.title')}</h3>
 				<button 
 					className="metadata-copy-btn"
 					onClick={handleCopyMetadata}
-					title={copied ? 'Copiado!' : 'Copiar metadatos'}
+					title={copied ? t('components.metadataTable.copied') : t('components.metadataTable.copyTooltip')}
 				>
 					{copied ? (
 						<>
 							<Check size={18} />
-							<span>Copiado!</span>
+							<span>{t('components.metadataTable.copied')}</span>
 						</>
 					) : (
 						<>
 							<Copy size={18} />
-							<span>Copiar</span>
+							<span>{t('components.metadataTable.copy')}</span>
 						</>
 					)}
 				</button>
@@ -157,8 +159,8 @@ const MetadataTable = ({ metadata, loading, error }) => {
 			<table className="metadata-table">
 				<thead>
 					<tr>
-						<th className="metadata-table__header-property">Propiedad</th>
-						<th className="metadata-table__header-value">Valor</th>
+						<th className="metadata-table__header-property">{t('components.metadataTable.property')}</th>
+						<th className="metadata-table__header-value">{t('components.metadataTable.value')}</th>
 					</tr>
 				</thead>
 				<tbody>

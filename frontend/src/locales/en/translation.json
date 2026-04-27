@@ -115,5 +115,69 @@
       "emptyMessage": "Click \"Analyze for AI\" to start the analysis",
       "exportButton": "Export Analysis"
     }
-  }
-}
+  },
+  "indicators": {
+    "encoding_library": {
+      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools"
+    },
+    "mono_audio": {
+      "reasoning": "Mono audio is less common in natural recordings, frequent in AI synthesis"
+    },
+    "padding_pattern": {
+      "reasoning": "Excessive zero padding is a strong indicator of automated AI audio processing"
+    },
+    "timestamp_consistency": {
+      "reasoning_missing": "Cannot verify consistency without timestamps",
+      "reasoning_ok": "Timestamps consistent (creation < modification)",
+      "reasoning_identical": "Creation and modification timestamps are identical",
+      "reasoning_reversed": "Creation timestamp is after modification timestamp",
+      "reasoning_error": "Error comparing timestamps"
+    },
+    "codec_consistency": {
+      "reasoning_ok": "Codec consistent with file format",
+      "reasoning_mismatch": "Codec inconsistent with format may indicate manipulation or re-encoding"
+    },
+    "file_size": {
+      "reasoning_ok": "File size consistent with bitrate and duration",
+      "reasoning_high_deviation": "File size deviated >30% from expected - HIGH risk",
+      "reasoning_medium_deviation": "File size deviated 20-30% from expected - MEDIUM risk",
+      "reasoning_low_deviation": "File size deviated <20% from expected - LOW risk",
+      "reasoning_error": "Error verifying file size"
+    }
+  },
+  "components": {
+    "riskScoreCard": {
+      "title": "Overall Score",
+      "riskLabel": "Risk:",
+      "percentileLabel": "Percentile:"
+    },
+    "conclusionBox": {
+      "lowRisk": "Low Risk",
+      "mediumRisk": "Medium Risk",
+      "highRisk": "High Risk",
+      "recommendationsTitle": "Recommendations",
+      "finalScore": "Final Score:"
+    },
+    "indicatorsGrid": {
+      "reasoning": "Reasoning:",
+      "technicalDetails": "Technical Details:",
+      "detectedIndicators": "Detected Indicators",
+      "missingIndicators": "Undetected Indicators",
+      "noSuspiciousIndicators": "No suspicious indicators detected",
+      "allIndicatorsDetected": "All indicators detected",
+      "confidence": "Confidence:",
+      "weight": "Weight:"
+    },
+    "metadataTable": {
+      "title": "Metadata",
+      "loading": "Extracting metadata...",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "copyTooltip": "Copy metadata",
+      "property": "Property",
+      "value": "Value",
+      "yes": "Yes",
+      "no": "No",
+      "notAvailable": "N/A",
+      "complexObject": "[Complex Object]"
+    }

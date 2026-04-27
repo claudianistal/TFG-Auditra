@@ -65,5 +65,5 @@ class CodecConsistencyIndicator(BaseIndicator):
                 'codec': codec,
                 'expected_codecs': expected_codecs,
             },
-            'reasoning': 'Codec inconsistente con formato puede indicar manipulación o re-codificación' if detected else 'Codec consistente con el formato del archivo'
+            'reasoning_key': 'indicators.codec_consistency.reasoning_mismatch' if detected else 'indicators.codec_consistency.reasoning_ok'
         }

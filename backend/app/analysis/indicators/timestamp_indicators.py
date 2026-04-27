@@ -36,13 +36,13 @@ class TimestampConsistencyIndicator(BaseIndicator):
                     'modification_time': modification_time,
                     'reason': 'Timestamps no disponibles'
                 },
-                'reasoning': 'No se puede verificar consistencia sin timestamps'
+                'reasoning_key': 'indicators.timestamp_consistency.reasoning_missing'
             }
         
         # Compare timestamps
         detected = False
         confidence = 0.0
-        reason = 'Timestamps consistentes'
+        reasoning_key = 'indicators.timestamp_consistency.reasoning_ok'
         
         # Try string comparison first (assumes ISO format or similar)
         try:
@@ -52,16 +52,16 @@ class TimestampConsistencyIndicator(BaseIndicator):
                 if creation_time == modification_time:
                     detected = True
                     confidence = 0.8
-                    reason = 'Timestamps de creación y modificación son idénticos'
+                    reasoning_key = 'indicators.timestamp_consistency.reasoning_identical'
                 elif creation_time > modification_time:
                     detected = True
                     confidence = 0.9
-                    reason = 'Timestamp de creación es posterior a modificación'
+                    reasoning_key = 'indicators.timestamp_consistency.reasoning_reversed'
                 else:
                     # creation_time < modification_time, which is normal
                     detected = False
                     confidence = 0.0
-                    reason = 'Timestamps consistentes (creación < modificación)'
+                    reasoning_key = 'indicators.timestamp_consistency.reasoning_ok'
         except Exception as e:
             # If comparison fails, assume no anomaly
             return {
@@ -72,7 +72,7 @@ class TimestampConsistencyIndicator(BaseIndicator):
                     'modification_time': modification_time,
                     'error': str(e)
                 },
-                'reasoning': 'Error al comparar timestamps'
+                'reasoning_key': 'indicators.timestamp_consistency.reasoning_error'
             }
         
         return {
@@ -83,5 +83,5 @@ class TimestampConsistencyIndicator(BaseIndicator):
                 'modification_time': modification_time,
                 'relationship': 'identical' if creation_time == modification_time else 'creation_after_modification' if creation_time > modification_time else 'normal'
             },
-            'reasoning': reason
+            'reasoning_key': reasoning_key
         }

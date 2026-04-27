@@ -28,5 +28,5 @@ class MonoAudioIndicator(BaseIndicator):
             'detected': detected,
             'confidence': 0.8 if detected else 0.0,
             'details': {'channels': channels},
-            'reasoning': 'Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA'
+            'reasoning_key': 'indicators.mono_audio.reasoning'
         }

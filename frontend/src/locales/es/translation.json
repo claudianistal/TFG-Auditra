@@ -115,5 +115,69 @@
       "emptyMessage": "Haz clic en \"Analizar para IA\" para iniciar el análisis",
       "exportButton": "Exportar Análisis"
     }
-  }
-}
+  },
+  "indicators": {
+    "encoding_library": {
+      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA"
+    },
+    "mono_audio": {
+      "reasoning": "Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA"
+    },
+    "padding_pattern": {
+      "reasoning": "Relleno excesivo con ceros es indicador fuerte de procesamiento automático de audio IA"
+    },
+    "timestamp_consistency": {
+      "reasoning_missing": "No se puede verificar consistencia sin timestamps",
+      "reasoning_ok": "Timestamps consistentes (creación < modificación)",
+      "reasoning_identical": "Timestamps de creación y modificación son idénticos",
+      "reasoning_reversed": "Timestamp de creación es posterior a modificación",
+      "reasoning_error": "Error al comparar timestamps"
+    },
+    "codec_consistency": {
+      "reasoning_ok": "Codec consistente con el formato del archivo",
+      "reasoning_mismatch": "Codec inconsistente con formato puede indicar manipulación o re-codificación"
+    },
+    "file_size": {
+      "reasoning_ok": "Tamaño de archivo consistente con bitrate y duración",
+      "reasoning_high_deviation": "Tamaño desviado >30% de lo esperado - ALTO riesgo",
+      "reasoning_medium_deviation": "Tamaño desviado 20-30% de lo esperado - MEDIO riesgo",
+      "reasoning_low_deviation": "Tamaño desviado <20% de lo esperado - BAJO riesgo",
+      "reasoning_error": "Error al verificar tamaño de archivo"
+    }
+  },
+  "components": {
+    "riskScoreCard": {
+      "title": "Puntuación General",
+      "riskLabel": "Riesgo:",
+      "percentileLabel": "Percentil:"
+    },
+    "conclusionBox": {
+      "lowRisk": "Bajo Riesgo",
+      "mediumRisk": "Riesgo Medio",
+      "highRisk": "Alto Riesgo",
+      "recommendationsTitle": "Recomendaciones",
+      "finalScore": "Puntuación Final:"
+    },
+    "indicatorsGrid": {
+      "reasoning": "Razón:",
+      "technicalDetails": "Detalles técnicos:",
+      "detectedIndicators": "Indicadores Detectados",
+      "missingIndicators": "Indicadores No Detectados",
+      "noSuspiciousIndicators": "No se detectaron indicadores sospechosos",
+      "allIndicatorsDetected": "Se detectaron todos los indicadores",
+      "confidence": "Confianza:",
+      "weight": "Peso:"
+    },
+    "metadataTable": {
+      "title": "Metadatos",
+      "loading": "Extrayendo metadatos...",
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "copyTooltip": "Copiar metadatos",
+      "property": "Propiedad",
+      "value": "Valor",
+      "yes": "Sí",
+      "no": "No",
+      "notAvailable": "N/A",
+      "complexObject": "[Objeto Complejo]"
+    }

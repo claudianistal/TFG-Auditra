@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
 
 const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
+	const { t } = useTranslation();
 	const [expandedId, setExpandedId] = useState(null);
 
 	const toggleExpanded = (factorName) => {
@@ -14,6 +16,9 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 			factor.risk_level === 'high' ? 'high' :
 			factor.risk_level === 'medium' ? 'medium' :
 			'low';
+
+		// Translate reasoning using the key from backend
+		const reasoning = factor.reasoning_key ? t(factor.reasoning_key) : 'No hay información disponible';
 
 		return (
 			<div 
@@ -35,10 +40,10 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 							<span className={`indicator-item__risk indicator-item__risk--${riskColor}`}>
 								{factor.risk_level.toUpperCase()}
 							</span>
-							<span className="indicator-item__weight">Peso: {factor.weight}</span>
+							<span className="indicator-item__weight">{t('components.indicatorsGrid.weight')} {factor.weight}</span>
 							{isDetected && (
 								<span className="indicator-item__confidence">
-									Confianza: {Math.round(factor.confidence * 100)}%
+								{t('components.indicatorsGrid.confidence')} {Math.round(factor.confidence * 100)}%
 								</span>
 							)}
 						</div>
@@ -57,11 +62,11 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 				{isDetected && isExpanded && (
 					<div className="indicator-item__details">
 						<p className="indicator-item__reasoning">
-							<strong>Razón:</strong> {factor.reasoning}
-						</p>
-						{Object.keys(factor.details).length > 0 && (
-							<div className="indicator-item__technical">
-								<strong>Detalles técnicos:</strong>
+						<strong>{t('components.indicatorsGrid.reasoning')}</strong> {reasoning}
+					</p>
+					{Object.keys(factor.details).length > 0 && (
+						<div className="indicator-item__technical">
+							<strong>{t('components.indicatorsGrid.technicalDetails')}</strong>
 								<ul>
 									{Object.entries(factor.details).map(([key, value]) => (
 										<li key={key}>
@@ -84,7 +89,7 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 		<div className="indicators-grid">
 			<div className="indicators-section">
 				<h4 className="indicators-section__title indicators-section__title--detected">
-					Indicadores Detectados ({detectedFactors.length})
+						{t('components.indicatorsGrid.detectedIndicators')} ({detectedFactors.length})
 				</h4>
 				<div className="indicators-list">
 					{detectedFactors.length > 0 ? (
@@ -98,7 +103,7 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 					) : (
 						<div className="indicators-empty">
 							<CheckCircle size={24} />
-							<p>No se detectaron indicadores sospechosos</p>
+							<p>{t('components.indicatorsGrid.noSuspiciousIndicators')}</p>
 						</div>
 					)}
 				</div>
@@ -106,7 +111,7 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 
 			<div className="indicators-section">
 				<h4 className="indicators-section__title indicators-section__title--missing">
-					Indicadores No Detectados ({missingFactors.length})
+					{t('components.indicatorsGrid.missingIndicators')} ({missingFactors.length})
 				</h4>
 				<div className="indicators-list">
 					{missingFactors.length > 0 ? (
@@ -120,7 +125,7 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 					) : (
 						<div className="indicators-empty">
 							<AlertCircle size={24} />
-							<p>Se detectaron todos los indicadores</p>
+							<p>{t('components.indicatorsGrid.allIndicatorsDetected')}</p>
 						</div>
 					)}
 				</div>

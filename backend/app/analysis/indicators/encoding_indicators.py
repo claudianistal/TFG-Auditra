@@ -59,5 +59,5 @@ class EncodingLibraryIndicator(BaseIndicator):
                 'encoder_found': encoder_info[:200],
                 'libraries_checked': ai_libraries,
             },
-            'reasoning': 'FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA'
+            'reasoning_key': 'indicators.encoding_library.reasoning'
         }
