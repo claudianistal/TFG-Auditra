@@ -16,6 +16,10 @@
     "patterns": {
       "label": "Patrones",
       "description": "Análisis de patrones binarios y relleno"
+    },
+    "analysis": {
+      "label": "Análisis IA",
+      "description": "Detección de audio generado por inteligencia artificial"
     }
   },
   "header": {
@@ -100,6 +104,16 @@
       "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: colores oscuros son valores bajos (0x00), colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. Audio natural muestra transiciones graduales y variadas, mientras que audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
       "paddingTitle": "Análisis de Bordes",
       "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. Audio legítimo tiene datos audio hasta el final. Audio sospechoso a menudo contiene relleno (bytes repetidos como 0x00 o 0xFF) en los bordes, indicando re-codificación, exportación incompleta o manipulación por software de síntesis de voz."
+    },
+    "analysis": {
+      "title": "Análisis de Detección de IA",
+      "description": "Análisis consolidado que integra metadatos y patrones para determinar si el audio fue generado por inteligencia artificial. Utiliza indicadores avanzados basados en huellas de codificación, configuración de audio, codecs, formato de archivo, tamaño y patrones de relleno.",
+      "noFileLoaded": "Ningún archivo cargado",
+      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "analyzeButton": "Analizar para IA",
+      "analyzing": "Analizando...",
+      "emptyMessage": "Haz clic en \"Analizar para IA\" para iniciar el análisis",
+      "exportButton": "Exportar Análisis"
     }
   }
 }

@@ -44,4 +44,8 @@ export const getPadding = async (fileId) => {
   return api.get(`/patterns/padding/${fileId}`);
 };
 
+export const getAnalysis = async (fileId) => {
+  return api.get(`/analysis/${fileId}`);
+};
+
 export default api;
