@@ -127,7 +127,7 @@
     },
     "padding_pattern": {
       "display_name": "Suspicious Padding Pattern",
-      "reasoning": "Excessive zero padding is a strong indicator of automated AI audio processing"
+      "reasoning": "Excessive repetitive bytes padding is a strong indicator of automated AI audio processing"
     },
     "timestamp_consistency": {
       "display_name": "Timestamp Inconsistency",
@@ -160,7 +160,7 @@
     "high_risk_multiple": "The analysis indicates high risk of AI generation. Multiple indicators suggest artificial processing."
   },
   "recommendations": {
-    "padding_pattern": "The detected zero padding is a strong indicator of automated processing. Consider analyzing files from the same source to confirm a pattern.",
+    "padding_pattern": "The detected  repetitive bytes padding is a strong indicator of automated processing. Consider analyzing files from the same source to confirm a pattern.",
     "timestamp_consistency": "A timestamp inconsistency was detected. The file may have been manipulated or re-encoded. Verify the integrity of the source.",
     "encoding_library": "FFmpeg/Lavf was detected as the encoding library. While it's a legitimate tool, it's also common in audio synthesis tools. Analyze alongside other indicators.",
     "mono_audio": "Mono audio is less common in natural recordings. Typical in voice synthesis or automated processing.",

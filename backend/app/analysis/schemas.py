@@ -29,12 +29,11 @@ class AnalysisResponse(BaseModel):
     likelihood: str = Field(..., description="bajo, medio, or alto")
     likelihood_description: str = Field(..., description="Human-readable likelihood description")
     score_color: str = Field(..., description="green, yellow, or red")
-    score_percentile: str = Field(..., description="Muy bajo, Bajo, Medio, Alto, or Muy alto")
     detected_factors: List[IndicatorDetail] = Field(..., description="Detected indicators")
     missing_factors: List[IndicatorDetail] = Field(..., description="Non-detected indicators")
     all_indicators: List[IndicatorDetail] = Field(..., description="All indicator results")
-    conclusion: str = Field(..., description="Human-readable conclusion")
-    recommendations: List[str] = Field(..., description="Actionable recommendations")
+    conclusion_key: str = Field(..., description="i18n translation key for conclusion")
+    recommendations: List[str] = Field(..., description="Actionable recommendations (i18n keys)")
     analysis_date: str = Field(..., description="ISO timestamp of analysis")
     
     class Config:
@@ -46,7 +45,6 @@ class AnalysisResponse(BaseModel):
                 "likelihood": "alto",
                 "likelihood_description": "Alto riesgo de generación por IA",
                 "score_color": "red",
-                "score_percentile": "Alto",
                 "detected_factors": [
                     {
                         "name": "padding_pattern",
@@ -66,9 +64,10 @@ class AnalysisResponse(BaseModel):
                 ],
                 "missing_factors": [],
                 "all_indicators": [],
-                "conclusion": "El análisis indica un alto riesgo de generación por IA...",
+                "conclusion_key": "conclusions.high_risk_critical",
                 "recommendations": [
-                    "El relleno con ceros detectado es un indicador fuerte..."
+                    "recommendations.padding_pattern",
+                    "recommendations.multiple_indicators"
                 ],
                 "analysis_date": "2026-04-25T10:30:00Z"
             }

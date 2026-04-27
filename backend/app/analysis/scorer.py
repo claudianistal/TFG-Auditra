@@ -15,10 +15,11 @@ class AnalysisScorer:
     
     def calculate_score(self, detected_factors: List[Dict[str, Any]]) -> int:
         """
-        Calculate total risk score based on detected factors.
+        Calculate total risk score based on detected factors using asymptotic probability.
         
-        Uses weighted sum: each factor contributes (weight * confidence).
-        The higher the score, the higher the likelihood of AI generation.
+        This method prevents score dilution when high-weight indicators are found alongside
+        many un-triggered low-weight indicators. A single highly confident, high-weight
+        indicator will push the score significantly towards 100.
         
         Args:
             detected_factors: List of detected indicator results
@@ -26,30 +27,31 @@ class AnalysisScorer:
         Returns:
             int: Risk score from 0-100
         """
-        total_score = 0
+        if not detected_factors:
+            return self.MIN_SCORE
+
+        not_ai_probability = 1.0
         
         for factor in detected_factors:
             weight = factor.get('weight', 0)
             confidence = factor.get('confidence', 0.0)
             
-            # Contribution = weight * confidence
-            contribution = weight * confidence
-            total_score += contribution
+            # Calculate the individual probability factor (0.0 to 1.0)
+            # Example: Weight 90, Confidence 0.95 -> 0.855
+            indicator_prob = (weight * confidence) / 100.0
+            
+            # Cap at 0.99 to ensure a single indicator never forces an absolute 100
+            # unless we explicitly want it to. It allows multiple strong indicators 
+            # to stack asymptotically.
+            indicator_prob = min(indicator_prob, 0.99)
+            
+            # Multiply the probabilities that the audio is NOT AI
+            not_ai_probability *= (1.0 - indicator_prob)
+            
+        # The final score is the inverse probability scaled to MAX_SCORE
+        final_score = int(self.MAX_SCORE * (1.0 - not_ai_probability))
         
-        # Maximum possible score is when all weights sum with confidence=1
-        # We use a fixed max of 237 (sum of all indicator weights)
-        max_possible_score = 237
-        
-        # Normalize to 0-100 range
-        if max_possible_score > 0:
-            normalized_score = (total_score / max_possible_score) * self.MAX_SCORE
-        else:
-            normalized_score = 0
-        
-        # Cap at MAX_SCORE
-        final_score = min(int(normalized_score), self.MAX_SCORE)
-        
-        return max(final_score, self.MIN_SCORE)
+        return max(min(final_score, self.MAX_SCORE), self.MIN_SCORE)
     
     def interpret_score(self, score: int) -> Dict[str, str]:
         """
@@ -80,17 +82,3 @@ class AnalysisScorer:
                 'color': 'red'
             }
     
-    def get_score_percentile(self, score: int) -> str:
-        """
-        Get human-readable description of score percentile.
-        """
-        if score <= 20:
-            return "Muy bajo"
-        elif score <= 40:
-            return "Bajo"
-        elif score <= 60:
-            return "Medio"
-        elif score <= 80:
-            return "Alto"
-        else:
-            return "Muy alto"

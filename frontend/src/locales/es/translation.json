@@ -127,7 +127,7 @@
     },
     "padding_pattern": {
       "display_name": "Patrón de relleno sospechoso",
-      "reasoning": "Relleno excesivo con ceros es indicador fuerte de procesamiento automático de audio IA"
+      "reasoning": "Relleno con patrones de bytes repetitivos es indicador fuerte de procesamiento automático de audio IA"
     },
     "timestamp_consistency": {
       "display_name": "Inconsistencia en timestamps",
@@ -160,7 +160,7 @@
     "high_risk_multiple": "El análisis indica un alto riesgo de generación por IA. Múltiples indicadores sugieren procesamiento artificial."
   },
   "recommendations": {
-    "padding_pattern": "El relleno con ceros detectado es un indicador fuerte de procesamiento automatizado. Considere analizar archivos de la misma fuente para confirmar un patrón.",
+    "padding_pattern": "El relleno con patrones de bytes repetitivos detectado es un indicador fuerte de procesamiento automatizado. Considere analizar archivos de la misma fuente para confirmar un patrón.",
     "timestamp_consistency": "Se detectó una inconsistencia en los timestamps. El archivo puede haber sido manipulado o recodificado. Verifique la integridad del origen.",
     "encoding_library": "Se detectó FFmpeg/Lavf como librería de codificación. Si bien es una herramienta legítima, también es común en herramientas de síntesis de audio. Analice junto con otros indicadores.",
     "mono_audio": "El audio mono es menos común en grabaciones naturales. Típico en síntesis de voz o procesamiento automatizado.",
