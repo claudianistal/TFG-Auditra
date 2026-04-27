@@ -135,7 +135,8 @@
     },
     "codec_consistency": {
       "reasoning_ok": "Codec consistente con el formato del archivo",
-      "reasoning_mismatch": "Codec inconsistente con formato puede indicar manipulación o re-codificación"
+      "reasoning_mismatch": "Codec inconsistente con formato puede indicar manipulación o re-codificación",
+      "reasoning_error": "Error: formato o codec no disponibles para verificar"
     },
     "file_size": {
       "reasoning_ok": "Tamaño de archivo consistente con bitrate y duración",

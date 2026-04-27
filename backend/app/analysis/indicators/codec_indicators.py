@@ -34,7 +34,7 @@ class CodecConsistencyIndicator(BaseIndicator):
                     'codec': codec,
                     'reason': 'Formato o codec no disponibles'
                 },
-                'reasoning': 'No se puede verificar consistencia sin información de formato/codec'
+                'reasoning_key': 'indicators.codec_consistency.reasoning_error'
             }
         
         # Define expected codecs for each format

@@ -15,7 +15,7 @@ class IndicatorDetail(BaseModel):
     detected: bool = Field(..., description="Whether indicator was detected")
     confidence: float = Field(..., ge=0, le=1, description="Confidence level 0-1")
     risk_level: str = Field(..., description="low, medium, or high")
-    reasoning: str = Field(..., description="Why this indicator was flagged")
+    reasoning_key: str = Field(..., description="i18n translation key for indicator reasoning")
     details: Dict[str, Any] = Field(..., description="Additional technical details")
 
 
@@ -49,14 +49,14 @@ class AnalysisResponse(BaseModel):
                 "score_percentile": "Alto",
                 "detected_factors": [
                     {
-                        "name": "zero_padding_end",
-                        "display_name": "Relleno de ceros al final del archivo",
+                        "name": "padding_pattern",
+                        "display_name": "Patrón de relleno",
                         "category": "padding",
-                        "weight": 30,
+                        "weight": 85,
                         "detected": True,
                         "confidence": 0.95,
                         "risk_level": "high",
-                        "reasoning": "Relleno con ceros al final es indicador fuerte de procesamiento automático",
+                        "reasoning_key": "indicators.padding_pattern.reasoning",
                         "details": {
                             "zero_bytes_at_end": 512,
                             "total_file_size": 5242880,

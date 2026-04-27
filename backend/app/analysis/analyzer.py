@@ -45,7 +45,7 @@ class AIDetectionAnalyzer:
                     'detected': result['detected'],
                     'confidence': result['confidence'],
                     'risk_level': indicator.risk_level,
-                    'reasoning': result['reasoning'],
+                    'reasoning_key': result['reasoning_key'],
                     'details': result['details']
                 }
                 
@@ -123,23 +123,23 @@ class AIDetectionAnalyzer:
         """
         recommendations = []
         
-        # Check for specific patterns and recommend actions
-        if any(f['name'].startswith('zero_padding') for f in detected_factors):
+        # Check for specific patterns and recommend actions based on 6 simplified indicators
+        if any(f['name'] == 'padding_pattern' for f in detected_factors):
             recommendations.append(
-                "El relleno con ceros detectado es un indicador fuerte. "
+                "El relleno con ceros detectado es un indicador fuerte de procesamiento automatizado. "
                 "Considere analizar archivos de la misma fuente para confirmar un patrón."
             )
         
-        if any(f['name'] == 'format_mismatch' for f in detected_factors):
+        if any(f['name'] == 'timestamp_consistency' for f in detected_factors):
             recommendations.append(
-                "Se detectó una inconsistencia de formato. "
-                "El archivo puede haber sido manipulado o reempaquetado. Verifique la integridad."
+                "Se detectó una inconsistencia en los timestamps. "
+                "El archivo puede haber sido manipulado o recodificado. Verifique la integridad del origen."
             )
         
-        if any(f['name'] == 'lavf_detected' for f in detected_factors):
+        if any(f['name'] == 'encoding_library' for f in detected_factors):
             recommendations.append(
-                "Se detectó FFmpeg/Lavf. Si bien es una herramienta legítima, "
-                "también es usada en herramientas de síntesis. Analice junto con otros indicadores."
+                "Se detectó FFmpeg/Lavf como librería de codificación. Si bien es una herramienta legítima, "
+                "también es común en herramientas de síntesis de audio. Analice junto con otros indicadores."
             )
         
         if any(f['name'] == 'mono_audio' for f in detected_factors):
@@ -148,7 +148,19 @@ class AIDetectionAnalyzer:
                 "Típico en síntesis de voz o procesamiento automatizado."
             )
         
-        if len(detected_factors) > 5:
+        if any(f['name'] == 'codec_consistency' for f in detected_factors):
+            recommendations.append(
+                "Se detectó una inconsistencia entre el codec y el formato de archivo. "
+                "Esto puede indicar manipulación o re-codificación del audio original."
+            )
+        
+        if any(f['name'] == 'file_size' for f in detected_factors):
+            recommendations.append(
+                "El tamaño del archivo presenta una desviación significativa respecto al bitrate y duración esperados. "
+                "Esto puede indicar re-codificación o compresión adicional."
+            )
+        
+        if len(detected_factors) > 4:
             recommendations.append(
                 "Se detectaron múltiples indicadores. Le recomendamos obtener una segunda opinión "
                 "mediante análisis con otras herramientas de detección de deepfakes."
