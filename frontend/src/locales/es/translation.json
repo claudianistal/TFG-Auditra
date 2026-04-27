@@ -118,15 +118,19 @@
   },
   "indicators": {
     "encoding_library": {
+      "display_name": "Librería de codificación sospechosa",
       "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA"
     },
     "mono_audio": {
+      "display_name": "Audio en mono detectado",
       "reasoning": "Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA"
     },
     "padding_pattern": {
+      "display_name": "Patrón de relleno sospechoso",
       "reasoning": "Relleno excesivo con ceros es indicador fuerte de procesamiento automático de audio IA"
     },
     "timestamp_consistency": {
+      "display_name": "Inconsistencia en timestamps",
       "reasoning_missing": "No se puede verificar consistencia sin timestamps",
       "reasoning_ok": "Timestamps consistentes (creación < modificación)",
       "reasoning_identical": "Timestamps de creación y modificación son idénticos",
@@ -134,17 +138,36 @@
       "reasoning_error": "Error al comparar timestamps"
     },
     "codec_consistency": {
+      "display_name": "Inconsistencia de codec",
       "reasoning_ok": "Codec consistente con el formato del archivo",
       "reasoning_mismatch": "Codec inconsistente con formato puede indicar manipulación o re-codificación",
       "reasoning_error": "Error: formato o codec no disponibles para verificar"
     },
     "file_size": {
+      "display_name": "Anomalía en tamaño de archivo",
       "reasoning_ok": "Tamaño de archivo consistente con bitrate y duración",
       "reasoning_high_deviation": "Tamaño desviado >30% de lo esperado - ALTO riesgo",
       "reasoning_medium_deviation": "Tamaño desviado 20-30% de lo esperado - MEDIO riesgo",
       "reasoning_low_deviation": "Tamaño desviado <20% de lo esperado - BAJO riesgo",
       "reasoning_error": "Error al verificar tamaño de archivo"
     }
+  },
+  "conclusions": {
+    "no_indicators": "No se detectaron indicadores de generación por IA. Este audio parece ser una grabación auténtica.",
+    "low_risk": "El análisis indica un bajo riesgo de generación por IA. Aunque se detectaron algunos indicadores menores, no hay evidencia concluyente de procesamiento artificial.",
+    "medium_risk": "El análisis indica un riesgo medio de generación por IA. Se detectaron varios indicadores sospechosos. Se recomienda un análisis más profundo.",
+    "high_risk_critical": "El análisis indica un alto riesgo de generación por IA. Se detectaron indicadores críticos. Este audio muy probablemente fue generado por herramientas de síntesis o IA.",
+    "high_risk_multiple": "El análisis indica un alto riesgo de generación por IA. Múltiples indicadores sugieren procesamiento artificial."
+  },
+  "recommendations": {
+    "padding_pattern": "El relleno con ceros detectado es un indicador fuerte de procesamiento automatizado. Considere analizar archivos de la misma fuente para confirmar un patrón.",
+    "timestamp_consistency": "Se detectó una inconsistencia en los timestamps. El archivo puede haber sido manipulado o recodificado. Verifique la integridad del origen.",
+    "encoding_library": "Se detectó FFmpeg/Lavf como librería de codificación. Si bien es una herramienta legítima, también es común en herramientas de síntesis de audio. Analice junto con otros indicadores.",
+    "mono_audio": "El audio mono es menos común en grabaciones naturales. Típico en síntesis de voz o procesamiento automatizado.",
+    "codec_consistency": "Se detectó una inconsistencia entre el codec y el formato de archivo. Esto puede indicar manipulación o re-codificación del audio original.",
+    "file_size": "El tamaño del archivo presenta una desviación significativa respecto al bitrate y duración esperados. Esto puede indicar re-codificación o compresión adicional.",
+    "multiple_indicators": "Se detectaron múltiples indicadores. Le recomendamos obtener una segunda opinión mediante análisis con otras herramientas de detección de deepfakes.",
+    "no_indicators": "El audio no presenta indicadores típicos de generación por IA. Sin embargo, las técnicas de IA evolucionan constantemente."
   },
   "components": {
     "riskScoreCard": {

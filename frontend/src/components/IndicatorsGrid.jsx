@@ -19,6 +19,9 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 
 		// Translate reasoning using the key from backend
 		const reasoning = factor.reasoning_key ? t(factor.reasoning_key) : 'No hay información disponible';
+		
+		// Translate indicator display name
+		const displayName = t(`indicators.${factor.name}.display_name`);
 
 		return (
 			<div 
@@ -35,7 +38,7 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 					</div>
 
 					<div className="indicator-item__info">
-						<div className="indicator-item__title">{factor.display_name}</div>
+						<div className="indicator-item__title">{displayName}</div>
 						<div className="indicator-item__meta">
 							<span className={`indicator-item__risk indicator-item__risk--${riskColor}`}>
 								{factor.risk_level.toUpperCase()}

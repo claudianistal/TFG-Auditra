@@ -133,7 +133,6 @@ const AnalysisPage = () => {
 									score={currentFile.analysis.risk_score}
 									likelihood={currentFile.analysis.likelihood}
 									color={currentFile.analysis.score_color}
-									percentile={currentFile.analysis.score_percentile}
 								/>
 
 								{/* Indicators Grid */}
@@ -146,9 +145,9 @@ const AnalysisPage = () => {
 								<ConclusionBox
 									riskScore={currentFile.analysis.risk_score}
 									likelihood={currentFile.analysis.likelihood}
-									conclusion={currentFile.analysis.conclusion}
+									conclusionKey={currentFile.analysis.conclusion_key}
 									recommendations={currentFile.analysis.recommendations}
-								/>
+								></ConclusionBox>
 
 								{/* Export Button */}
 								<div className="analysis-export">

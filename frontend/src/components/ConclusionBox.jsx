@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Info, CheckCircle } from 'lucide-react';
 
-const ConclusionBox = ({ riskScore, likelihood, conclusion, recommendations }) => {
+const ConclusionBox = ({ riskScore, likelihood, conclusionKey, recommendations }) => {
 	const { t } = useTranslation();
 
 	const iconMap = {
@@ -27,7 +27,7 @@ const ConclusionBox = ({ riskScore, likelihood, conclusion, recommendations }) =
 			</div>
 
 			<p className="conclusion-box__conclusion">
-				{conclusion}
+				{t(conclusionKey)}
 			</p>
 
 			{recommendations && recommendations.length > 0 && (
@@ -39,7 +39,7 @@ const ConclusionBox = ({ riskScore, likelihood, conclusion, recommendations }) =
 					<ul className="conclusion-box__rec-list">
 						{recommendations.map((rec, idx) => (
 							<li key={idx} className="conclusion-box__rec-item">
-								{rec}
+								{t(rec)}
 							</li>
 						))}
 					</ul>

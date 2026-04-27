@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle } from 'lucide-react';
 
-const RiskScoreCard = ({ score, likelihood, color, percentile }) => {
+const RiskScoreCard = ({ score, likelihood, color }) => {
 	const { t } = useTranslation();
 	return (
 		<div className={`risk-score-card risk-score-card--${color}`}>
@@ -31,10 +31,7 @@ const RiskScoreCard = ({ score, likelihood, color, percentile }) => {
 							{likelihood === 'alto' && t('components.conclusionBox.highRisk')}
 						</span>
 					</div>
-					<div className="risk-score-card__percentile">
-						<span className="risk-score-card__label">{t('components.riskScoreCard.percentileLabel')}</span>
-						<span className="risk-score-card__value">{percentile}</span>
-					</div>
+
 				</div>
 			</div>
 

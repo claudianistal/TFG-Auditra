@@ -73,120 +73,70 @@ class AIDetectionAnalyzer:
             'likelihood': score_interpretation['likelihood'],
             'likelihood_description': score_interpretation['description'],
             'score_color': score_interpretation['color'],
-            'score_percentile': self.scorer.get_score_percentile(risk_score),
             'detected_factors': detected_factors,
             'missing_factors': missing_factors,
             'all_indicators': all_indicators_results,
-            'conclusion': conclusion,
+            'conclusion_key': conclusion,
             'recommendations': recommendations,
             'analysis_date': self._get_iso_timestamp()
         }
     
     def _generate_conclusion(self, detected_factors: List[Dict[str, Any]], risk_score: int) -> str:
         """
-        Generate a human-readable conclusion based on detected factors.
+        Generate conclusion key for frontend translation based on detected factors.
+        Returns i18n key for the conclusion message.
         """
         if not detected_factors:
-            return "No se detectaron indicadores de generación por IA. " \
-                   "Este audio parece ser una grabación auténtica."
+            return "conclusions.no_indicators"
         
         # Count factors by risk level
         high_risk = [f for f in detected_factors if f['risk_level'] == 'high']
-        medium_risk = [f for f in detected_factors if f['risk_level'] == 'medium']
         
         if risk_score < 30:
-            return "El análisis indica un bajo riesgo de generación por IA. " \
-                   "Aunque se detectaron algunos indicadores menores, no hay evidencia concluyente " \
-                   "de procesamiento artificial."
+            return "conclusions.low_risk"
         
         elif risk_score < 60:
-            factors_desc = self._format_factors_for_conclusion(detected_factors[:3])
-            return f"El análisis indica un riesgo medio de generación por IA. " \
-                   f"Se detectaron varios indicadores sospechosos: {factors_desc}. " \
-                   f"Se recomienda un análisis más profundo."
+            return "conclusions.medium_risk"
         
         else:
             if high_risk:
-                critical = [f['display_name'] for f in high_risk[:2]]
-                critical_desc = " y ".join(critical)
-                return f"El análisis indica un alto riesgo de generación por IA. " \
-                       f"Se detectaron indicadores críticos: {critical_desc}. " \
-                       f"Este audio muy probablemente fue generado por herramientas de síntesis o IA."
+                return "conclusions.high_risk_critical"
             else:
-                factors_desc = self._format_factors_for_conclusion(detected_factors[:3])
-                return f"El análisis indica un alto riesgo de generación por IA. " \
-                       f"Múltiples indicadores sugieren procesamiento artificial: {factors_desc}."
+                return "conclusions.high_risk_multiple"
     
     def _generate_recommendations(self, detected_factors: List[Dict[str, Any]]) -> List[str]:
         """
         Generate actionable recommendations based on findings.
+        Returns i18n keys for frontend translation.
         """
         recommendations = []
         
         # Check for specific patterns and recommend actions based on 6 simplified indicators
         if any(f['name'] == 'padding_pattern' for f in detected_factors):
-            recommendations.append(
-                "El relleno con ceros detectado es un indicador fuerte de procesamiento automatizado. "
-                "Considere analizar archivos de la misma fuente para confirmar un patrón."
-            )
+            recommendations.append('recommendations.padding_pattern')
         
         if any(f['name'] == 'timestamp_consistency' for f in detected_factors):
-            recommendations.append(
-                "Se detectó una inconsistencia en los timestamps. "
-                "El archivo puede haber sido manipulado o recodificado. Verifique la integridad del origen."
-            )
+            recommendations.append('recommendations.timestamp_consistency')
         
         if any(f['name'] == 'encoding_library' for f in detected_factors):
-            recommendations.append(
-                "Se detectó FFmpeg/Lavf como librería de codificación. Si bien es una herramienta legítima, "
-                "también es común en herramientas de síntesis de audio. Analice junto con otros indicadores."
-            )
+            recommendations.append('recommendations.encoding_library')
         
         if any(f['name'] == 'mono_audio' for f in detected_factors):
-            recommendations.append(
-                "El audio mono es menos común en grabaciones naturales. "
-                "Típico en síntesis de voz o procesamiento automatizado."
-            )
+            recommendations.append('recommendations.mono_audio')
         
         if any(f['name'] == 'codec_consistency' for f in detected_factors):
-            recommendations.append(
-                "Se detectó una inconsistencia entre el codec y el formato de archivo. "
-                "Esto puede indicar manipulación o re-codificación del audio original."
-            )
+            recommendations.append('recommendations.codec_consistency')
         
         if any(f['name'] == 'file_size' for f in detected_factors):
-            recommendations.append(
-                "El tamaño del archivo presenta una desviación significativa respecto al bitrate y duración esperados. "
-                "Esto puede indicar re-codificación o compresión adicional."
-            )
+            recommendations.append('recommendations.file_size')
         
         if len(detected_factors) > 4:
-            recommendations.append(
-                "Se detectaron múltiples indicadores. Le recomendamos obtener una segunda opinión "
-                "mediante análisis con otras herramientas de detección de deepfakes."
-            )
+            recommendations.append('recommendations.multiple_indicators')
         
         if not recommendations:
-            recommendations.append(
-                "El audio no presenta indicadores típicos de generación por IA. "
-                "Sin embargo, las técnicas de IA evolucionan constantemente."
-            )
+            recommendations.append('recommendations.no_indicators')
         
         return recommendations
-    
-    @staticmethod
-    def _format_factors_for_conclusion(factors: List[Dict[str, Any]]) -> str:
-        """Format factors for inclusion in conclusion text."""
-        if not factors:
-            return "indicadores no especificados"
-        
-        names = [f['display_name'].lower() for f in factors[:3]]
-        if len(names) == 1:
-            return names[0]
-        elif len(names) == 2:
-            return f"{names[0]} y {names[1]}"
-        else:
-            return ", ".join(names[:-1]) + f" y {names[-1]}"
     
     @staticmethod
     def _get_iso_timestamp() -> str:
