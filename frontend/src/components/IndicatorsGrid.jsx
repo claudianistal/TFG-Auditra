@@ -44,11 +44,6 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 								{factor.risk_level.toUpperCase()}
 							</span>
 							<span className="indicator-item__weight">{t('components.indicatorsGrid.weight')} {factor.weight}</span>
-							{isDetected && (
-								<span className="indicator-item__confidence">
-								{t('components.indicatorsGrid.confidence')} {Math.round(factor.confidence * 100)}%
-								</span>
-							)}
 						</div>
 					</div>
 

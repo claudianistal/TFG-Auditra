@@ -34,11 +34,10 @@ class AnalysisScorer:
         
         for factor in detected_factors:
             weight = factor.get('weight', 0)
-            confidence = factor.get('confidence', 0.0)
             
             # Calculate the individual probability factor (0.0 to 1.0)
-            # Example: Weight 90, Confidence 0.95 -> 0.855
-            indicator_prob = (weight * confidence) / 100.0
+            # Only detected factors contribute, using their weight directly
+            indicator_prob = weight / 100.0
             
             # Cap at 0.99 to ensure a single indicator never forces an absolute 100
             # unless we explicitly want it to. It allows multiple strong indicators 

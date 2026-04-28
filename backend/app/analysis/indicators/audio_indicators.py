@@ -26,7 +26,6 @@ class MonoAudioIndicator(BaseIndicator):
         
         return {
             'detected': detected,
-            'confidence': 0.8 if detected else 0.0,
             'details': {'channels': channels},
             'reasoning_key': 'indicators.mono_audio.reasoning'
         }

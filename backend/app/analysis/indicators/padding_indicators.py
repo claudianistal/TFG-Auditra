@@ -65,7 +65,6 @@ class PaddingPatternIndicator(BaseIndicator):
 
         return {
             'detected': detected,
-            'confidence': min(padding_percentage / 10, 1.0) if padding_percentage > 0 else 0.0,
             'details': {
                 # Legacy compatibility fields
                 'padding_at_start': max_pattern_start, 

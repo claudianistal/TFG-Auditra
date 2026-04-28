@@ -77,7 +77,6 @@ class TimestampConsistencyIndicator(BaseIndicator):
         
         return {
             'detected': detected,
-            'confidence': confidence,
             'details': {
                 'creation_time': creation_time,
                 'modification_time': modification_time,

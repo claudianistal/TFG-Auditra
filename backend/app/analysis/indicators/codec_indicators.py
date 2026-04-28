@@ -59,7 +59,6 @@ class CodecConsistencyIndicator(BaseIndicator):
         
         return {
             'detected': detected,
-            'confidence': 0.8 if detected else 0.0,
             'details': {
                 'file_format': file_format,
                 'codec': codec,

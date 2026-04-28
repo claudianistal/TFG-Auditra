@@ -91,7 +91,6 @@ class FileSizeIndicator(BaseIndicator):
             
             return {
                 'detected': detected,
-                'confidence': confidence,
                 'details': {
                     'file_size': file_size,
                     'expected_size': int(expected_size),

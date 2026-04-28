@@ -43,7 +43,6 @@ class AIDetectionAnalyzer:
                     'category': indicator.category,
                     'weight': indicator.weight,
                     'detected': result['detected'],
-                    'confidence': result['confidence'],
                     'risk_level': indicator.risk_level,
                     'reasoning_key': result['reasoning_key'],
                     'details': result['details']

@@ -34,9 +34,8 @@ class BaseIndicator(ABC):
             Dictionary with structure:
             {
                 'detected': bool,           # True if indicator is present
-                'confidence': float,        # 0.0-1.0 confidence level
                 'details': {},              # Additional details about the detection
-                'reasoning': str            # Explanation of why this was flagged
+                'reasoning_key': str        # i18n key for the explanation
             }
         """
         pass

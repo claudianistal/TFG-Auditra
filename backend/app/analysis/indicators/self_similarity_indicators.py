@@ -73,11 +73,9 @@ class SelfSimilarityIndicator(BaseIndicator):
         
         # Determine detection and calculate confidence
         detected = self_similarity_score > self.MIN_SELF_SIMILAR_RATIO
-        confidence = min(self_similarity_score * 1.5, 1.0)
         
         return {
             'detected': detected,
-            'confidence': confidence,
             'details': {
                 'self_similarity_score': round(self_similarity_score, 3),
                 'threshold': self.MIN_SELF_SIMILAR_RATIO,
@@ -179,7 +177,6 @@ class SelfSimilarityIndicator(BaseIndicator):
     def _empty_result(self) -> Dict[str, Any]:
         return {
             'detected': False,
-            'confidence': 0.0,
             'details': {},
             'reasoning_key': 'indicators.self_similarity.reasoning'
         }

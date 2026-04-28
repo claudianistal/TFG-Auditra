@@ -41,7 +41,6 @@ class FormatMismatchIndicator(BaseIndicator):
         
         return {
             'detected': detected,
-            'confidence': 0.95 if detected else 0.0,
             'details': {
                 'file_extension': file_extension,
                 'detected_format': detected_format,

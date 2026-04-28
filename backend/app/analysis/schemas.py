@@ -13,7 +13,6 @@ class IndicatorDetail(BaseModel):
     category: str = Field(..., description="Indicator category")
     weight: int = Field(..., description="Weight in scoring")
     detected: bool = Field(..., description="Whether indicator was detected")
-    confidence: float = Field(..., ge=0, le=1, description="Confidence level 0-1")
     risk_level: str = Field(..., description="low, medium, or high")
     reasoning_key: str = Field(..., description="i18n translation key for indicator reasoning")
     details: Dict[str, Any] = Field(..., description="Additional technical details")
@@ -36,39 +35,3 @@ class AnalysisResponse(BaseModel):
     recommendations: List[str] = Field(..., description="Actionable recommendations (i18n keys)")
     analysis_date: str = Field(..., description="ISO timestamp of analysis")
     
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "file_id": "550e8400-e29b-41d4-a716-446655440000",
-                "filename": "audio.mp3",
-                "risk_score": 75,
-                "likelihood": "alto",
-                "likelihood_description": "Alto riesgo de generación por IA",
-                "score_color": "red",
-                "detected_factors": [
-                    {
-                        "name": "padding_pattern",
-                        "display_name": "Patrón de relleno",
-                        "category": "padding",
-                        "weight": 85,
-                        "detected": True,
-                        "confidence": 0.95,
-                        "risk_level": "high",
-                        "reasoning_key": "indicators.padding_pattern.reasoning",
-                        "details": {
-                            "zero_bytes_at_end": 512,
-                            "total_file_size": 5242880,
-                            "percentage": 0.01
-                        }
-                    }
-                ],
-                "missing_factors": [],
-                "all_indicators": [],
-                "conclusion_key": "conclusions.high_risk_critical",
-                "recommendations": [
-                    "recommendations.padding_pattern",
-                    "recommendations.multiple_indicators"
-                ],
-                "analysis_date": "2026-04-25T10:30:00Z"
-            }
-        }

@@ -54,7 +54,6 @@ class EncodingLibraryIndicator(BaseIndicator):
         
         return {
             'detected': detected,
-            'confidence': 0.95 if detected else 0.0,
             'details': {
                 'encoder_found': encoder_info[:200],
                 'libraries_checked': ai_libraries,
