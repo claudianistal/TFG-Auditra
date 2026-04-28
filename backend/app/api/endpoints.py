@@ -212,6 +212,7 @@ async def get_analysis(file_id: str):
         patterns = {
             'hex_start': patterns_response.get('hex_start', ''),
             'hex_end': patterns_response.get('hex_end', ''),
+            'full_hex': patterns_response.get('full_hex', ''),  
             'total_file_size': patterns_response.get('total_file_size', 0)
         }
         

@@ -150,6 +150,10 @@
       "reasoning_medium_deviation": "File size deviated 20-30% from expected - MEDIUM risk",
       "reasoning_low_deviation": "File size deviated <20% from expected - LOW risk",
       "reasoning_error": "Error verifying file size"
+    },
+    "self_similarity": {
+      "display_name": "High Pattern Repetition Detected",
+      "reasoning": "Highly repetitive byte patterns indicate artificial processing and AI generation"
     }
   },
   "conclusions": {

@@ -150,6 +150,10 @@
       "reasoning_medium_deviation": "Tamaño desviado 20-30% de lo esperado - MEDIO riesgo",
       "reasoning_low_deviation": "Tamaño desviado <20% de lo esperado - BAJO riesgo",
       "reasoning_error": "Error al verificar tamaño de archivo"
+    },
+    "self_similarity": {
+      "display_name": "Alta repetición de patrones detectada",
+      "reasoning": "Patrones de bytes altamente repetitivos indican procesamiento artificial y generación por IA"
     }
   },
   "conclusions": {

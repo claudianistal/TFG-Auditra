@@ -11,10 +11,11 @@ from typing import Dict, List
 
 def extract_hex_dumps(file_path: str, num_bytes: int = 1024) -> Dict[str, any]:
     """
-    Extract hex representation of file start and end bytes.
+    Extract hex representation of file start, end, and full content.
     
     Returns formatted hex dumps with ASCII representation for inspection
-    of potential padding (0x00 or 0xFF) at file boundaries.
+    of potential padding (0x00 or 0xFF) at file boundaries, plus full hex dump
+    for advanced pattern analysis.
     
     Args:
         file_path (str): Full path to the audio file
@@ -24,6 +25,7 @@ def extract_hex_dumps(file_path: str, num_bytes: int = 1024) -> Dict[str, any]:
         dict: {
             "hex_start": [list of hex dump lines],
             "hex_end": [list of hex dump lines],
+            "full_hex": [list of complete hex dump lines],
             "total_file_size": int
         }
         
@@ -41,17 +43,25 @@ def extract_hex_dumps(file_path: str, num_bytes: int = 1024) -> Dict[str, any]:
     if len(data) == 0:
         raise ValueError("File is empty")
     
-    # Extract start and end
+    # Extract start and end (for boundary analysis)
     start_bytes = data[:num_bytes]
     end_bytes = data[-num_bytes:] if len(data) >= num_bytes else data
     
     hex_start = _format_hex_dump(start_bytes, label="Start of file")
     hex_end = _format_hex_dump(end_bytes, label="End of file", offset=max(0, len(data) - num_bytes))
     
+    # Extract full hex dump (for pattern analysis, with limit to avoid memory issues)
+    # Limit to 100KB for performance, but analyze the whole file if smaller
+    max_hex_bytes = min(len(data), 100 * 1024)  # Max 100KB
+    full_data = data[:max_hex_bytes]
+    hex_full = _format_hex_dump(full_data, label=f"Full content ({len(data)} bytes total, showing {len(full_data)} bytes)")
+    
     return {
         "hex_start": hex_start,
         "hex_end": hex_end,
+        "full_hex": hex_full,
         "total_file_size": len(data),
+        "hex_bytes_analyzed": len(full_data)
     }
 
 

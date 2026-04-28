@@ -22,7 +22,7 @@ class PaddingPatternIndicator(BaseIndicator):
     risk_level = "high"
     
     # Minimum threshold for consecutive bytes to consider as padding
-    MIN_CONSECUTIVE_BYTES = 100
+    MIN_CONSECUTIVE_BYTES = 70
     # Minimum percentage of file that should be padding to flag as suspicious
     MIN_PADDING_PERCENTAGE = 3
     

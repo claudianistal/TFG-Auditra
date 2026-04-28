@@ -6,7 +6,7 @@ Provides utilities for:
 2. Hex dump extraction of file boundaries (padding detection)
 """
 
-from .bitmap import generate_bitmap as _generate_bitmap
+from .self_similarity import generate_bitmap as _generate_bitmap
 from .hex_dump import extract_hex_dumps as _extract_hex_dumps
 
 

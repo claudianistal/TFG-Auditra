@@ -279,6 +279,7 @@ class FileUploadService:
                 "filename": file_path.name,
                 "hex_start": hex_data["hex_start"],
                 "hex_end": hex_data["hex_end"],
+                "full_hex": hex_data["full_hex"],
                 "total_file_size": hex_data["total_file_size"],
                 "generated_at": datetime.utcnow().isoformat() + "Z"
             }
