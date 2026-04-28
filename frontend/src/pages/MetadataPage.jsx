@@ -59,7 +59,7 @@ const MetadataPage = () => {
 				{!currentFile && (
 					<div className="metadata-no-file">
 						<Music size={48} />
-						<p>{t('pages.metadata.noFileMessage') || 'Carga un archivo en la sección de ingesta de audio primero.'}</p>
+						<p>{t('pages.metadata.noFileMessage') || 'Carga un archivo en la sección de \'Cargar Audio\' primero.'}</p>
 					</div>
 				)}
 

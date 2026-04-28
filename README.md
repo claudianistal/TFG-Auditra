@@ -9,7 +9,7 @@
 
 Auditra proporciona **3 módulos independientes y complementarios** para un análisis integral:
 
-### 1️⃣ **Cargar Audio** (Ingesta)
+### 1️⃣ **Cargar Audio**
 - Carga segura de archivos WAV, MP3, M4A (máx 2GB)
 - Validación de formato y tamaño
 - Cálculo de hash SHA-256 para integridad de cadena de custodia

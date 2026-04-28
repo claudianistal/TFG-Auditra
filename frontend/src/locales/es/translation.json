@@ -5,6 +5,10 @@
   },
   "menu": {
     "aria_label": "Navegación principal",
+    "home": {
+      "label": "Auditra Inicio",
+      "description": "Aprende cómo utilizar la aplicación"
+    },
     "audioIngestion": {
       "label": "Cargar Audio",
       "description": "Carga evidencias de audio de forma segura"
@@ -41,6 +45,38 @@
     "toggle": "Cambiar tema a {{theme}}"
   },
   "pages": {
+    "home": {
+      "title": "Guía rápida de la aplicación",
+      "description": "Empieza por la carga de evidencia y avanza por metadatos, patrones y análisis IA para completar una evaluación forense consistente.",
+      "eyebrow": "Pantalla de inicio",
+      "intro": "Auditra es una aplicación de análisis forense de audio diseñada para detectar si un archivo de audio fue generado por inteligencia artificial. Sigue esta guía rápida para entender cómo usar cada módulo y obtener resultados.",
+      "startButton": "Comenzar carga de audio",
+      "jumpAnalysisButton": "Ir directo a análisis IA",
+      "noticeTitle": "Recomendación de flujo",
+      "noticeText": "Para entender mejor el proceso de análisis, sigue el orden: Cargar Audio -> Metadatos -> Patrones -> Análisis IA.",
+      "steps": {
+        "upload": {
+          "title": "Carga la evidencia",
+          "description": "Sube un único archivo (WAV, MP3 o M4A). Auditra no altera el archivo original, sino que trabaja siempre sobre una copia para garantizar la integridad de la evidencia.",
+          "link": "Ir a 'Cargar Audio'"
+        },
+        "metadata": {
+          "title": "Revisa metadatos",
+          "description": "Inspecciona todo tipo de metadatos para detectar la huella que haya podido dejar la IA. Auditra utiliza herramientas forenses estándar como Mutagen, Wave, ExifTool y FFprobe para extraer información.",
+          "link": "Ir a 'Metadatos'"
+        },
+        "patterns": {
+          "title": "Analiza patrones binarios",
+          "description": "Visualiza la autosimilitud a nivel de datos (bytes) de forma gráfica y el relleno en bordes para identificar huellas de síntesis.",
+          "link": "Ir a 'Patrones'"
+        },
+        "analysis": {
+          "title": "Obtén la conclusión final",
+          "description": "En base a los resultados de los análisis de los pasos anteriores, Auditra genera una valoración final sobre posible generación por IA.",
+          "link": "Ir a 'Análisis IA'"
+        }
+      }
+    },
     "audioIngestion": {
       "title": "Cargar evidencia de audio",
       "description": "Carga y cataloga de forma segura evidencias de audio.",
@@ -71,7 +107,7 @@
     "metadata": {
       "title": "Análisis de Metadatos",
       "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias de bitrate y anomalías en la arquitectura del archivo que indiquen generación o alteración por IA.",
-      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "analyzeButton": "Analizar Metadatos",
       "analyzing": "Analizando..."
@@ -79,7 +115,7 @@
     "patterns": {
       "title": "Análisis de Patrones",
       "description": "Visualiza la estructura interna del archivo de audio como un mapa de bits. Cada píxel representa el valor de un byte, mostrado en escala de grises. Detecta patrones anómalos, discontinuidades y secuencias de relleno que indiquen generación o manipulación por IA. Ajusta la resolución para analizar diferentes escalas.",
-      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
       "analyzeButton": "Analizar Patrones",
@@ -109,7 +145,7 @@
       "title": "Análisis de Detección de IA",
       "description": "Análisis consolidado que integra metadatos y patrones para determinar si el audio fue generado por inteligencia artificial. Utiliza indicadores avanzados basados en huellas de codificación, configuración de audio, codecs, formato de archivo, tamaño y patrones de relleno.",
       "noFileLoaded": "Ningún archivo cargado",
-      "noFileMessage": "Carga un archivo en la sección de ingesta de audio primero.",
+      "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "analyzeButton": "Analizar para IA",
       "analyzing": "Analizando...",
       "emptyMessage": "Haz clic en \"Analizar para IA\" para iniciar el análisis",
