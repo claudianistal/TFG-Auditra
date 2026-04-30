@@ -29,7 +29,7 @@ def build():
         "-m",
         "PyInstaller",
         "--onefile",
-        "--console",  # TEMPORALMENTE cambiado para detectar bugs. Luego cambiar de nuevo a --windowed
+        "--windowed",  # TEMPORALMENTE (--console) cambiado para detectar bugs. Luego cambiar de nuevo a --windowed
         "--name=Auditra",
         f"--icon={icon_path}",
         f"--paths={backend_path}",
