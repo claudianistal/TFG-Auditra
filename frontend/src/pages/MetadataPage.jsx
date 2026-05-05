@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle, Music } from 'lucide-react';
 import FileBar from '../components/FileBar';
@@ -13,9 +13,16 @@ const MetadataPage = () => {
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [analyzed, setAnalyzed] = useState(false);
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
+
+	// Reset analyzed state when file changes
+	useEffect(() => {
+		setAnalyzed(false);
+		setError(null);
+	}, [currentFile?.id]);
 
 	const handleAnalyzeMetadata = async () => {
 		if (!currentFile) {
@@ -36,6 +43,9 @@ const MetadataPage = () => {
 				metadataLoading: false,
 				metadataError: null,
 			});
+
+			// Mark as analyzed after successful analysis
+			setAnalyzed(true);
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error extracting metadata';
 			setError(errorMessage);
@@ -74,7 +84,7 @@ const MetadataPage = () => {
 						<button
 							className={'metadata-analyze-button ' + (loading ? 'metadata-analyze-button--loading' : '')}
 							onClick={handleAnalyzeMetadata}
-							disabled={loading}
+							disabled={loading || analyzed}
 						>
 							{loading ? t('pages.metadata.analyzing') || 'Analyzing...' : t('pages.metadata.analyzeButton') || 'Analyze Metadata'}
 						</button>

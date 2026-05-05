@@ -885,3 +885,33 @@
 		justify-content: center;
 	}
 }
+
+/* Hex dump copy button */
+.hex-dump-copy-btn {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 1rem;
+	background: rgba(76, 175, 80, 0.08);
+	border: 2px solid rgba(76, 175, 80, 0.2);
+	border-radius: 6px;
+	font-size: 0.85rem;
+	font-weight: 500;
+	color: rgba(76, 175, 80, 0.9);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+.hex-dump-copy-btn:hover {
+	background: rgba(76, 175, 80, 0.12);
+	border-color: rgba(76, 175, 80, 0.4);
+}
+
+.hex-dump-copy-btn:active {
+	transform: translateY(0);
+}
+
+.hex-dump-copy-btn svg {
+	flex-shrink: 0;
+}

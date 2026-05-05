@@ -52,10 +52,7 @@ const BitmapViewer = ({ imageBase64, filename, width }) => {
 
       <div className="bitmap-viewer__footer">
         <p className="bitmap-viewer__info">{t('pages.patterns.width') || 'Width'}: {width} {t('pages.patterns.bytesPerRow') || 'bytes per row'}</p>
-        <button className="btn btn-primary" onClick={handleDownload}>
-          <Download size={18} />
-          {t('pages.patterns.downloadPNG') || 'Download PNG'}
-        </button>
+        
       </div>
     </div>
   );

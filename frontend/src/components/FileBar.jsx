@@ -1,9 +1,11 @@
 import React from 'react';
 import { Music } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './styles/FileBar.css';
 import { useFiles } from '../context/FileContext';
 
 const FileBar = () => {
+	const { t } = useTranslation();
 	const { files } = useFiles();
 
 	if (files.length === 0) {
@@ -13,7 +15,7 @@ const FileBar = () => {
 	return (
 		<div className="file-bar">
 			<div className="file-bar__header">
-				<span className="file-bar__title">Archivos cargados</span>
+				<span className="file-bar__title">{t('components.fileBar.loadedFile')}</span>
 				<span className="file-bar__count">{files.length}</span>
 			</div>
 			<div className="file-bar__list">

@@ -63,17 +63,17 @@ const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
           <button 
             className="hex-dump-copy-btn"
             onClick={handleCopyHexStart}
-            title={copiedStart ? 'Copiado!' : 'Copiar hex dump'}
+            title={copiedStart ? t('components.hexDumpViewer.copied') : t('components.hexDumpViewer.copyTooltip')}
           >
             {copiedStart ? (
               <>
                 <Check size={16} />
-                <span>Copiado!</span>
+                <span>{t('components.hexDumpViewer.copied')}</span>
               </>
             ) : (
               <>
                 <Copy size={16} />
-                <span>Copiar</span>
+                <span>{t('components.hexDumpViewer.copy')}</span>
               </>
             )}
           </button>
@@ -103,17 +103,17 @@ const HexDumpViewer = ({ hexStart, hexEnd, totalFileSize }) => {
           <button 
             className="hex-dump-copy-btn"
             onClick={handleCopyHexEnd}
-            title={copiedEnd ? 'Copiado!' : 'Copiar hex dump'}
+            title={copiedEnd ? t('components.hexDumpViewer.copied') : t('components.hexDumpViewer.copyTooltip')}
           >
             {copiedEnd ? (
               <>
                 <Check size={16} />
-                <span>Copiado!</span>
+                <span>{t('components.hexDumpViewer.copied')}</span>
               </>
             ) : (
               <>
                 <Copy size={16} />
-                <span>Copiar</span>
+                <span>{t('components.hexDumpViewer.copy')}</span>
               </>
             )}
           </button>

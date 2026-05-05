@@ -158,17 +158,6 @@ const AnalysisPage = () => {
 									conclusionKey={currentFile.analysis.conclusion_key}
 									recommendations={currentFile.analysis.recommendations}
 								></ConclusionBox>
-
-								{/* Export Button */}
-								<div className="analysis-export">
-									<button 
-										className="analysis-export-button"
-										onClick={handleExportAnalysis}
-									>
-										<Download size={18} />
-										{t('pages.analysis.exportButton') || 'Export Analysis'}
-									</button>
-								</div>
 							</div>
 						)}
 

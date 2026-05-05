@@ -146,9 +146,9 @@
       "description": "Análisis consolidado que integra metadatos y patrones para determinar si el audio fue generado por inteligencia artificial. Utiliza indicadores avanzados basados en huellas de codificación, configuración de audio, codecs, formato de archivo, tamaño y patrones de relleno.",
       "noFileLoaded": "Ningún archivo cargado",
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
-      "analyzeButton": "Analizar para IA",
+      "analyzeButton": "Analizar",
       "analyzing": "Analizando...",
-      "emptyMessage": "Haz clic en \"Analizar para IA\" para iniciar el análisis",
+      "emptyMessage": "Haz clic en \"Analizar\" para iniciar el análisis",
       "exportButton": "Exportar Análisis"
     }
   },
@@ -290,6 +290,14 @@
       "no": "No",
       "notAvailable": "N/A",
       "complexObject": "[Objeto Complejo]"
+    },
+    "fileBar": {
+      "loadedFile": "Archivo cargado"
+    },
+    "hexDumpViewer": {
+      "copy": "Copiar",
+      "copied": "¡Copiado!",
+      "copyTooltip": "Copiar hex dump"
     }
   }
 }
