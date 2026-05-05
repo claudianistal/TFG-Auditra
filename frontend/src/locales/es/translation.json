@@ -155,15 +155,31 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Librería de codificación sospechosa",
-      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA"
+      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA",
+      "details": {
+        "metadata_tags_header": "Etiquetas de Metadatos Encontradas",
+        "metadata_tags_explanation": "Estas son las etiquetas de metadatos donde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados."
+      }
     },
     "mono_audio": {
       "display_name": "Audio en mono detectado",
-      "reasoning": "Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA"
+      "reasoning": "Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA",
+      "details": {
+        "channels": "Canales de Audio",
+        "mono": "Mono (1 canal)",
+        "channels_plural": "canales",
+        "channels_explanation": "Las grabaciones de audio natural típicamente tienen 2 canales (estéreo) o más. El audio generado por IA frecuentemente usa mono (canal único), que es menos común en grabaciones reales."
+      }
     },
     "padding_pattern": {
       "display_name": "Patrón de relleno sospechoso",
-      "reasoning": "Relleno con patrones de bytes repetitivos es indicador fuerte de procesamiento automático de audio IA"
+      "reasoning": "Relleno con patrones de bytes repetitivos es indicador fuerte de procesamiento automático de audio IA",
+      "details": {
+        "bytes_at_start": "Bytes Repetidos al Inicio del Archivo",
+        "bytes_at_start_explanation": "Muestra los valores de byte que se repiten al inicio del archivo. Por ejemplo, 0x00 (ceros) repetidos muchas veces indica relleno agregado por software de procesamiento.",
+        "bytes_at_end": "Bytes Repetidos al Final del Archivo",
+        "bytes_at_end_explanation": "Muestra los valores de byte que se repiten al final del archivo. Las grabaciones reales raramente tienen esto; es típico de audio editado o sintetizado."
+      }
     },
     "timestamp_consistency": {
       "display_name": "Inconsistencia en timestamps",
@@ -171,13 +187,31 @@
       "reasoning_ok": "Timestamps consistentes (creación < modificación)",
       "reasoning_identical": "Timestamps de creación y modificación son idénticos",
       "reasoning_reversed": "Timestamp de creación es posterior a modificación",
-      "reasoning_error": "Error al comparar timestamps"
+      "reasoning_error": "Error al comparar timestamps",
+      "details": {
+        "creation_time": "Fecha de Creación del Archivo",
+        "modification_time": "Fecha de Última Modificación",
+        "relationship": "Relación entre Timestamps",
+        "relationship_normal": "Normal - Creación antes de modificación",
+        "relationship_normal_explanation": "El archivo fue creado y luego modificado después, que es el comportamiento esperado para archivos legítimos.",
+        "relationship_identical": "Timestamps idénticos",
+        "relationship_identical_explanation": "Los tiempos de creación y modificación son exactamente iguales. Esto es sospechoso porque los archivos deberían tener timestamps diferentes al ser creados vs. modificados. Las herramientas de IA a veces crean archivos con timestamps idénticos.",
+        "relationship_creation_after_modification": "Creación posterior a modificación",
+        "relationship_creation_after_modification_explanation": "El timestamp de creación es posterior al de modificación, lo cual es lógicamente imposible. Esto indica que los metadatos del archivo han sido manipulados o creados artificialmente."
+      }
     },
     "codec_consistency": {
       "display_name": "Inconsistencia de codec",
       "reasoning_ok": "Codec consistente con el formato del archivo",
       "reasoning_mismatch": "Codec inconsistente con formato puede indicar manipulación o re-codificación",
-      "reasoning_error": "Error: formato o codec no disponibles para verificar"
+      "reasoning_error": "Error: formato o codec no disponibles para verificar",
+      "details": {
+        "file_format": "Formato de Archivo",
+        "codec_detected": "Codec Utilizado",
+        "codec_explanation": "El codec es el método utilizado para comprimir/codificar los datos de audio. Cada formato de archivo espera codecs específicos. Una inconsistencia indica que el archivo puede haber sido convertido o manipulado.",
+        "expected_codecs": "Codec(s) Esperado(s)",
+        "expected_explanation": "Estos son los codecs estándar que deberían usarse con este formato de archivo."
+      }
     },
     "file_size": {
       "display_name": "Anomalía en tamaño de archivo",
@@ -185,11 +219,26 @@
       "reasoning_high_deviation": "Tamaño desviado >30% de lo esperado - ALTO riesgo",
       "reasoning_medium_deviation": "Tamaño desviado 20-30% de lo esperado - MEDIO riesgo",
       "reasoning_low_deviation": "Tamaño desviado <20% de lo esperado - BAJO riesgo",
-      "reasoning_error": "Error al verificar tamaño de archivo"
+      "reasoning_error": "Error al verificar tamaño de archivo",
+      "details": {
+        "deviation": "Desviación del Tamaño de Archivo",
+        "deviation_low_explanation": "El tamaño del archivo difiere en {{deviation}}% de lo que esperaríamos basado en el bitrate y duración. Esta pequeña desviación es normal y dentro de rangos aceptables.",
+        "deviation_medium_explanation": "El tamaño del archivo difiere en {{deviation}}% del tamaño esperado. Esto sugiere que el archivo puede haber sido re-codificado o comprimido, lo que puede ocurrir con procesamiento de IA.",
+        "deviation_high_explanation": "El tamaño del archivo difiere significativamente ({{deviation}}%) de lo que debería ser matemáticamente basado en bitrate y duración. Esto es un indicador fuerte de re-codificación, procesamiento adicional o manipulación.",
+        "actual_vs_expected": "Tamaño Actual vs. Esperado",
+        "size_explanation": "El archivo es más grande o más pequeño de lo que matemáticamente debería ser. Los archivos que han sido modificados o sintetizados a menudo tienen desajustes de tamaño.",
+        "audio_specs": "Especificaciones de Audio",
+        "specs_explanation": "Muestra la duración del audio y el bitrate (calidad). Estos dos valores determinan cuál debería ser el tamaño del archivo.",
+        "compression_type": "Tipo de Compresión",
+        "lossy": "Con pérdida (comprime reduciendo calidad)",
+        "lossless": "Sin pérdida (preserva calidad original)",
+        "compression_explanation": "La compresión {{type}} es cómo se almacenan los datos de audio. Los formatos con pérdida permiten más variación de tamaño debido a los ajustes de calidad."
+      }
     },
     "self_similarity": {
-      "display_name": "Alta repetición de patrones detectada",
-      "reasoning": "Patrones de bytes altamente repetitivos indican procesamiento artificial y generación por IA"
+      "display_name": "Autosimilitud a nivel de bytes detectada",
+      "reasoning": "El archivo de audio contiene patrones de bytes altamente repetitivos, característica de audio generado por IA o procesado artificialmente. Las grabaciones naturales típicamente tienen patrones de bytes variados y aleatorios en todo el archivo. Ve a la sección de Patrones para ver la visualización de la repetición a nivel de bytes.",
+      "details": {}
     }
   },
   "conclusions": {

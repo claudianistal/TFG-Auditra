@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, AlertCircle, CheckCircle } from 'lucide-react';
+import { formatIndicatorDetails } from '../utils/indicatorDetailsFormatter';
 
 const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 	const { t } = useTranslation();
@@ -60,23 +61,31 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 				{isDetected && isExpanded && (
 					<div className="indicator-item__details">
 						<p className="indicator-item__reasoning">
-						<strong>{t('components.indicatorsGrid.reasoning')}</strong> {reasoning}
-					</p>
-					{Object.keys(factor.details).length > 0 && (
-						<div className="indicator-item__technical">
-							<strong>{t('components.indicatorsGrid.technicalDetails')}</strong>
-								<ul>
-									{Object.entries(factor.details).map(([key, value]) => (
-										<li key={key}>
-											<span className="indicator-item__detail-key">{key}:</span>
-											<span className="indicator-item__detail-value">
-												{typeof value === 'object' ? JSON.stringify(value) : String(value)}
-											</span>
-										</li>
-									))}
-								</ul>
-							</div>
-						)}
+							<strong>{t('components.indicatorsGrid.reasoning')}</strong> {reasoning}
+						</p>
+						{(() => {
+							const formattedDetails = formatIndicatorDetails(factor.name, factor.details);
+							// Only show technical details section if there are formatted details to display
+							if (formattedDetails.length === 0) return null;
+							return (
+								<div className="indicator-item__technical">
+									<strong>{t('components.indicatorsGrid.technicalDetails')}</strong>
+									<div className="indicator-item__formatted-details">
+										{formattedDetails.map((detail, idx) => (
+											<div key={idx} className="indicator-item__detail-block">
+												<div className="indicator-item__detail-header">
+													<span className="indicator-item__detail-label">{detail.label}</span>
+												</div>
+												<div className="indicator-item__detail-value">{detail.value}</div>
+												{detail.explanation && (
+													<div className="indicator-item__detail-explanation">{detail.explanation}</div>
+												)}
+											</div>
+										))}
+									</div>
+								</div>
+							);
+						})()}
 					</div>
 				)}
 			</div>

@@ -60,23 +60,33 @@ const AnalysisPage = () => {
 	};
 
 	const handleExportAnalysis = () => {
-		if (!currentFile?.analysis) return;
+        if (!currentFile?.analysis) return;
 
-		const analysisData = {
-			filename: currentFile.name,
-			timestamp: new Date().toISOString(),
-			...currentFile.analysis,
-		};
+        const analysisData = {
+            filename: currentFile.name,
+            timestamp: new Date().toISOString(),
+            ...currentFile.analysis,
+        };
 
-		const dataStr = JSON.stringify(analysisData, null, 2);
-		const dataBlob = new Blob([dataStr], { type: 'application/json' });
-		const url = URL.createObjectURL(dataBlob);
-		const link = document.createElement('a');
-		link.href = url;
-		link.download = `analysis_${currentFile.id}.json`;
-		link.click();
-		URL.revokeObjectURL(url);
-	};
+        const dataStr = JSON.stringify(analysisData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        // Se asegura de tener un nombre de archivo fallback por si currentFile.id no existe
+        link.download = `analysis_${currentFile.id || 'export'}.json`; 
+        
+        // 1. Añadir el enlace al DOM
+        document.body.appendChild(link);
+        
+        // 2. Simular el clic
+        link.click();
+        
+        // 3. Limpiar: remover del DOM y revocar la URL
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 
 	return (
 		<>

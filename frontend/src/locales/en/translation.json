@@ -155,15 +155,31 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Suspicious Encoding Library",
-      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools"
+      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools",
+      "details": {
+        "metadata_tags_header": "Metadata Tags Found",
+        "metadata_tags_explanation": "These are the metadata tags where encoding libraries were detected. Search for these tags in the Metadata section to verify the detected values."
+      }
     },
     "mono_audio": {
       "display_name": "Mono Audio Detected",
-      "reasoning": "Mono audio is less common in natural recordings, frequent in AI synthesis"
+      "reasoning": "Mono audio is less common in natural recordings, frequent in AI synthesis",
+      "details": {
+        "channels": "Audio Channels",
+        "mono": "Mono (1 channel)",
+        "channels_plural": "channels",
+        "channels_explanation": "Natural audio recordings typically have 2 channels (stereo) or more. AI-generated speech often uses mono (single channel), which is less common in real-world recordings."
+      }
     },
     "padding_pattern": {
       "display_name": "Suspicious Padding Pattern",
-      "reasoning": "Excessive repetitive bytes padding is a strong indicator of automated AI audio processing"
+      "reasoning": "Excessive repetitive bytes padding is a strong indicator of automated AI audio processing",
+      "details": {
+        "bytes_at_start": "Repeated Bytes at File Start",
+        "bytes_at_start_explanation": "Shows the byte values that repeat at the beginning of the file. For example, 0x00 (zeros) repeated many times indicates padding added by processing software.",
+        "bytes_at_end": "Repeated Bytes at File End",
+        "bytes_at_end_explanation": "Shows the byte values that repeat at the end of the file. Real recordings rarely have this; it's typical of edited or synthesized audio."
+      }
     },
     "timestamp_consistency": {
       "display_name": "Timestamp Inconsistency",
@@ -171,13 +187,31 @@
       "reasoning_ok": "Timestamps consistent (creation < modification)",
       "reasoning_identical": "Creation and modification timestamps are identical",
       "reasoning_reversed": "Creation timestamp is after modification timestamp",
-      "reasoning_error": "Error comparing timestamps"
+      "reasoning_error": "Error comparing timestamps",
+      "details": {
+        "creation_time": "File Creation Time",
+        "modification_time": "File Last Modified Time",
+        "relationship": "Timestamp Relationship",
+        "relationship_normal": "Normal - Creation before modification",
+        "relationship_normal_explanation": "The file was created and then later modified, which is the expected behavior for legitimate files.",
+        "relationship_identical": "Identical timestamps",
+        "relationship_identical_explanation": "The creation and modification times are exactly the same. This is suspicious because files should have different timestamps when created vs. modified. AI tools sometimes create files with identical timestamps.",
+        "relationship_creation_after_modification": "Creation after modification",
+        "relationship_creation_after_modification_explanation": "The creation timestamp is after the modification timestamp, which is logically impossible. This indicates the file's metadata has been tampered with or artificially created."
+      }
     },
     "codec_consistency": {
       "display_name": "Codec Inconsistency",
       "reasoning_ok": "Codec consistent with file format",
       "reasoning_mismatch": "Codec inconsistent with format may indicate manipulation or re-encoding",
-      "reasoning_error": "Error: format or codec not available for verification"
+      "reasoning_error": "Error: format or codec not available for verification",
+      "details": {
+        "file_format": "File Format",
+        "codec_detected": "Codec Used",
+        "codec_explanation": "The codec is the method used to compress/encode the audio data. Each file format expects specific codecs. A mismatch indicates the file may have been converted or manipulated.",
+        "expected_codecs": "Expected Codec(s)",
+        "expected_explanation": "These are the standard codecs that should be used with this file format."
+      }
     },
     "file_size": {
       "display_name": "File Size Anomaly",
@@ -185,11 +219,26 @@
       "reasoning_high_deviation": "File size deviated >30% from expected - HIGH risk",
       "reasoning_medium_deviation": "File size deviated 20-30% from expected - MEDIUM risk",
       "reasoning_low_deviation": "File size deviated <20% from expected - LOW risk",
-      "reasoning_error": "Error verifying file size"
+      "reasoning_error": "Error verifying file size",
+      "details": {
+        "deviation": "File Size Deviation",
+        "deviation_low_explanation": "The file size differs by {{deviation}}% from what we'd expect based on the bitrate and duration. This small deviation is normal and within acceptable ranges.",
+        "deviation_medium_explanation": "The file size differs by {{deviation}}% from the expected size. This suggests the file may have been re-encoded or compressed, which can happen with AI processing.",
+        "deviation_high_explanation": "The file size differs significantly ({{deviation}}%) from what it should be based on bitrate and duration. This is a strong indicator of re-encoding, additional processing, or manipulation.",
+        "actual_vs_expected": "Actual vs. Expected Size",
+        "size_explanation": "The file is larger or smaller than it should be mathematically. Files that have been modified or synthesized often have size mismatches.",
+        "audio_specs": "Audio Specifications",
+        "specs_explanation": "Shows the length of the audio and the bitrate (quality). These two values determine what the file size should be.",
+        "compression_type": "Compression Type",
+        "lossy": "Lossy (compressed quality loss)",
+        "lossless": "Lossless (preserves original quality)",
+        "compression_explanation": "{{type}} compression is how the audio data is stored. Lossy formats allow more size variation due to quality settings."
+      }
     },
     "self_similarity": {
-      "display_name": "High Pattern Repetition Detected",
-      "reasoning": "Highly repetitive byte patterns indicate artificial processing and AI generation"
+      "display_name": "Byte-level Self-Similarity Detected",
+      "reasoning": "The audio file contains highly repetitive byte patterns, which are characteristic of AI-generated or artificially processed audio. Natural recordings typically have varied, random byte patterns throughout the file. Go to the Patterns section to see the byte-level repetition visualization.",
+      "details": {}
     }
   },
   "conclusions": {
