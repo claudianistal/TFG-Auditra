@@ -1,11 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
 from app.services import FileUploadService
-from app.models import FileUploadResponse
-from app.analysis import AIDetectionAnalyzer, AnalysisResponse
+from app.models import FileUploadResponse, AnalysisResponse
 
 router = APIRouter()
 file_service = FileUploadService()  # Servicio de gestión de archivos
-analyzer = AIDetectionAnalyzer()  # Analizador de detección de IA
 
 
 @router.post("/upload", response_model=FileUploadResponse)
@@ -203,35 +201,4 @@ async def get_analysis(file_id: str):
     Raises:
         HTTPException: 404 if file not found, 500 on analysis errors
     """
-    try:
-        # Get metadata and patterns
-        metadata_response = file_service.get_file_metadata(file_id)
-        patterns_response = file_service.get_padding(file_id)
-        
-        metadata = metadata_response.get('metadata', {})
-        patterns = {
-            'hex_start': patterns_response.get('hex_start', ''),
-            'hex_end': patterns_response.get('hex_end', ''),
-            'full_hex': patterns_response.get('full_hex', ''),  
-            'total_file_size': patterns_response.get('total_file_size', 0)
-        }
-        
-        # Run analysis
-        analysis_result = analyzer.analyze(metadata, patterns)
-        
-        # Build response
-        response = AnalysisResponse(
-            file_id=file_id,
-            filename=metadata_response.get('filename', 'unknown'),
-            **analysis_result
-        )
-        
-        return response
-    
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error performing analysis: {str(e)}"
-        )
+    return file_service.get_analysis(file_id)
