@@ -155,12 +155,12 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Librería de codificación sospechosa",
-      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA. Las etiquetas de metadatos mostradas a continuación indican dónde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados.",
+      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio. Las etiquetas de metadatos mostradas a continuación indican dónde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados.",
       "details": {}
     },
     "mono_audio": {
       "display_name": "Audio en mono detectado",
-      "reasoning": "Audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA",
+      "reasoning": "El audio mono es menos común en grabaciones naturales, frecuente en síntesis de IA",
       "details": {
         "channels": "Canales de Audio",
         "mono": "Mono (1 canal)",
@@ -175,7 +175,7 @@
         "bytes_at_start": "Bytes Repetidos al Inicio del Archivo",
         "bytes_at_start_explanation": "Muestra los valores de byte que se repiten al inicio del archivo. Por ejemplo, 0x00 (ceros) repetidos muchas veces indica relleno agregado por software de procesamiento.",
         "bytes_at_end": "Bytes Repetidos al Final del Archivo",
-        "bytes_at_end_explanation": "Muestra los valores de byte que se repiten al final del archivo. Las grabaciones reales raramente tienen esto; es típico de audio editado o sintetizado."
+        "bytes_at_end_explanation": "Muestra los valores de byte que se repiten al final del archivo. Las grabaciones reales raramente tienen esto; es típico de audio procesado o sintetizado."
       }
     },
     "timestamp_consistency": {
@@ -234,7 +234,7 @@
     },
     "self_similarity": {
       "display_name": "Autosimilitud a nivel de bytes detectada",
-      "reasoning": "El archivo de audio contiene patrones de bytes altamente repetitivos, característica de audio generado por IA o procesado artificialmente. Las grabaciones naturales típicamente tienen patrones de bytes variados y aleatorios en todo el archivo. Ve a la sección de Patrones para ver la visualización de la repetición a nivel de bytes.",
+      "reasoning": "Se ha detectado autosimilitud a nivel de bytes a diferentes escalas. Ve a la sección de Patrones para ver la visualización de la repetición a nivel de bytes.",
       "details": {}
     }
   },

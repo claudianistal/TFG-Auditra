@@ -155,7 +155,7 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Suspicious Encoding Library",
-      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools. The metadata tags below show where encoding libraries were detected. Search for these tags in the Metadata section to verify the detected values.",
+      "reasoning": "FFmpeg/Lavf is common software in audio synthesis tools. The metadata tags below show where encoding libraries were detected. Search for these tags in the Metadata section to verify the detected values.",
       "details": {}
     },
     "mono_audio": {
@@ -234,7 +234,7 @@
     },
     "self_similarity": {
       "display_name": "Byte-level Self-Similarity Detected",
-      "reasoning": "The audio file contains highly repetitive byte patterns, which are characteristic of AI-generated or artificially processed audio. Natural recordings typically have varied, random byte patterns throughout the file. Go to the Patterns section to see the byte-level repetition visualization.",
+      "reasoning": "Self-similarity has been detected at the byte level across different scales. Go to the Patterns section to see the byte-level repetition visualization.",
       "details": {}
     }
   },
