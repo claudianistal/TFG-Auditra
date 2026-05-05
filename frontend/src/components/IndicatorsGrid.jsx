@@ -27,9 +27,11 @@ const IndicatorsGrid = ({ detectedFactors, missingFactors }) => {
 		return (
 			<div 
 				className={`indicator-item indicator-item--${isDetected ? 'detected' : 'missing'}`}
-				onClick={() => isDetected && toggleExpanded(factor.name)}
 			>
-				<div className="indicator-item__header">
+				<div 
+					className="indicator-item__header"
+					onClick={() => isDetected && toggleExpanded(factor.name)}
+				>
 					<div className="indicator-item__status">
 						{isDetected ? (
 							<AlertCircle size={20} className="indicator-item__icon--detected" />

@@ -155,11 +155,8 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Suspicious Encoding Library",
-      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools",
-      "details": {
-        "metadata_tags_header": "Metadata Tags Found",
-        "metadata_tags_explanation": "These are the metadata tags where encoding libraries were detected. Search for these tags in the Metadata section to verify the detected values."
-      }
+      "reasoning": "FFmpeg/Lavf is common software in audio synthesis and AI tools. The metadata tags below show where encoding libraries were detected. Search for these tags in the Metadata section to verify the detected values.",
+      "details": {}
     },
     "mono_audio": {
       "display_name": "Mono Audio Detected",

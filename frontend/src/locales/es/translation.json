@@ -155,11 +155,8 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Librería de codificación sospechosa",
-      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA",
-      "details": {
-        "metadata_tags_header": "Etiquetas de Metadatos Encontradas",
-        "metadata_tags_explanation": "Estas son las etiquetas de metadatos donde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados."
-      }
+      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio e IA. Las etiquetas de metadatos mostradas a continuación indican dónde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados.",
+      "details": {}
     },
     "mono_audio": {
       "display_name": "Audio en mono detectado",

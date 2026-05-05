@@ -112,14 +112,6 @@ function formatEncodingLibrary(details) {
   const t = i18n.t;
   const result = [];
 
-  // Add header text explaining these are metadata tags to look for
-  result.push({
-    label: t('indicators.encoding_library.details.metadata_tags_header'),
-    value: t('indicators.encoding_library.details.metadata_tags_explanation'),
-    explanation: null,
-    isHeader: true, // Special flag to render differently if needed
-  });
-
   // Show all detected fields
   if (details.detected_fields && Array.isArray(details.detected_fields) && details.detected_fields.length > 0) {
     details.detected_fields.forEach((item) => {
