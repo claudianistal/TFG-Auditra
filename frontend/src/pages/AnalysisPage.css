@@ -43,6 +43,7 @@
 	border-radius: 8px;
 	margin-bottom: 1rem;
 	flex-wrap: wrap;
+	padding-top: 1rem;
 }
 
 .analysis-file-name {
@@ -914,4 +915,15 @@
 
 .hex-dump-copy-btn svg {
 	flex-shrink: 0;
+}
+
+/* Espaciado para la descripción de la página */
+.analysis-description {
+    padding-bottom: 1.5rem;  /* Ajusta este valor (1rem, 2rem...) según el espacio que quieras */
+    color: #64748b;          /* Un gris un poco más suave para que no compita con el título */
+}
+
+/* Y su versión para el modo oscuro (si lo estás usando) */
+[data-theme='dark'] .analysis-description {
+    color: #94a3b8;
 }
