@@ -51,7 +51,7 @@ if __name__ == "__main__":
     print(f"Abriendo webview: {frontend_url}")
     
     # 4. Create the webview window pointing to the frontend
-    webview.create_window(
+    window = webview.create_window(
         'AUDITRA', 
         frontend_url,
         width=1200,
@@ -59,4 +59,4 @@ if __name__ == "__main__":
         resizable=True
     )
 
-    webview.start()
+    webview.start(lambda: window.maximize())

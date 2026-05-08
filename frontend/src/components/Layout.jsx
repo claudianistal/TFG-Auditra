@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
@@ -11,6 +11,12 @@ import './styles/Layout.css';
 const LayoutContent = () => {
 	const { t } = useTranslation();
 	const location = useLocation();
+
+	// Reiniciar scroll al cambiar de pantalla
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [location.pathname]);
+
 	const currentItem = menuItems.find((item) => item.path === location.pathname) ?? menuItems[0];
 
 	return (
