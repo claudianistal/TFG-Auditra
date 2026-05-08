@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle, Music } from 'lucide-react';
 import FileBar from '../components/FileBar';
+import ConfirmationBanner from '../components/ConfirmationBanner';
 import MetadataTable from '../components/MetadataTable';
 import { useFiles } from '../context/FileContext';
 import { getMetadata } from '../api/audioService';
@@ -14,6 +15,11 @@ const MetadataPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [analyzed, setAnalyzed] = useState(false);
+	const [confirmation, setConfirmation] = useState({
+		visible: false,
+		executionTime: 0,
+		type: 'success',
+	});
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
@@ -32,10 +38,11 @@ const MetadataPage = () => {
 
 		setLoading(true);
 		setError(null);
+		const startTime = Date.now();
 
 		try {
 			const response = await getMetadata(currentFile.id);
-			const { metadata } = response.data;
+			const { metadata, execution_time_ms } = response.data;
 
 			// Update the file in context with metadata
 			updateFile(currentFile.id, {
@@ -46,12 +53,26 @@ const MetadataPage = () => {
 
 			// Mark as analyzed after successful analysis
 			setAnalyzed(true);
+
+			// Show confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: execution_time_ms || Date.now() - startTime,
+				type: 'success',
+			});
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error extracting metadata';
 			setError(errorMessage);
 			updateFile(currentFile.id, {
 				metadataError: errorMessage,
 				metadataLoading: false,
+			});
+
+			// Show error confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - startTime,
+				type: 'error',
 			});
 		} finally {
 			setLoading(false);
@@ -89,6 +110,21 @@ const MetadataPage = () => {
 							{loading ? t('pages.metadata.analyzing') || 'Analyzing...' : t('pages.metadata.analyzeButton') || 'Analyze Metadata'}
 						</button>
 						</div>
+
+						{/* Confirmation Banner */}
+						{confirmation.visible && (
+							<ConfirmationBanner
+								isVisible={confirmation.visible}
+								type={confirmation.type}
+								message={
+									confirmation.type === 'success'
+										? t('components.confirmationBanner.metadataSuccess') || '✓ Metadata analysis completed'
+										: t('components.confirmationBanner.metadataError') || '✗ Error analyzing metadata'
+								}
+								executionTime={confirmation.executionTime}
+								onDismiss={() => setConfirmation({ ...confirmation, visible: false })}
+							/>
+						)}
 
 						{/* Error message if extraction failed */}
 						{error && (

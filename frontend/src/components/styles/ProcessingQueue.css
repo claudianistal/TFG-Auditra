@@ -199,6 +199,11 @@
 	background: rgba(91, 134, 229, 0.08);
 }
 
+.queue-item__player {
+	padding-top: 0.5rem;
+	border-top: 1px solid rgba(91, 134, 229, 0.1);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
 	.queue-item {

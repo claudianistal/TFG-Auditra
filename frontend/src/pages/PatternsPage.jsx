@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle, Music, RefreshCw } from 'lucide-react';
 import FileBar from '../components/FileBar';
+import ConfirmationBanner from '../components/ConfirmationBanner';
 import BitmapViewer from '../components/BitmapViewer';
 import HexDumpViewer from '../components/HexDumpViewer';
 import { useFiles } from '../context/FileContext';
@@ -18,6 +19,11 @@ const PatternsPage = () => {
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
 	const [analyzed, setAnalyzed] = useState(false);
+	const [confirmation, setConfirmation] = useState({
+		visible: false,
+		executionTime: 0,
+		type: 'success',
+	});
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
@@ -36,6 +42,7 @@ const PatternsPage = () => {
 
 		setLoading(true);
 		setError(null);
+		const startTime = Date.now();
 
 		try {
 			// Make both requests in parallel
@@ -62,12 +69,26 @@ const PatternsPage = () => {
 
 			// Mark as analyzed after successful analysis
 			setAnalyzed(true);
+
+			// Show confirmation banner with total execution time
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - startTime,
+				type: 'success',
+			});
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error analyzing patterns';
 			setError(errorMessage);
 			updateFile(currentFile.id, {
 				patternsError: errorMessage,
 				patternsLoading: false,
+			});
+
+			// Show error confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - startTime,
+				type: 'error',
 			});
 		} finally {
 			setLoading(false);
@@ -88,10 +109,11 @@ const PatternsPage = () => {
 
 		setRecalculatingWidth(true);
 		setError(null);
+		const startTime = Date.now();
 
 		try {
 			const response = await getAutosimilarity(currentFile.id, width);
-			const { image_base64, width_used } = response.data;
+			const { image_base64, width_used, execution_time_ms } = response.data;
 
 			// Update only the bitmap, keep hex dumps
 			updateFile(currentFile.id, {
@@ -103,12 +125,26 @@ const PatternsPage = () => {
 				patternsLoading: false,
 				patternsError: null,
 			});
+
+			// Show confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: execution_time_ms || Date.now() - startTime,
+				type: 'success',
+			});
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error recalculating autosimilarity';
 			setError(errorMessage);
 			updateFile(currentFile.id, {
 				patternsError: errorMessage,
 				patternsLoading: false,
+			});
+
+			// Show error confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - startTime,
+				type: 'error',
 			});
 		} finally {
 			setRecalculatingWidth(false);
@@ -158,7 +194,20 @@ const PatternsPage = () => {
 								{loading ? t('pages.patterns.analyzing') || 'Analyzing...' : t('pages.patterns.analyzeButton') || 'Analyze Patterns'}
 							</button>
 						</div>
-
+					{/* Confirmation Banner */}
+					{confirmation.visible && (
+						<ConfirmationBanner
+							isVisible={confirmation.visible}
+							type={confirmation.type}
+							message={
+								confirmation.type === 'success'
+									? t('components.confirmationBanner.patternsSuccess') || '✓ Pattern analysis completed'
+									: t('components.confirmationBanner.patternsError') || '✗ Error analyzing patterns'
+							}
+							executionTime={confirmation.executionTime}
+							onDismiss={() => setConfirmation({ ...confirmation, visible: false })}
+						/>
+					)}
 						{/* Error message if analysis failed */}
 						{error && (
 							<div className="patterns-error-banner">

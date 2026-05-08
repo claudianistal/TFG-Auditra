@@ -298,6 +298,16 @@
       "copy": "Copy",
       "copied": "Copied!",
       "copyTooltip": "Copy hex dump"
+    },
+    "confirmationBanner": {
+      "uploadSuccess": "File uploaded successfully",
+      "uploadError": "Error uploading file",
+      "metadataSuccess": "Metadata analysis completed",
+      "metadataError": "Error analyzing metadata",
+      "patternsSuccess": "Pattern analysis completed",
+      "patternsError": "Error analyzing patterns",
+      "analysisSuccess": "AI Detection analysis completed",
+      "analysisError": "Error performing analysis"
     }
   }
 }

@@ -339,3 +339,37 @@ class FileUploadService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Error performing analysis: {str(e)}"
             )
+            
+    def get_audio_file(self, file_id: str) -> tuple[Path, str]:
+        """
+        Locate an audio file and determine its MIME type.
+        
+        Args:
+            file_id (str): The UUID of the file
+            
+        Returns:
+            tuple[Path, str]: A tuple containing the file path and its MIME type
+            
+        Raises:
+            HTTPException: 404 if file not found
+        """
+        # 1. Use utility function to get file path (handles extension search)
+        file_path = get_file_path(file_id)
+        
+        # 2. Verify that the file exists
+        if not file_path.exists():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Audio file with ID {file_id} not found"
+            )
+            
+        # 3. Determine the MIME type based on the actual extension found
+        ext = file_path.suffix.lower()
+        mime_types = {
+            '.wav': 'audio/wav',
+            '.mp3': 'audio/mpeg',
+            '.m4a': 'audio/mp4'
+        }
+        mime_type = mime_types.get(ext, 'audio/mpeg')
+        
+        return file_path, mime_type

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { uploadAudioFile, deleteAudioFile } from '../api/audioService';
+import ConfirmationBanner from '../components/ConfirmationBanner';
 import DropZone from '../components/audioIngestion/DropZone';
 import ProcessingQueue from '../components/audioIngestion/ProcessingQueue';
 import AnalysisTips from '../components/audioIngestion/AnalysisTips';
@@ -11,6 +12,11 @@ const AudioIngestion = () => {
 	const { t } = useTranslation();
 	const { files, addFiles, removeFile: removeFileFromContext } = useFiles();
 	const [loading, setLoading] = useState(false);
+	const [confirmation, setConfirmation] = useState({
+		visible: false,
+		executionTime: 0,
+		type: 'success',
+	});
 
 	const SUPPORTED_EXTENSIONS = ['.wav', '.mp3', '.m4a'];
 	const MAX_FILE_SIZE = 2 * 1024 * 1024 * 1024; // 2GB
@@ -41,6 +47,7 @@ const AudioIngestion = () => {
 		}
 
 		setLoading(true);
+		const uploadStartTime = Date.now();
 		const validFiles = [];
 
 		for (let file of filesToProcess) {
@@ -72,9 +79,19 @@ const AudioIngestion = () => {
 				newFilesArray.push(newFile);
 			}
 			addFiles(newFilesArray);
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - uploadStartTime,
+				type: 'success',
+			});
 		} catch (error) {
 			console.error('Error uploading file:', error);
 			alert(t('errors.uploadFailed') || 'Error al cargar el archivo');
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - uploadStartTime,
+				type: 'error',
+			});
 		} finally {
 			setLoading(false);
 		}
@@ -116,6 +133,19 @@ const AudioIngestion = () => {
 						<p className="audio-ingestion__info-value">{t('pages.audioIngestion.encryption')}</p>
 					</div>
 			</div>
+			{confirmation.visible && (
+					<ConfirmationBanner
+						isVisible={confirmation.visible}
+						type={confirmation.type}
+						message={
+							confirmation.type === 'success'
+								? t('components.confirmationBanner.uploadSuccess') || '✓ File uploaded successfully'
+								: t('components.confirmationBanner.uploadError') || '✗ Error uploading file'
+						}
+						executionTime={confirmation.executionTime}
+						onDismiss={() => setConfirmation({ ...confirmation, visible: false })}
+					/>
+			)}
 
 			<div className="audio-ingestion__content">
 				<div className="audio-ingestion__main">

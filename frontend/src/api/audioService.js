@@ -5,11 +5,7 @@ const api = axios.create({
 });
 
 export const uploadAudioFile = async (formData) => {
-  return api.post('/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  return api.post('/upload', formData);
 };
 
 export const deleteAudioFile = async (fileId) => {
@@ -46,6 +42,18 @@ export const getPadding = async (fileId) => {
 
 export const getAnalysis = async (fileId) => {
   return api.get(`/analysis/${fileId}`);
+};
+
+export const getAudioUrl = async (fileId) => {
+  try {
+    const response = await api.get(`/audio/${fileId}`, {
+      responseType: 'blob',
+    });
+    return URL.createObjectURL(response.data);
+  } catch (error) {
+    console.error('Error fetching audio:', error);
+    throw error;
+  }
 };
 
 export default api;

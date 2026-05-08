@@ -1,10 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trash2, Copy } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { getAudioUrl } from '../../api/audioService';
 import '../styles/ProcessingQueue.css';
+import AudioPlayer from '../AudioPlayer';
 
 const ProcessingQueue = ({ files, onRemoveFile }) => {
 	const { t } = useTranslation();
+	const [audioUrls, setAudioUrls] = useState({});
+
+	// Load audio URLs for each file
+    useEffect(() => {
+        const activeUrls = [];
+
+        const loadAudioUrls = async () => {
+            
+            const urls = {};
+            
+            await Promise.all(files.map(async (file) => {
+                try {
+                    const url = await getAudioUrl(file.id);
+                    urls[file.id] = url;
+                    if (url) activeUrls.push(url); 
+                } catch (error) {
+                    console.error(`Error loading audio URL for file ${file.id}:`, error);
+                    urls[file.id] = null;
+                }
+            }));
+            
+            setAudioUrls(urls);
+        };
+
+        if (files.length > 0) {
+            loadAudioUrls();
+        }
+
+        // Cleanup: revoke blob URLs on unmount or when files change
+        return () => {
+           
+            activeUrls.forEach(url => {
+                URL.revokeObjectURL(url);
+            });
+        };
+    }, [files]);
 
 	if (files.length === 0) return null;
 
@@ -31,13 +69,12 @@ const ProcessingQueue = ({ files, onRemoveFile }) => {
 								<Trash2 size={18} strokeWidth={2} />
 							</button>
 						</div>
-						<div className="queue-item__progress-bar">
-							<div
-								className="queue-item__progress"
-								style={{ width: `${file.progress}%` }}
-							></div>
+						
+						<div className="queue-item__player">
+								{audioUrls[file.id] && (
+									<AudioPlayer audioFile={audioUrls[file.id]} showFileName={false} />
+								)}
 						</div>
-						<span className="queue-item__percent">{file.progress}%</span>
 
 						<div className="queue-item__details queue-item__details--expanded">
 							<div className="queue-item__detail-row">
@@ -52,6 +89,7 @@ const ProcessingQueue = ({ files, onRemoveFile }) => {
 									<Copy size={16} strokeWidth={2} />
 								</button>
 							</div>
+							
 						</div>
 					</div>
 				))}

@@ -18,6 +18,7 @@ class FileUploadResponse(BaseModel):
         status: Current status of the file (e.g., "received", "processing", "analyzed")
         hash: SHA-256 hash of the original file
         hash_algorithm: Algorithm used to calculate the hash
+        execution_time_ms: Time taken to upload and process in milliseconds
     """
     id: str = Field(..., description="Unique file identifier (UUID)")
     filename: str = Field(..., description="Original filename")
@@ -25,6 +26,7 @@ class FileUploadResponse(BaseModel):
     status: str = Field(..., description="Current status of the file")
     hash: str = Field(..., description="SHA-256 hash of the original file")
     hash_algorithm: str = Field(default="SHA-256", description="Hash algorithm used")
+    execution_time_ms: float = Field(default=0, description="Execution time in milliseconds")
 
 
 class IndicatorDetail(BaseModel):
@@ -55,3 +57,4 @@ class AnalysisResponse(BaseModel):
     conclusion_key: str = Field(..., description="i18n translation key for conclusion")
     recommendations: List[str] = Field(..., description="Actionable recommendations (i18n keys)")
     analysis_date: str = Field(..., description="ISO timestamp of analysis")
+    execution_time_ms: float = Field(default=0, description="Execution time in milliseconds")

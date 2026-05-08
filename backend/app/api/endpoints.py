@@ -1,6 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
+from fastapi.responses import FileResponse
 from app.services import FileUploadService
 from app.models import FileUploadResponse, AnalysisResponse
+from app.utils import get_upload_dir
+import time
 
 router = APIRouter()
 file_service = FileUploadService()  # Servicio de gestión de archivos
@@ -23,7 +26,11 @@ async def upload_audio(file: UploadFile = File(...)):
     Raises:
         HTTPException: 400 if validation fails, 500 if save fails
     """
-    return await file_service.upload_file(file)
+    start_time = time.time()
+    response = await file_service.upload_file(file)
+    execution_time_ms = (time.time() - start_time) * 1000
+    response.execution_time_ms = execution_time_ms
+    return response
 
 
 @router.delete("/upload/{file_id}")
@@ -76,13 +83,18 @@ async def get_metadata(file_id: str):
             "metadata": {
                 ... (all extracted metadata fields)
             },
-            "extracted_at": ISO 8601 timestamp
+            "extracted_at": ISO 8601 timestamp,
+            "execution_time_ms": float
         }
         
     Raises:
         HTTPException: 404 if file not found, 400 if unsupported format, 500 on errors
     """
-    return file_service.get_file_metadata(file_id)
+    start_time = time.time()
+    result = file_service.get_file_metadata(file_id)
+    execution_time_ms = (time.time() - start_time) * 1000
+    result["execution_time_ms"] = execution_time_ms
+    return result
 
 
 @router.get("/patterns/autosimilarity/{file_id}")
@@ -99,8 +111,7 @@ async def get_autosimilarity(file_id: str, width: int = 512):
             "file_id": str,
             "filename": str,
             "image_base64": base64-encoded PNG image,
-            "width_used": int,
-            "generated_at": ISO 8601 timestamp
+            "width_used": int
         }
         
     Raises:
@@ -130,8 +141,7 @@ async def get_padding(file_id: str):
             "filename": str,
             "hex_start": [list of formatted hex dump lines],
             "hex_end": [list of formatted hex dump lines],
-            "total_file_size": int,
-            "generated_at": ISO 8601 timestamp
+            "total_file_size": int
         }
         
     Raises:
@@ -161,7 +171,8 @@ async def get_patterns(file_id: str, width: int = 512):
             "hex_end": [list of formatted hex dump lines],
             "total_file_size": int,
             "width_used": int,
-            "generated_at": ISO 8601 timestamp
+            "generated_at": ISO 8601 timestamp,
+            "execution_time_ms": float
         }
         
     Raises:
@@ -174,7 +185,11 @@ async def get_patterns(file_id: str, width: int = 512):
             detail="Width must be between 128 and 2048 bytes"
         )
     
-    return file_service.get_patterns(file_id, width)
+    start_time = time.time()
+    result = file_service.get_patterns(file_id, width)
+    execution_time_ms = (time.time() - start_time) * 1000
+    result["execution_time_ms"] = execution_time_ms
+    return result
 
 
 @router.get("/analysis/{file_id}", response_model=AnalysisResponse)
@@ -195,10 +210,32 @@ async def get_analysis(file_id: str):
         file_id (str): The UUID of the file to analyze
         
     Returns:
-        AnalysisResponse: Comprehensive analysis with risk score, detected factors,
-                         conclusion, and recommendations
+        dict: Comprehensive analysis with risk score, detected factors,
+              conclusion, recommendations, and execution time
         
     Raises:
         HTTPException: 404 if file not found, 500 on analysis errors
     """
-    return file_service.get_analysis(file_id)
+    start_time = time.time()
+    result = file_service.get_analysis(file_id)
+    execution_time_ms = (time.time() - start_time) * 1000
+    result["execution_time_ms"] = execution_time_ms
+    return result
+
+
+@router.get("/audio/{file_id}")
+async def get_audio(file_id: str):
+    """
+    Serve an uploaded audio file.
+    
+    Args:
+        file_id (str): The UUID of the file to retrieve
+        
+    Returns:
+        FileResponse: The audio file with appropriate MIME type
+        
+    Raises:
+        HTTPException: 404 if file not found
+    """
+    file_path, mime_type = file_service.get_audio_file(file_id)
+    return FileResponse(path=file_path, media_type=mime_type)

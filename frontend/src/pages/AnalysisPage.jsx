@@ -5,6 +5,7 @@ import FileBar from '../components/FileBar';
 import RiskScoreCard from '../components/RiskScoreCard';
 import IndicatorsGrid from '../components/IndicatorsGrid';
 import ConclusionBox from '../components/ConclusionBox';
+import ConfirmationBanner from '../components/ConfirmationBanner';
 import { useFiles } from '../context/FileContext';
 import { getAnalysis } from '../api/audioService';
 import './Common.css';
@@ -16,6 +17,11 @@ const AnalysisPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [analyzed, setAnalyzed] = useState(false);
+	const [confirmation, setConfirmation] = useState({
+		visible: false,
+		executionTime: 0,
+		type: 'success',
+	});
 
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
@@ -34,6 +40,7 @@ const AnalysisPage = () => {
 
 		setLoading(true);
 		setError(null);
+		const startTime = Date.now();
 
 		try {
 			const response = await getAnalysis(currentFile.id);
@@ -47,12 +54,26 @@ const AnalysisPage = () => {
 			});
 
 			setAnalyzed(true);
+
+			// Show confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: analysis.execution_time_ms || Date.now() - startTime,
+				type: 'success',
+			});
 		} catch (err) {
 			const errorMessage = err.response?.data?.detail || 'Error performing analysis';
 			setError(errorMessage);
 			updateFile(currentFile.id, {
 				analysisError: errorMessage,
 				analysisLoading: false,
+			});
+
+			// Show error confirmation banner
+			setConfirmation({
+				visible: true,
+				executionTime: Date.now() - startTime,
+				type: 'error',
 			});
 		} finally {
 			setLoading(false);
@@ -127,6 +148,21 @@ const AnalysisPage = () => {
 							</button>
 						</div>
 
+						{/* Confirmation Banner */}
+						{confirmation.visible && (
+							<ConfirmationBanner
+								isVisible={confirmation.visible}
+								type={confirmation.type}
+								message={
+									confirmation.type === 'success'
+										? t('components.confirmationBanner.analysisSuccess') || '✓ AI Detection analysis completed'
+										: t('components.confirmationBanner.analysisError') || '✗ Error performing analysis'
+								}
+								executionTime={confirmation.executionTime}
+								onDismiss={() => setConfirmation({ ...confirmation, visible: false })}
+							/>
+						)}
+
 						{/* Error message if analysis failed */}
 						{error && (
 							<div className="analysis-error-banner">
@@ -169,13 +205,7 @@ const AnalysisPage = () => {
 							</div>
 						)}
 
-						{/* Show message when no analysis has been performed yet */}
-						{!currentFile.analysis && !loading && !error && (
-							<div className="analysis-empty">
-								<AlertCircle size={48} />
-								<p>{t('pages.analysis.emptyMessage') || 'Click "Analyze for AI" to start the analysis'}</p>
-							</div>
-						)}
+						
 					</div>
 				)}
 			</section>
