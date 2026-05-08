@@ -10,20 +10,20 @@
       "description": "Aprende cómo utilizar la aplicación"
     },
     "audioIngestion": {
-      "label": "Cargar Audio",
+      "label": "1. Cargar Audio",
       "description": "Carga evidencias de audio de forma segura"
     },
     "metadata": {
-      "label": "Metadatos",
+      "label": "2. Metadatos",
       "description": "Análisis y consulta de metadatos"
     },
     "patterns": {
-      "label": "Patrones",
+      "label": "3. Patrones",
       "description": "Análisis de patrones binarios y relleno"
     },
     "analysis": {
-      "label": "Análisis IA",
-      "description": "Detección de audio generado por inteligencia artificial"
+      "label": "4. Análisis de Resultados",
+      "description": "Detección de audio generado por inteligencia artificial en base a los análisis realizados."
     }
   },
   "header": {
@@ -47,13 +47,13 @@
   "pages": {
     "home": {
       "title": "Guía rápida de la aplicación",
-      "description": "Empieza por la carga de evidencia y avanza por metadatos, patrones y análisis IA para completar una evaluación forense consistente.",
+      "description": "Empieza por la carga de evidencia y avanza por metadatos, patrones y análisis de resultados para completar una evaluación forense consistente.",
       "eyebrow": "Pantalla de inicio",
       "intro": "Auditra es una aplicación de análisis forense de audio diseñada para detectar si un archivo de audio fue generado por inteligencia artificial. Sigue esta guía rápida para entender cómo usar cada módulo y obtener resultados.",
       "startButton": "Comenzar carga de audio",
-      "jumpAnalysisButton": "Ir directo a análisis IA",
+      "jumpAnalysisButton": "Ir directo a análisis de resultados",
       "noticeTitle": "Recomendación de flujo",
-      "noticeText": "Para entender mejor el proceso de análisis, sigue el orden: Cargar Audio -> Metadatos -> Patrones -> Análisis IA.",
+      "noticeText": "Para entender mejor el proceso de análisis, sigue el orden: Cargar Audio -> Metadatos -> Patrones -> Análisis de Resultados.",
       "steps": {
         "upload": {
           "title": "Carga la evidencia",
@@ -73,7 +73,7 @@
         "analysis": {
           "title": "Obtén la conclusión final",
           "description": "En base a los resultados de los análisis de los pasos anteriores, Auditra genera una valoración final sobre posible generación por IA.",
-          "link": "Ir a 'Análisis IA'"
+          "link": "Ir a 'Análisis de Resultados'"
         }
       }
     },
