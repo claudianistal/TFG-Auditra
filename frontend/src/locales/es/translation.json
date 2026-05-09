@@ -170,13 +170,13 @@
     },
     "padding_pattern": {
       "display_name": "Patrón de relleno sospechoso",
-      "reasoning": "Relleno con patrones de bytes repetitivos es indicador fuerte de procesamiento automático de audio IA",
+      "reasoning": "Se ha detectado una cantidad anómala de secuencias exactas de bytes. Esta homogeneidad estructural es un fuerte indicador de algoritmos de IA que rellenan bloques de datos para cumplir con tamaños predefinidos.",
       "details": {
-        "bytes_at_start": "Bytes Repetidos al Inicio del Archivo",
-        "bytes_at_start_explanation": "Muestra los valores de byte que se repiten al inicio del archivo. Por ejemplo, 0x00 (ceros) repetidos muchas veces indica relleno agregado por software de procesamiento.",
-        "bytes_at_end": "Bytes Repetidos al Final del Archivo",
-        "bytes_at_end_explanation": "Muestra los valores de byte que se repiten al final del archivo. Las grabaciones reales raramente tienen esto; es típico de audio procesado o sintetizado."
-      }
+        "top_patterns": "Patrones Principales Detectados",
+        "top_patterns_explanation": "Muestra los valores de byte (en hexadecimal) que forman los bloques repetitivos más grandes en el archivo.",
+        "max_sequence": "Racha Máxima Consecutiva",
+        "max_sequence_explanation": "La secuencia ininterrumpida más larga de un mismo byte exacto. Las rachas masivas de cientos o miles de bytes indican bloques de silencio artificial o relleno estructural típico de herramientas de síntesis."
+       }
     },
     "timestamp_consistency": {
       "display_name": "Inconsistencia en timestamps",

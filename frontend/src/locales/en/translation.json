@@ -170,13 +170,13 @@
     },
     "padding_pattern": {
       "display_name": "Suspicious Padding Pattern",
-      "reasoning": "Excessive repetitive bytes padding is a strong indicator of automated AI audio processing",
+      "reasoning": "An anomalous amount of exact byte sequences was detected. This structural homogeneity is a strong indicator of AI algorithms padding data blocks to meet predefined sizes.",
       "details": {
-        "bytes_at_start": "Repeated Bytes at File Start",
-        "bytes_at_start_explanation": "Shows the byte values that repeat at the beginning of the file. For example, 0x00 (zeros) repeated many times indicates padding added by processing software.",
-        "bytes_at_end": "Repeated Bytes at File End",
-        "bytes_at_end_explanation": "Shows the byte values that repeat at the end of the file. Real recordings rarely have this; it's typical of edited or synthesized audio."
-      }
+        "top_patterns": "Top Detected Patterns",
+        "top_patterns_explanation": "Shows the byte values (in hexadecimal) that form the largest repetitive blocks in the file.",
+        "max_sequence": "Maximum Consecutive Sequence",
+        "max_sequence_explanation": "The longest uninterrupted sequence of the exact same byte. Massive streaks of hundreds or thousands of bytes indicate artificial silence blocks or structural padding typical of synthesis tools."
+        }
     },
     "timestamp_consistency": {
       "display_name": "Timestamp Inconsistency",

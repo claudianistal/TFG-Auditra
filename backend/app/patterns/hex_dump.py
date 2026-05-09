@@ -52,8 +52,7 @@ def extract_hex_dumps(file_path: str, num_bytes: int = 1024) -> Dict[str, any]:
     
     # Extract full hex dump (for pattern analysis, with limit to avoid memory issues)
     # Limit to 100KB for performance, but analyze the whole file if smaller
-    max_hex_bytes = min(len(data), 100 * 1024)  # Max 100KB
-    full_data = data[:max_hex_bytes]
+    full_data = data
     hex_full = _format_hex_dump(full_data, label=f"Full content ({len(data)} bytes total, showing {len(full_data)} bytes)")
     
     return {

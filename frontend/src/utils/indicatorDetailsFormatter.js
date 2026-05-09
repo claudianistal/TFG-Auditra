@@ -36,35 +36,31 @@ export function formatIndicatorDetails(indicatorName, details) {
 
 /**
  * Format padding pattern details
- * Shows what repetitive bytes were found at file edges
+ * Shows the largest repetitive byte sequences found across the entire file
  */
 function formatPaddingPattern(details) {
   const t = i18n.t;
   const result = [];
 
-  // Repetitive bytes at file start
-  if (details.patterns_at_start && details.patterns_at_start.length > 0) {
-    const patterns = details.patterns_at_start
+  // Top patterns found in the file
+  if (details.top_patterns && details.top_patterns.length > 0) {
+    const patterns = details.top_patterns
       .map((p) => `${p.pattern} (${p.consecutive_bytes} bytes)`)
       .join(', ');
 
     result.push({
-      label: t('indicators.padding_pattern.details.bytes_at_start'),
+      label: t('indicators.padding_pattern.details.top_patterns'),
       value: patterns,
-      explanation: t('indicators.padding_pattern.details.bytes_at_start_explanation'),
+      explanation: t('indicators.padding_pattern.details.top_patterns_explanation'),
     });
   }
 
-  // Repetitive bytes at file end
-  if (details.patterns_at_end && details.patterns_at_end.length > 0) {
-    const patterns = details.patterns_at_end
-      .map((p) => `${p.pattern} (${p.consecutive_bytes} bytes)`)
-      .join(', ');
-
+  // Maximum consecutive sequence
+  if (details.max_consecutive_sequence !== undefined) {
     result.push({
-      label: t('indicators.padding_pattern.details.bytes_at_end'),
-      value: patterns,
-      explanation: t('indicators.padding_pattern.details.bytes_at_end_explanation'),
+      label: t('indicators.padding_pattern.details.max_sequence'),
+      value: `${details.max_consecutive_sequence} bytes`,
+      explanation: t('indicators.padding_pattern.details.max_sequence_explanation'),
     });
   }
 
