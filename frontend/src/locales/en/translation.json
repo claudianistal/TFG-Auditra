@@ -236,6 +236,42 @@
       "display_name": "Byte-level Self-Similarity Detected",
       "reasoning": "Self-similarity has been detected at the byte level across different scales. Go to the Patterns section to see the byte-level repetition visualization.",
       "details": {}
+    },
+    "sample_rate_anomaly": {
+      "display_name": "Sample Rate Anomaly",
+      "reasoning": "Sample rate of 16kHz, 22.05kHz, or 24kHz is typical of AI-generated audio. Commercial and natural recordings typically use 44.1kHz or 48kHz.",
+      "details": {
+        "sample_rate": "Sample Rate (Hz)",
+        "sample_rate_explanation": "The number of audio samples per second. Lower rates (16-24kHz) are common in AI synthesis tools to optimize resources.",
+        "typical_ai_rates": "Typical AI Sample Rates",
+        "typical_ai_rates_explanation": "AI models typically output audio at these sample rates: 16kHz, 22.05kHz, and 24kHz."
+      }
+    },
+    "atypical_bitrate": {
+      "display_name": "Atypical Bitrate",
+      "reasoning": "Unusually low bitrate detected. Cloud-based AI services often use very low bitrates (24-48 kbps for lossy formats, <300 kbps for WAV) to reduce bandwidth.",
+      "reasoning_error": "Error determining bitrate",
+      "reasoning_no_data": "No bitrate data available",
+      "details": {
+        "format_type": "Compression Type",
+        "format_type_explanation": "Lossy formats (MP3, M4A) compress audio with quality loss. Lossless formats (WAV) preserve all data.",
+        "bitrate_kbps": "Bitrate (kbps)",
+        "bitrate_kbps_explanation": "The number of kilobits per second. Lower values indicate more compression or reduced quality.",
+        "threshold_kbps": "Typical Threshold",
+        "threshold_kbps_explanation": "Bitrates below this threshold are suspicious for AI-generated audio."
+      }
+    },
+    "precise_duration": {
+      "display_name": "Precise Duration",
+      "reasoning": "Audio duration is mathematically exact (e.g., 15.000s or 30.500s). Human recordings have irregular durations; AI-generated audio often has exact boundaries.",
+      "reasoning_error": "Error reading duration",
+      "reasoning_no_data": "No duration data available",
+      "details": {
+        "exact_duration": "Audio Duration (seconds)",
+        "exact_duration_explanation": "The total length of the audio file in seconds.",
+        "decimal_part": "Decimal Precision",
+        "decimal_part_explanation": "The fractional part of the duration. AI-generated audio often has very precise decimal values (like 0.000 or 0.500), while human recordings tend to have irregular values."
+      }
     }
   },
   "conclusions": {
@@ -253,7 +289,10 @@
     "codec_consistency": "A mismatch between codec and file format was detected. This may indicate manipulation or re-encoding of the original audio.",
     "file_size": "The file size shows a significant deviation from the expected bitrate and duration. This may indicate re-encoding or additional compression.",
     "multiple_indicators": "Multiple indicators were detected. We recommend getting a second opinion through analysis with other deepfake detection tools.",
-    "no_indicators": "The audio does not show typical indicators of AI generation. However, AI techniques are constantly evolving."
+    "no_indicators": "The audio does not show typical indicators of AI generation. However, AI techniques are constantly evolving.",
+    "sample_rate_anomaly": "The detected sample rate ({{sample_rate}}Hz) is typical of AI-generated audio. Verify if the source matches the expected recording device.",
+    "atypical_bitrate": "Unusually low bitrate detected. This is common in cloud-based AI services. Consider analyzing the file source.",
+    "precise_duration": "The audio duration is mathematically exact, which is characteristic of AI-generated or algorithmically processed audio."
   },
   "components": {
     "riskScoreCard": {

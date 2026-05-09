@@ -25,6 +25,9 @@ export function formatIndicatorDetails(indicatorName, details) {
     codec_consistency: formatCodecConsistency,
     file_size: formatFileSize,
     self_similarity: formatSelfSimilarity,
+    sample_rate_anomaly: formatSampleRateAnomaly,
+    atypical_bitrate: formatAtypicalBitrate,
+    precise_duration: formatPreciseDuration,
   };
 
   const formatter = formatters[indicatorName];
@@ -243,6 +246,95 @@ function formatFileSize(details) {
 function formatSelfSimilarity(details) {
   // No technical details shown - explanation is in the reasoning section
   return [];
+}
+
+/**
+ * Format sample rate anomaly details
+ * Shows the detected sample rate and typical AI rates
+ */
+function formatSampleRateAnomaly(details) {
+  const t = i18n.t;
+  const result = [];
+
+  if (details.sample_rate !== undefined) {
+    result.push({
+      label: t('indicators.sample_rate_anomaly.details.sample_rate'),
+      value: `${formatNumber(details.sample_rate)} Hz`,
+      explanation: t('indicators.sample_rate_anomaly.details.sample_rate_explanation'),
+    });
+  }
+
+  if (details.typical_ai_rates && Array.isArray(details.typical_ai_rates)) {
+    result.push({
+      label: t('indicators.sample_rate_anomaly.details.typical_ai_rates'),
+      value: details.typical_ai_rates.map((rate) => `${formatNumber(rate)} Hz`).join(', '),
+      explanation: t('indicators.sample_rate_anomaly.details.typical_ai_rates_explanation'),
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Format atypical bitrate details
+ * Shows bitrate, format type, and threshold information
+ */
+function formatAtypicalBitrate(details) {
+  const t = i18n.t;
+  const result = [];
+
+  if (details.format_type) {
+    result.push({
+      label: t('indicators.atypical_bitrate.details.format_type'),
+      value: details.format_type === 'lossy' ? 'MP3/M4A (Lossy)' : 'WAV (Lossless)',
+      explanation: t('indicators.atypical_bitrate.details.format_type_explanation'),
+    });
+  }
+
+  if (details.bitrate_kbps !== undefined) {
+    result.push({
+      label: t('indicators.atypical_bitrate.details.bitrate_kbps'),
+      value: `${formatNumber(details.bitrate_kbps)} kbps`,
+      explanation: t('indicators.atypical_bitrate.details.bitrate_kbps_explanation'),
+    });
+  }
+
+  if (details.threshold_kbps !== undefined) {
+    result.push({
+      label: t('indicators.atypical_bitrate.details.threshold_kbps'),
+      value: `${formatNumber(details.threshold_kbps)} kbps`,
+      explanation: t('indicators.atypical_bitrate.details.threshold_kbps_explanation'),
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Format precise duration details
+ * Shows exact duration and decimal precision
+ */
+function formatPreciseDuration(details) {
+  const t = i18n.t;
+  const result = [];
+
+  if (details.exact_duration !== undefined) {
+    result.push({
+      label: t('indicators.precise_duration.details.exact_duration'),
+      value: `${details.exact_duration} seconds`,
+      explanation: t('indicators.precise_duration.details.exact_duration_explanation'),
+    });
+  }
+
+  if (details.decimal_part !== undefined) {
+    result.push({
+      label: t('indicators.precise_duration.details.decimal_part'),
+      value: details.decimal_part.toFixed(4),
+      explanation: t('indicators.precise_duration.details.decimal_part_explanation'),
+    });
+  }
+
+  return result;
 }
 
 /**

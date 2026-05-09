@@ -8,6 +8,9 @@ from .timestamp_indicators import TimestampConsistencyIndicator
 from .codec_indicators import CodecConsistencyIndicator
 from .size_indicators import FileSizeIndicator
 from .self_similarity_indicators import SelfSimilarityIndicator
+from .duration_indicators import PreciseDurationIndicator
+from .bitrate_indicators import AtypicalBitrateIndicator
+from .sample_rate_indicators import SampleRateIndicator
 
 # Central registry of indicators - simplified to 7 key metrics
 INDICATORS = [
@@ -24,6 +27,9 @@ INDICATORS = [
     # BAJA PRIORITY (weight 20)
     TimestampConsistencyIndicator(),    # weight: 20
     CodecConsistencyIndicator(),        # weight: 20
+    PreciseDurationIndicator(),         # weight: 15
+    AtypicalBitrateIndicator(),         # weight: 25
+    SampleRateIndicator(),              # weight: 25
     
     # VARIABLE PRIORITY
     FileSizeIndicator(),                # weight: 20-50 (depends on deviation)
@@ -37,5 +43,8 @@ __all__ = [
     'CodecConsistencyIndicator',
     'FileSizeIndicator',
     'SelfSimilarityIndicator',
+    'PreciseDurationIndicator',
+    'MetadataSparsityIndicator',
+    'SampleRateIndicator',
     'INDICATORS',
 ]

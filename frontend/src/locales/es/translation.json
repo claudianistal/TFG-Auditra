@@ -236,6 +236,42 @@
       "display_name": "Autosimilitud a nivel de bytes detectada",
       "reasoning": "Se ha detectado autosimilitud a nivel de bytes a diferentes escalas. Ve a la sección de Patrones para ver la visualización de la repetición a nivel de bytes.",
       "details": {}
+    },
+    "sample_rate_anomaly": {
+      "display_name": "Anomalía en tasa de muestreo",
+      "reasoning": "Una tasa de muestreo de 16kHz, 22.05kHz o 24kHz es típica de audio generado por IA. Grabaciones comerciales y naturales típicamente usan 44.1kHz o 48kHz.",
+      "details": {
+        "sample_rate": "Tasa de Muestreo (Hz)",
+        "sample_rate_explanation": "El número de muestras de audio por segundo. Tasas más bajas (16-24kHz) son comunes en herramientas de síntesis de IA para optimizar recursos.",
+        "typical_ai_rates": "Tasas de Muestreo Típicas de IA",
+        "typical_ai_rates_explanation": "Los modelos de IA típicamente generan audio a estas tasas: 16kHz, 22.05kHz y 24kHz."
+      }
+    },
+    "atypical_bitrate": {
+      "display_name": "Tasa de bits atípica",
+      "reasoning": "Se detectó una tasa de bits anormalmente baja. Los servicios de IA basados en nube a menudo usan tasas muy bajas (24-48 kbps para formatos con pérdida, <300 kbps para WAV) para reducir el ancho de banda.",
+      "reasoning_error": "Error al determinar la tasa de bits",
+      "reasoning_no_data": "No hay datos de tasa de bits disponibles",
+      "details": {
+        "format_type": "Tipo de Compresión",
+        "format_type_explanation": "Los formatos con pérdida (MP3, M4A) comprimen el audio con pérdida de calidad. Los formatos sin pérdida (WAV) preservan todos los datos.",
+        "bitrate_kbps": "Tasa de Bits (kbps)",
+        "bitrate_kbps_explanation": "El número de kilobits por segundo. Valores más bajos indican más compresión o calidad reducida.",
+        "threshold_kbps": "Umbral Típico",
+        "threshold_kbps_explanation": "Las tasas de bits por debajo de este umbral son sospechosas para audio generado por IA."
+      }
+    },
+    "precise_duration": {
+      "display_name": "Duración exacta",
+      "reasoning": "La duración del audio es matemáticamente exacta (p. ej., 15.000s o 30.500s). Las grabaciones humanas tienen duraciones irregulares; el audio generado por IA a menudo tiene límites exactos.",
+      "reasoning_error": "Error al leer la duración",
+      "reasoning_no_data": "No hay datos de duración disponibles",
+      "details": {
+        "exact_duration": "Duración de Audio (segundos)",
+        "exact_duration_explanation": "La duración total del archivo de audio en segundos.",
+        "decimal_part": "Precisión Decimal",
+        "decimal_part_explanation": "La parte fraccionaria de la duración. El audio generado por IA a menudo tiene valores decimales muy precisos (como 0.000 o 0.500), mientras que las grabaciones humanas tienden a tener valores irregulares."
+      }
     }
   },
   "conclusions": {
@@ -253,7 +289,10 @@
     "codec_consistency": "Se detectó una inconsistencia entre el codec y el formato de archivo. Esto puede indicar manipulación o re-codificación del audio original.",
     "file_size": "El tamaño del archivo presenta una desviación significativa respecto al bitrate y duración esperados. Esto puede indicar re-codificación o compresión adicional.",
     "multiple_indicators": "Se detectaron múltiples indicadores. Le recomendamos obtener una segunda opinión mediante análisis con otras herramientas de detección de deepfakes.",
-    "no_indicators": "El audio no presenta indicadores típicos de generación por IA. Sin embargo, las técnicas de IA evolucionan constantemente."
+    "no_indicators": "El audio no presenta indicadores típicos de generación por IA. Sin embargo, las técnicas de IA evolucionan constantemente.",
+    "sample_rate_anomaly": "La tasa de muestreo detectada ({{sample_rate}}Hz) es típica de audio generado por IA. Verifique si la fuente coincide con el dispositivo de grabación esperado.",
+    "atypical_bitrate": "Se detectó una tasa de bits anormalmente baja. Esto es común en servicios de IA basados en nube. Considere analizar la fuente del archivo.",
+    "precise_duration": "La duración del audio es matemáticamente exacta, lo cual es característico de audio generado por IA o procesado algorítmicamente."
   },
   "components": {
     "riskScoreCard": {
