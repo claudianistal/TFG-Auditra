@@ -17,7 +17,7 @@ class PaddingPatternIndicator(BaseIndicator):
     
     name = "padding_pattern"
     category = "padding"
-    weight = 85
+    weight = 50
     description = "Patrón de relleno sospechoso detectado"
     risk_level = "high"
     

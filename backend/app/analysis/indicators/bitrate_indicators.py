@@ -12,7 +12,7 @@ class AtypicalBitrateIndicator(BaseIndicator):
     
     name = "atypical_bitrate"
     category = "encoding"
-    weight = 25  # Low/Medium weight as an individual factor
+    weight = 15 
     description = "Tasa de bits (Bitrate) anormalmente baja o atípica"
     risk_level = "low"
     

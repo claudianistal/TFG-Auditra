@@ -30,7 +30,6 @@ class TimestampConsistencyIndicator(BaseIndicator):
         if not creation_time or not modification_time:
             return {
                 'detected': False,
-                'confidence': 0.0,
                 'details': {
                     'creation_time': creation_time,
                     'modification_time': modification_time,
@@ -41,7 +40,6 @@ class TimestampConsistencyIndicator(BaseIndicator):
         
         # Compare timestamps
         detected = False
-        confidence = 0.0
         reasoning_key = 'indicators.timestamp_consistency.reasoning_ok'
         
         # Try string comparison first (assumes ISO format or similar)
@@ -51,22 +49,18 @@ class TimestampConsistencyIndicator(BaseIndicator):
                 # Timestamps should be: creation_time < modification_time
                 if creation_time == modification_time:
                     detected = True
-                    confidence = 0.8
                     reasoning_key = 'indicators.timestamp_consistency.reasoning_identical'
                 elif creation_time > modification_time:
                     detected = True
-                    confidence = 0.9
                     reasoning_key = 'indicators.timestamp_consistency.reasoning_reversed'
                 else:
                     # creation_time < modification_time, which is normal
                     detected = False
-                    confidence = 0.0
                     reasoning_key = 'indicators.timestamp_consistency.reasoning_ok'
         except Exception as e:
             # If comparison fails, assume no anomaly
             return {
                 'detected': False,
-                'confidence': 0.0,
                 'details': {
                     'creation_time': creation_time,
                     'modification_time': modification_time,

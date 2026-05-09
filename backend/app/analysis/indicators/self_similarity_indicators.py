@@ -26,7 +26,7 @@ class SelfSimilarityIndicator(BaseIndicator):
     
     name = "self_similarity"
     category = "structure"
-    weight = 70
+    weight = 50
     description = "Patrones de autosimilitud detectados en datos"
     risk_level = "high"
     

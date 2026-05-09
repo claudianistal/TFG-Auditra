@@ -8,14 +8,14 @@ from .base_indicator import BaseIndicator
 class MonoAudioIndicator(BaseIndicator):
     """Detects mono audio which is uncommon in natural recordings.
     
-    Weight: 40 (MEDIO) - Mono audio is often used in AI speech synthesis.
+    Weight: 15 (BAJO) - Mono audio is often used in AI speech synthesis.
     """
     
     name = "mono_audio"
     category = "audio"
-    weight = 40
+    weight = 15
     description = "Audio en mono detectado"
-    risk_level = "medium"
+    risk_level = "low"
     
     def check(self, metadata: Dict[str, Any], patterns: Dict[str, Any]) -> Dict[str, Any]:
         """

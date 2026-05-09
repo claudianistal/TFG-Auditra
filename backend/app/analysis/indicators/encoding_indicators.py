@@ -8,14 +8,14 @@ from .base_indicator import BaseIndicator
 class EncodingLibraryIndicator(BaseIndicator):
     """Detects suspicious encoding libraries (Lavf/FFmpeg) fingerprints in metadata.
     
-    Weight: 90 (ALTO) - Strongly indicates AI-generated audio.
+    Weight: 40 (MEDIO) - Indicates potential AI-generated audio.
     """
     
     name = "encoding_library"
     category = "encoding"
-    weight = 90
+    weight = 40
     description = "Librería de codificación sospechosa detectada (Lavf/FFmpeg)"
-    risk_level = "high"
+    risk_level = "medium"
     
     def check(self, metadata: Dict[str, Any], patterns: Dict[str, Any]) -> Dict[str, Any]:
         """

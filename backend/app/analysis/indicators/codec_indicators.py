@@ -8,15 +8,15 @@ from .base_indicator import BaseIndicator
 class CodecConsistencyIndicator(BaseIndicator):
     """Detects if audio codec matches the file format.
     
-    Weight: 20 (BAJO) - Codec mismatches indicate anomalies.
+    Weight: 30 (MEDIO) - Codec mismatches indicate anomalies.
     Verifies codec is correct for the file extension.
     """
     
     name = "codec_consistency"
     category = "codec"
-    weight = 20
+    weight = 30
     description = "Codec incorrecto o inconsistente con el formato del archivo"
-    risk_level = "low"
+    risk_level = "medium"
     
     def check(self, metadata: Dict[str, Any], patterns: Dict[str, Any]) -> Dict[str, Any]:
         """
