@@ -22,7 +22,6 @@ class AtypicalBitrateIndicator(BaseIndicator):
         
         # Extract the file format to determine compression type
         file_format = metadata.get('ffprobe_format_format_name', '').lower()
-        print(file_format)
         
         try:
             bitrate = int(bitrate_str)
