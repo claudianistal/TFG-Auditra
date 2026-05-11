@@ -1,9 +1,31 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Clock } from 'lucide-react';
 
-const RiskScoreCard = ({ score, likelihood, color }) => {
+const RiskScoreCard = ({ score, likelihood, color, analysisDate }) => {
 	const { t } = useTranslation();
+	
+	const formatAnalysisDateTime = (isoDate) => {
+		if (!isoDate) return null;
+		try {
+			const date = new Date(isoDate);
+			const formattedDate = date.toLocaleDateString('es-ES', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit'
+			});
+			const formattedTime = date.toLocaleTimeString('es-ES', {
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit'
+			});
+			return { date: formattedDate, time: formattedTime };
+		} catch (e) {
+			return null;
+		}
+	};
+	
+	const dateTimeInfo = formatAnalysisDateTime(analysisDate);
 	return (
 		<div className={`risk-score-card risk-score-card--${color}`}>
 			<div className="risk-score-card__content">
@@ -31,7 +53,13 @@ const RiskScoreCard = ({ score, likelihood, color }) => {
 							{likelihood === 'alto' && t('components.conclusionBox.highRisk')}
 						</span>
 					</div>
-
+					
+					{dateTimeInfo && (
+						<div className="risk-score-card__analysis-date">
+							<Clock size={14} />
+							<span className="risk-score-card__date-value">{dateTimeInfo.date} {dateTimeInfo.time}</span>
+						</div>
+					)}
 				</div>
 			</div>
 
