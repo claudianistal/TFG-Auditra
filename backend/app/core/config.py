@@ -28,12 +28,10 @@ class Config:
                 - In development: project root
         """
         if getattr(sys, 'frozen', False):
-            # Ejecutándose desde el .exe compilado
             return Path(sys._MEIPASS)
         else:
-            # Ejecutándose desde el código fuente
-            # app/core/config.py -> app -> project_root
-            return Path(__file__).parent.parent.parent
+            # Up 4 levels: config.py -> core -> app -> backend -> RAÍZ
+            return Path(__file__).resolve().parent.parent.parent.parent
     
     @staticmethod
     def get_frontend_path() -> Path:
@@ -49,5 +47,8 @@ class Config:
     def get_frontend_url() -> str:
         """Get frontend URL based on environment"""
         if Config.is_production():
-            return f"http://localhost:{Config.BACKEND_PORT}"
-        return Config.FRONTEND_DEV_URL
+            # In production, the frontend is served by FastAPI, so we use the backend URL
+            return f"http://{Config.BACKEND_HOST}:{Config.BACKEND_PORT}"
+        else:
+            # Uses Vite dev server URL in development
+            return Config.FRONTEND_DEV_URL

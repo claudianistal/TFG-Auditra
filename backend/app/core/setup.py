@@ -18,8 +18,13 @@ def setup_frontend(app: FastAPI) -> None:
     Args:
         app: FastAPI application instance
     """
-    frontend_dist = Config.get_frontend_path()
-    if frontend_dist.exists():
-        app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+    # Only mount static files in production mode, in development the frontend is served by Vite
+    if Config.is_production():
+        frontend_dist = Config.get_frontend_path()
+        if frontend_dist.exists():
+            app.mount("/", StaticFiles(directory=str(frontend_dist), html=True), name="frontend")
+        else:
+            print(f"Advertencia: No se encontró frontend empaquetado en {frontend_dist}")
     else:
-        print(f"Advertencia: No se encontró frontend en {frontend_dist}")
+        # In development mode, the frontend is served by Vite on a separate port, so we don't mount static files here
+        print(f"Modo Desarrollo: Frontend gestionado externamente por Vite en {Config.FRONTEND_DEV_URL}")

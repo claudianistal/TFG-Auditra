@@ -20,8 +20,23 @@ def get_upload_dir() -> Path:
     Returns:
         Path: Path to the uploads directory
     """
-    # Use Documents folder - easily accessible and works with PyInstaller
-    uploads_dir = Path.home() / 'Documents' / 'TFG_Auditra_Uploads'
+    home = Path.home()
+    
+    posibles_rutas = [
+        home / 'Documentos',                 
+        home / 'Documents',                  
+        home / 'OneDrive' / 'Documents',     
+        home / 'OneDrive' / 'Documentos',
+    ]
+    
+    base_dir = home # Final fallback: (C:\Users\Name)
+    
+    for ruta in posibles_rutas:
+        if ruta.exists():
+            base_dir = ruta
+            break
+            
+    uploads_dir = base_dir / 'TFG_Auditra_Uploads'
     
     return uploads_dir
 
