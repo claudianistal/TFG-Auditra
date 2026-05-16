@@ -320,8 +320,9 @@
 /* Info section */
 .risk-score-card__info {
 	display: flex;
-	gap: 2rem;
-	flex-wrap: wrap;
+	flex-direction: column;
+	gap: 0.75rem;
+	width: 100%;
 }
 
 .risk-score-card__likelihood,
@@ -353,6 +354,24 @@
 
 .risk-score-card__value--red {
 	color: #F44336;
+}
+
+/* Analysis date */
+.risk-score-card__analysis-date {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 0.8rem;
+	color: var(--text-muted);
+}
+
+.risk-score-card__analysis-date svg {
+	flex-shrink: 0;
+}
+
+.risk-score-card__date-value {
+	font-family: 'Courier New', monospace;
+	font-size: 0.75rem;
 }
 
 /* Icon */

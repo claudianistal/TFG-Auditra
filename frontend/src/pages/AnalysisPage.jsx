@@ -178,6 +178,7 @@ const AnalysisPage = () => {
 											score={currentFile.analysis.risk_score}
 											likelihood={currentFile.analysis.likelihood}
 											color={currentFile.analysis.score_color}
+											analysisDate={currentFile.analysis.analysis_date}
 										/>
 
 										{/* Indicators Grid */}
