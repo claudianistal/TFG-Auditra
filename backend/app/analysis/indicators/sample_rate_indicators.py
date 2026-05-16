@@ -38,5 +38,5 @@ class SampleRateIndicator(BaseIndicator):
                 'sample_rate': sample_rate,
                 'typical_ai_rates': ai_sample_rates
             },
-            'reasoning_key': 'indicators.sample_rate.reasoning' if detected else 'indicators.ok'
+            'reasoning_key': 'indicators.sample_rate_anomaly.reasoning' if detected else 'indicators.ok'
         }

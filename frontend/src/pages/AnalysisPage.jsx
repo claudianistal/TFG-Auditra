@@ -16,7 +16,6 @@ const AnalysisPage = () => {
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [analyzed, setAnalyzed] = useState(false);
 	const [confirmation, setConfirmation] = useState({
 		visible: false,
 		executionTime: 0,
@@ -26,9 +25,8 @@ const AnalysisPage = () => {
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
 
-	// Reset analyzed state when file changes
+	// Reset error state when file changes
 	useEffect(() => {
-		setAnalyzed(false);
 		setError(null);
 	}, [currentFile?.id]);
 
@@ -52,8 +50,6 @@ const AnalysisPage = () => {
 				analysisLoading: false,
 				analysisError: null,
 			});
-
-			setAnalyzed(true);
 
 			// Show confirmation banner
 			setConfirmation({
@@ -135,7 +131,7 @@ const AnalysisPage = () => {
 							<button
 								className={`analysis-analyze-button ${loading ? 'analysis-analyze-button--loading' : ''}`}
 								onClick={handleAnalyzeAI}
-								disabled={loading}
+								disabled={loading || !!currentFile.analysis}
 							>
 								{loading ? (
 									<>
@@ -149,7 +145,7 @@ const AnalysisPage = () => {
 						</div>
 					
 						{/* Analysis section - only show after clicking analyze */}
-						{(loading || error || analyzed || currentFile.analysis) && (
+						{(loading || error || currentFile.analysis) && (
 							<div className="analysis-section">
 								{/* Confirmation Banner */}
 								{confirmation.visible && (

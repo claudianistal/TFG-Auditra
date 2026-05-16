@@ -18,7 +18,6 @@ const PatternsPage = () => {
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
-	const [analyzed, setAnalyzed] = useState(false);
 	const [confirmation, setConfirmation] = useState({
 		visible: false,
 		executionTime: 0,
@@ -28,9 +27,8 @@ const PatternsPage = () => {
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
 
-	// Reset analyzed state when file changes
+	// Reset error state when file changes
 	useEffect(() => {
-		setAnalyzed(false);
 		setError(null);
 	}, [currentFile?.id]);
 
@@ -66,9 +64,6 @@ const PatternsPage = () => {
 				patternsLoading: false,
 				patternsError: null,
 			});
-
-			// Mark as analyzed after successful analysis
-			setAnalyzed(true);
 
 			// Show confirmation banner with total execution time
 			setConfirmation({
@@ -189,7 +184,7 @@ const PatternsPage = () => {
 							<button
 								className={`patterns-analyze-button ${loading ? 'patterns-analyze-button--loading' : ''}`}
 								onClick={handleAnalyzePatterns}
-							disabled={loading || !currentFile || analyzed}
+							disabled={loading || !currentFile || !!currentFile.patterns}
 							>
 								{loading ? t('pages.patterns.analyzing') || 'Analyzing...' : t('pages.patterns.analyzeButton') || 'Analyze Patterns'}
 							</button>

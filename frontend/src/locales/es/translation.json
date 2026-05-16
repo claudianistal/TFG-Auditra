@@ -91,9 +91,9 @@
       "active": "Activo",
       "analysisTips": "Métodos de Detección",
       "highNoiseDetection": "Análisis de Patrones",
-      "highNoiseText": "Visualiza patrones de autosimilitud en la cadena de bytes y detecta secuencias de relleno (padding) o nulos en los offsets iniciales y finales, revelando la huella digital de motores de síntesis.",
+      "highNoiseText": "Visualiza patrones de autosimilitud en la cadena de bytes y detecta secuencias de relleno (padding) en los offsets iniciales y finales, revelando la huella digital de motores de síntesis.",
       "batchProcessing": "Análisis de Metadatos",
-      "batchText": "Inspecciona registros internos, librerías de codificación y discrepancias en el bitrate. Identifica rastros de software de terceros y anomalías en la arquitectura del archivo mediante análisis multi-librería.",
+      "batchText": "Inspecciona todos los metadatos del archivo cargado. Busca rastros que la IA pueda haber dejado, como librerías de codificación, inconsistencias en timestamps, codecs inusuales o anomalías en la configuración de audio.",
       "supportedFormatsInfo": "Formatos soportados",
       "formatsLabel": "MP3, WAV, M4A",
       "maxFileSize": "Tamaño máximo",
@@ -106,7 +106,7 @@
     },
     "metadata": {
       "title": "Análisis de Metadatos",
-      "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias de bitrate y anomalías en la arquitectura del archivo que indiquen generación o alteración por IA.",
+      "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias de bitrate y anomalías en la arquitectura del archivo que indiquen generación por IA.",
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "analyzeButton": "Analizar Metadatos",
@@ -114,7 +114,7 @@
     },
     "patterns": {
       "title": "Análisis de Patrones",
-      "description": "Visualiza la estructura interna del archivo de audio como un mapa de bits. Cada píxel representa el valor de un byte, mostrado en escala de grises. Detecta patrones anómalos, discontinuidades y secuencias de relleno que indiquen generación o manipulación por IA. Ajusta la resolución para analizar diferentes escalas.",
+      "description": "Visualiza la autosimilitud a nivel de bytes y el relleno en los bordes del archivo para detectar posibles patrones que la IA pueda haber dejado. La autosimilitud revela patrones de repetición en los datos, mientras que el análisis de relleno detecta secuencias homogéneas que son indicativas de procesamiento automatizado.",
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
@@ -137,13 +137,13 @@
         "padding": "Relleno"
       },
       "autosimilarityTitle": "Mapa de Contenido",
-      "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: colores oscuros son valores bajos (0x00), colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. Audio natural muestra transiciones graduales y variadas, mientras que audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
-      "paddingTitle": "Análisis de Bordes",
-      "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. Audio legítimo tiene datos audio hasta el final. Audio sospechoso a menudo contiene relleno (bytes repetidos como 0x00 o 0xFF) en los bordes, indicando re-codificación, exportación incompleta o manipulación por software de síntesis de voz."
+      "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: los colores oscuros son valores bajos (0x00) y los colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. El audio natural muestra transiciones graduales y variadas, mientras que el audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
+      "paddingTitle": "Análisis de Relleno",
+      "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. En el audio generado por IA, es común encontrar secuencias de bytes repetitivos (relleno), lo que indica procesamiento automatizado. El audio natural típicamente no presenta este tipo de patrones homogéneos."
     },
     "analysis": {
       "title": "Análisis de Detección de IA",
-      "description": "Análisis consolidado que integra metadatos y patrones para determinar si el audio fue generado por inteligencia artificial. Utiliza indicadores avanzados basados en huellas de codificación, configuración de audio, codecs, formato de archivo, tamaño y patrones de relleno.",
+      "description": "Análisis que integra metadatos y patrones para determinar si el audio fue generado por inteligencia artificial. Utiliza 10 indicadores basados en huellas de codificación, configuración de audio, codecs, formato de archivo, tamaño y patrones de relleno.",
       "noFileLoaded": "Ningún archivo cargado",
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "analyzeButton": "Analizar",
@@ -155,7 +155,7 @@
   "indicators": {
     "encoding_library": {
       "display_name": "Librería de codificación sospechosa",
-      "reasoning": "FFmpeg/Lavf es software común en herramientas de síntesis de audio. Las etiquetas de metadatos mostradas a continuación indican dónde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados.",
+      "reasoning": "Librerías como FFmpeg/Lavf son comunes en herramientas de síntesis de audio. Las etiquetas de metadatos mostradas a continuación indican dónde se detectaron librerías de codificación. Busca estas etiquetas en la sección de Metadatos para verificar los valores detectados.",
       "details": {}
     },
     "mono_audio": {
@@ -170,12 +170,12 @@
     },
     "padding_pattern": {
       "display_name": "Patrón de relleno sospechoso",
-      "reasoning": "Se ha detectado una cantidad anómala de secuencias exactas de bytes. Esta homogeneidad estructural es un fuerte indicador de algoritmos de IA que rellenan bloques de datos para cumplir con tamaños predefinidos.",
+      "reasoning": "Se ha detectado una cantidad anómala de secuencias exactas de bytes. Esta homogeneidad estructural es un fuerte indicador de algoritmos de IA que rellenan bloques de datos para cumplir con tamaños predefinidos o para introducir silencios.",
       "details": {
         "top_patterns": "Patrones Principales Detectados",
         "top_patterns_explanation": "Muestra los valores de byte (en hexadecimal) que forman los bloques repetitivos más grandes en el archivo.",
         "max_sequence": "Racha Máxima Consecutiva",
-        "max_sequence_explanation": "La secuencia ininterrumpida más larga de un mismo byte exacto. Las rachas masivas de cientos o miles de bytes indican bloques de silencio artificial o relleno estructural típico de herramientas de síntesis."
+        "max_sequence_explanation": "La secuencia ininterrumpida más larga de un mismo byte exacto."
        }
     },
     "timestamp_consistency": {
@@ -239,17 +239,17 @@
     },
     "sample_rate_anomaly": {
       "display_name": "Anomalía en tasa de muestreo",
-      "reasoning": "Una tasa de muestreo de 16kHz, 22.05kHz o 24kHz es típica de audio generado por IA. Grabaciones comerciales y naturales típicamente usan 44.1kHz o 48kHz.",
+      "reasoning": "Una tasa de muestreo de 16kHz, 22.05kHz, 24kHz, 32kHz o 40kHz es típica de audio generado por IA. Las grabaciones naturales típicamente usan 44.1kHz o 48kHz.",
       "details": {
         "sample_rate": "Tasa de Muestreo (Hz)",
-        "sample_rate_explanation": "El número de muestras de audio por segundo. Tasas más bajas (16-24kHz) son comunes en herramientas de síntesis de IA para optimizar recursos.",
+        "sample_rate_explanation": "El número de muestras de audio por segundo.",
         "typical_ai_rates": "Tasas de Muestreo Típicas de IA",
-        "typical_ai_rates_explanation": "Los modelos de IA típicamente generan audio a estas tasas: 16kHz, 22.05kHz y 24kHz."
+        "typical_ai_rates_explanation": "Los modelos de IA típicamente generan audio a estas tasas de muestreo."
       }
     },
     "atypical_bitrate": {
       "display_name": "Tasa de bits atípica",
-      "reasoning": "Se detectó una tasa de bits anormalmente baja. Los servicios de IA basados en nube a menudo usan tasas muy bajas (24-48 kbps para formatos con pérdida, <300 kbps para WAV) para reducir el ancho de banda.",
+      "reasoning": "Se detectó una tasa de bits anormalmente baja. Los modelos de IA a menudo usan tasas muy bajas (24-48 kbps para formatos con pérdida, <300 kbps para formatos sin pérdida) para reducir el uso de recursos.",
       "reasoning_error": "Error al determinar la tasa de bits",
       "reasoning_no_data": "No hay datos de tasa de bits disponibles",
       "details": {
@@ -270,7 +270,7 @@
         "exact_duration": "Duración de Audio (segundos)",
         "exact_duration_explanation": "La duración total del archivo de audio en segundos.",
         "decimal_part": "Precisión Decimal",
-        "decimal_part_explanation": "La parte fraccionaria de la duración. El audio generado por IA a menudo tiene valores decimales muy precisos (como 0.000 o 0.500), mientras que las grabaciones humanas tienden a tener valores irregulares."
+        "decimal_part_explanation": "La parte fraccionaria de la duración en segundos."
       }
     }
   },

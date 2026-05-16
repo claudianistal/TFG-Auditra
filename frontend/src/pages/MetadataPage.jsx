@@ -14,7 +14,6 @@ const MetadataPage = () => {
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [analyzed, setAnalyzed] = useState(false);
 	const [confirmation, setConfirmation] = useState({
 		visible: false,
 		executionTime: 0,
@@ -24,9 +23,8 @@ const MetadataPage = () => {
 	// Get the currently loaded file (first one in the list)
 	const currentFile = files.length > 0 ? files[0] : null;
 
-	// Reset analyzed state when file changes
+	// Reset error state when file changes
 	useEffect(() => {
-		setAnalyzed(false);
 		setError(null);
 	}, [currentFile?.id]);
 
@@ -50,9 +48,6 @@ const MetadataPage = () => {
 				metadataLoading: false,
 				metadataError: null,
 			});
-
-			// Mark as analyzed after successful analysis
-			setAnalyzed(true);
 
 			// Show confirmation banner
 			setConfirmation({
@@ -105,7 +100,7 @@ const MetadataPage = () => {
 						<button
 							className={'metadata-analyze-button ' + (loading ? 'metadata-analyze-button--loading' : '')}
 							onClick={handleAnalyzeMetadata}
-							disabled={loading || analyzed}
+							disabled={loading || !!currentFile.metadata}
 						>
 							{loading ? t('pages.metadata.analyzing') || 'Analyzing...' : t('pages.metadata.analyzeButton') || 'Analyze Metadata'}
 						</button>
