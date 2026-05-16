@@ -3,6 +3,7 @@ AI Detection Analyzer - Orchestrates the analysis process.
 Runs all indicators and produces a comprehensive analysis report.
 """
 from typing import Dict, Any, List, Tuple
+from datetime import datetime, timezone
 from .indicators import INDICATORS
 from .scorer import AnalysisScorer
 
@@ -140,5 +141,4 @@ class AIDetectionAnalyzer:
     @staticmethod
     def _get_iso_timestamp() -> str:
         """Get current timestamp in ISO format."""
-        from datetime import datetime
-        return datetime.utcnow().isoformat() + 'Z'
+        return datetime.now(timezone.utc).isoformat() + 'Z'
