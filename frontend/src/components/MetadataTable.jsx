@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, Loader, Copy, Check } from 'lucide-react';
+import { AlertCircle, Loader, Copy, Check, Search, X } from 'lucide-react';
 import './styles/MetadataTable.css';
 
 const MetadataTable = ({ metadata, loading, error }) => {
 	const { t } = useTranslation();
 	const [copied, setCopied] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
 
 	// Format duration from seconds to HH:MM:SS
 	const formatDuration = (seconds) => {
@@ -30,39 +31,6 @@ const MetadataTable = ({ metadata, loading, error }) => {
 	const formatSampleRate = (sampleRate) => {
 		if (!sampleRate || sampleRate === null) return 'N/A';
 		return `${(sampleRate / 1000).toFixed(1)} kHz`;
-	};
-
-	// Display loading state
-	if (loading) {
-		return (
-			<div className="metadata-loading">
-				<Loader className="metadata-loading__spinner" size={40} />
-				<p>{t('components.metadataTable.loading')}</p>
-			</div>
-		);
-	}
-
-	// Display error state
-	if (error) {
-		return (
-			<div className="metadata-error">
-				<AlertCircle size={32} />
-				<p className="metadata-error__message">{error}</p>
-			</div>
-		);
-	}
-
-	// Display metadata table
-	if (!metadata) {
-		return null;
-	}
-
-	// Utility function to format label from key (snake_case to Title Case)
-	const formatLabel = (key) => {
-		return key
-			.split('_')
-			.map(word => word.charAt(0).toUpperCase() + word.slice(1))
-			.join(' ');
 	};
 
 	// Utility function to format value based on key type
@@ -105,23 +73,78 @@ const MetadataTable = ({ metadata, loading, error }) => {
 		}
 	};
 
-	// Get all metadata entries dynamically
-	const metadataEntries = Object.entries(metadata)
-		.filter(([, value]) => value !== undefined && value !== null && value !== '') // Exclude undefined, null, empty values
-		.filter(([key]) => {
-			// Exclude highly complex nested structures that don't provide user-friendly info
-			const complexKeys = ['container_layout', 'atom_structure_error'];
-			return !complexKeys.includes(key);
-		})
-		.map(([key, value]) => ({
-			key,
-			label: formatLabel(key),
-			value,
-		}));
+	// Highlight matching text in a string
+	const highlightText = (text, query) => {
+		if (!query || !text) return text;
+		
+		const parts = text.toString().split(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'));
+		return parts.map((part, index) =>
+			part.toLowerCase() === query.toLowerCase() ? (
+				<mark key={index} className="metadata-highlight">{part}</mark>
+			) : (
+				part
+			)
+		);
+	};
+
+	// Display loading state
+	if (loading) {
+		return (
+			<div className="metadata-loading">
+				<Loader className="metadata-loading__spinner" size={40} />
+				<p>{t('components.metadataTable.loading')}</p>
+			</div>
+		);
+	}
+
+	// Display error state
+	if (error) {
+		return (
+			<div className="metadata-error">
+				<AlertCircle size={32} />
+				<p className="metadata-error__message">{error}</p>
+			</div>
+		);
+	}
+
+	// Display metadata table
+	if (!metadata) {
+		return null;
+	}
+
+	// Filter and highlight metadata entries based on search query
+	const filteredAndHighlightedEntries = useMemo(() => {
+		let entries = Object.entries(metadata)
+			.filter(([, value]) => value !== undefined && value !== null && value !== '')
+			.filter(([key]) => {
+				const complexKeys = ['container_layout', 'atom_structure_error'];
+				return !complexKeys.includes(key);
+			})
+			.map(([key, value]) => ({
+				key,
+				label: key
+					.split('_')
+					.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+					.join(' '),
+				value,
+			}));
+
+		if (!searchQuery.trim()) {
+			return entries;
+		}
+
+		const query = searchQuery.toLowerCase();
+		return entries.filter(entry => {
+			const labelMatch = entry.label.toLowerCase().includes(query);
+			const valueStr = formatValue(entry.key, entry.value).toString().toLowerCase();
+			const valueMatch = valueStr.includes(query);
+			return labelMatch || valueMatch;
+		});
+	}, [metadata, searchQuery]);
 
 	// Handle copy to clipboard
 	const handleCopyMetadata = async () => {
-		const textToCopy = metadataEntries
+		const textToCopy = filteredAndHighlightedEntries
 			.map(entry => `${entry.label}: ${formatValue(entry.key, entry.value)}`)
 			.join('\n');
 		
@@ -134,28 +157,67 @@ const MetadataTable = ({ metadata, loading, error }) => {
 		}
 	};
 
+	const totalMatches = useMemo(() => {
+		if (!metadata) return 0;
+		return Object.keys(metadata).filter(key => {
+			const complexKeys = ['container_layout', 'atom_structure_error'];
+			return !complexKeys.includes(key);
+		}).length;
+	}, [metadata]);
+
 	return (
 		<div className="metadata-table-container">
 			<div className="metadata-table-header">
 				<h3>{t('components.metadataTable.title')}</h3>
-				<button 
-					className="metadata-copy-btn"
-					onClick={handleCopyMetadata}
-					title={copied ? t('components.metadataTable.copied') : t('components.metadataTable.copyTooltip')}
-				>
-					{copied ? (
-						<>
-							<Check size={18} />
-							<span>{t('components.metadataTable.copied')}</span>
-						</>
-					) : (
-						<>
-							<Copy size={18} />
-							<span>{t('components.metadataTable.copy')}</span>
-						</>
-					)}
-				</button>
+				<div className="metadata-table-actions">
+					<button 
+						className="metadata-copy-btn"
+						onClick={handleCopyMetadata}
+						title={copied ? t('components.metadataTable.copied') : t('components.metadataTable.copyTooltip')}
+					>
+						{copied ? (
+							<>
+								<Check size={18} />
+								<span>{t('components.metadataTable.copied')}</span>
+							</>
+						) : (
+							<>
+								<Copy size={18} />
+								<span>{t('components.metadataTable.copy')}</span>
+							</>
+						)}
+					</button>
+				</div>
 			</div>
+
+			{/* Search Bar */}
+			<div className="metadata-search-container">
+				<div className="metadata-search-wrapper">
+					<Search size={18} className="metadata-search-icon" />
+					<input
+						type="text"
+						className="metadata-search-input"
+						placeholder={t('components.metadataTable.searchPlaceholder')}
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+					/>
+					{searchQuery && (
+						<button
+							className="metadata-search-clear"
+							onClick={() => setSearchQuery('')}
+							title={t('components.metadataTable.clearSearch')}
+						>
+							<X size={18} />
+						</button>
+					)}
+				</div>
+				{searchQuery && (
+					<div className="metadata-search-info">
+						{t('components.metadataTable.matchesFound', { count: filteredAndHighlightedEntries.length, total: totalMatches })}
+					</div>
+				)}
+			</div>
+
 			<table className="metadata-table">
 				<thead>
 					<tr>
@@ -164,11 +226,13 @@ const MetadataTable = ({ metadata, loading, error }) => {
 					</tr>
 				</thead>
 				<tbody>
-					{metadataEntries.map((entry) => (
+					{filteredAndHighlightedEntries.map((entry) => (
 						<tr key={entry.key} className="metadata-table__row">
-							<td className="metadata-table__property">{entry.label}</td>
+							<td className="metadata-table__property">
+								{highlightText(entry.label, searchQuery)}
+							</td>
 							<td className="metadata-table__value">
-								{formatValue(entry.key, entry.value)}
+								{highlightText(formatValue(entry.key, entry.value), searchQuery)}
 							</td>
 						</tr>
 					))}

@@ -328,7 +328,10 @@
       "yes": "Sí",
       "no": "No",
       "notAvailable": "N/A",
-      "complexObject": "[Objeto Complejo]"
+      "complexObject": "[Objeto Complejo]",
+      "searchPlaceholder": "Busca metadatos por nombre o valor...",
+      "clearSearch": "Limpiar búsqueda",
+      "matchesFound": "{{count}} de {{total}} coincidencias"
     },
     "fileBar": {
       "loadedFile": "Archivo cargado"

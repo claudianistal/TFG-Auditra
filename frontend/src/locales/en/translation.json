@@ -328,7 +328,10 @@
       "yes": "Yes",
       "no": "No",
       "notAvailable": "N/A",
-      "complexObject": "[Complex Object]"
+      "complexObject": "[Complex Object]",
+      "searchPlaceholder": "Search metadata by name or value...",
+      "clearSearch": "Clear search",
+      "matchesFound": "{{count}} of {{total}} matches"
     },
     "fileBar": {
       "loadedFile": "File loaded"
