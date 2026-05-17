@@ -118,6 +118,7 @@
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
+      "resolutionDescription": "Pulsa los botones de abajo para cambiar la resolución y recalcular automáticamente la visualización",
       "analyzeButton": "Analizar Patrones",
       "analyzing": "Analizando...",
       "recalculate": "Recalcular",
@@ -139,7 +140,9 @@
       "autosimilarityTitle": "Mapa de Contenido",
       "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: los colores oscuros son valores bajos (0x00) y los colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. El audio natural muestra transiciones graduales y variadas, mientras que el audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
       "paddingTitle": "Análisis de Relleno",
-      "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. En el audio generado por IA, es común encontrar secuencias de bytes repetitivos (relleno), lo que indica procesamiento automatizado. El audio natural típicamente no presenta este tipo de patrones homogéneos."
+      "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. En el audio generado por IA, es común encontrar secuencias de bytes repetitivos (relleno), lo que indica procesamiento automatizado. El audio natural típicamente no presenta este tipo de patrones homogéneos.",
+      "copy": "Copiar imagen",
+      "copyImage": "¡Copiada!"
     },
     "analysis": {
       "title": "Análisis de Detección de IA",

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, Music, RefreshCw } from 'lucide-react';
+import { AlertCircle, Music, Copy, Check } from 'lucide-react';
 import FileBar from '../components/FileBar';
 import ConfirmationBanner from '../components/ConfirmationBanner';
 import BitmapViewer from '../components/BitmapViewer';
@@ -15,6 +15,7 @@ const PatternsPage = () => {
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
 	const [recalculatingWidth, setRecalculatingWidth] = useState(false);
+	const [copiedFeedback, setCopiedFeedback] = useState(false);
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
@@ -156,6 +157,34 @@ const PatternsPage = () => {
 	// Width presets for easy selection
 	const widthPresets = [128, 256, 512, 1024, 2048];
 
+	const handleCopyImage = async () => {
+		if (!currentFile?.patterns?.image_base64) return;
+
+		try {
+			// Decode base64 to blob
+			const binaryString = atob(currentFile.patterns.image_base64);
+			const bytes = new Uint8Array(binaryString.length);
+			for (let i = 0; i < binaryString.length; i++) {
+				bytes[i] = binaryString.charCodeAt(i);
+			}
+
+			const blob = new Blob([bytes], { type: 'image/png' });
+			
+			// Copy to clipboard using the Clipboard API
+			await navigator.clipboard.write([
+				new ClipboardItem({
+					'image/png': blob,
+				}),
+			]);
+
+			// Show feedback
+			setCopiedFeedback(true);
+			setTimeout(() => setCopiedFeedback(false), 2000);
+		} catch (err) {
+			console.error('Failed to copy image:', err);
+		}
+	};
+
 	return (
 		<>
 			<FileBar />
@@ -251,6 +280,7 @@ const PatternsPage = () => {
 											{/* Width selector - only visible in autosimilarity tab */}
 											<div className="patterns-width-selector">
 												<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>
+												<p className="patterns-width-description">{t('pages.patterns.resolutionDescription') || 'Press the buttons below to change the resolution'}</p>
 											<div className="patterns-width-controls">
 												<div className="patterns-width-presets">
 													{widthPresets.map((preset) => (
@@ -264,6 +294,15 @@ const PatternsPage = () => {
 														</button>
 													))}
 												</div>
+												<button
+													className="btn btn-copy"
+													onClick={handleCopyImage}
+													disabled={!currentFile?.patterns?.image_base64}
+													title={t('pages.patterns.copyImage') || 'Copy image to clipboard'}
+												>
+													{copiedFeedback ? <Check size={16} /> : <Copy size={16} />}
+													{copiedFeedback ? t('pages.patterns.copyImage') || 'Copied!' : t('pages.patterns.copy') || 'Copy'}
+												</button>
 											</div>
 										</div>
 

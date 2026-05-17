@@ -118,6 +118,7 @@
       "noFileMessage": "Upload a file in the 'Upload Audio' section first.",
       "noFileLoaded": "No file loaded",
       "resolution": "Resolution (bytes per row)",
+      "resolutionDescription": "Press the buttons below to change the resolution and automatically recalculate the visualization",
       "analyzeButton": "Analyze Patterns",
       "analyzing": "Analyzing...",
       "recalculate": "Recalculate",
@@ -139,7 +140,9 @@
       "autosimilarityTitle": "Content Map",
       "autosimilarityDesc": "Each pixel represents the value of one byte in the file: dark colors are low values (0x00) and light colors are high values (0xFF). Self-similarity reveals repetition patterns in the data. Natural audio shows gradual and varied transitions, while AI-generated synthetic audio tends to show more regular, repetitive patterns or uniform blocks that reveal its artificial processing.",
       "paddingTitle": "Padding Analysis",
-      "paddingDesc": "Examines the first and last 1024 bytes of the file. In AI-generated audio, it is common to find sequences of repetitive bytes (padding), indicating automated processing. Natural audio typically does not exhibit this type of homogeneous pattern."
+      "paddingDesc": "Examines the first and last 1024 bytes of the file. In AI-generated audio, it is common to find sequences of repetitive bytes (padding), indicating automated processing. Natural audio typically does not exhibit this type of homogeneous pattern.",
+      "copy": "Copy image",
+      "copyImage": "Copied!"
     },
     "analysis": {
       "title": "AI Detection Analysis",
