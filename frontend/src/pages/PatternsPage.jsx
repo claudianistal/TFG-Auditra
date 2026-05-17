@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, Music, RefreshCw } from 'lucide-react';
+import { AlertCircle, Music, Copy, Check } from 'lucide-react';
 import FileBar from '../components/FileBar';
 import ConfirmationBanner from '../components/ConfirmationBanner';
 import BitmapViewer from '../components/BitmapViewer';
@@ -15,6 +15,7 @@ const PatternsPage = () => {
 	const { files, updateFile } = useFiles();
 	const [loading, setLoading] = useState(false);
 	const [recalculatingWidth, setRecalculatingWidth] = useState(false);
+	const [copiedFeedback, setCopiedFeedback] = useState(false);
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
@@ -90,16 +91,23 @@ const PatternsPage = () => {
 		}
 	};
 
-	const handleRecalculateAutosimilarity = async () => {
+	const handleRecalculateAutosimilarity = async (newWidth = null) => {
 		if (!currentFile) {
 			setError(t('pages.patterns.noFileLoaded') || 'No file loaded');
 			return;
 		}
 
+		const widthToUse = newWidth !== null ? newWidth : width;
+
 		// Validate width
-		if (width < 128 || width > 2048) {
+		if (widthToUse < 128 || widthToUse > 2048) {
 			setError(t('pages.patterns.invalidWidth') || 'Width must be between 128 and 2048 bytes');
 			return;
+		}
+
+		// Update width state if a new width was provided
+		if (newWidth !== null) {
+			setWidth(newWidth);
 		}
 
 		setRecalculatingWidth(true);
@@ -107,7 +115,7 @@ const PatternsPage = () => {
 		const startTime = Date.now();
 
 		try {
-			const response = await getAutosimilarity(currentFile.id, width);
+			const response = await getAutosimilarity(currentFile.id, widthToUse);
 			const { image_base64, width_used, execution_time_ms } = response.data;
 
 			// Update only the bitmap, keep hex dumps
@@ -148,6 +156,34 @@ const PatternsPage = () => {
 
 	// Width presets for easy selection
 	const widthPresets = [128, 256, 512, 1024, 2048];
+
+	const handleCopyImage = async () => {
+		if (!currentFile?.patterns?.image_base64) return;
+
+		try {
+			// Decode base64 to blob
+			const binaryString = atob(currentFile.patterns.image_base64);
+			const bytes = new Uint8Array(binaryString.length);
+			for (let i = 0; i < binaryString.length; i++) {
+				bytes[i] = binaryString.charCodeAt(i);
+			}
+
+			const blob = new Blob([bytes], { type: 'image/png' });
+			
+			// Copy to clipboard using the Clipboard API
+			await navigator.clipboard.write([
+				new ClipboardItem({
+					'image/png': blob,
+				}),
+			]);
+
+			// Show feedback
+			setCopiedFeedback(true);
+			setTimeout(() => setCopiedFeedback(false), 2000);
+		} catch (err) {
+			console.error('Failed to copy image:', err);
+		}
+	};
 
 	return (
 		<>
@@ -244,13 +280,14 @@ const PatternsPage = () => {
 											{/* Width selector - only visible in autosimilarity tab */}
 											<div className="patterns-width-selector">
 												<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>
+												<p className="patterns-width-description">{t('pages.patterns.resolutionDescription') || 'Press the buttons below to change the resolution'}</p>
 											<div className="patterns-width-controls">
 												<div className="patterns-width-presets">
 													{widthPresets.map((preset) => (
 														<button
 															key={preset}
 															className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
-															onClick={() => setWidth(preset)}
+														onClick={() => handleRecalculateAutosimilarity(preset)}
 															disabled={recalculatingWidth}
 														>
 															{preset}
@@ -258,13 +295,13 @@ const PatternsPage = () => {
 													))}
 												</div>
 												<button
-													className={`recalculate-btn ${recalculatingWidth ? 'recalculate-btn--loading' : ''}`}
-													onClick={handleRecalculateAutosimilarity}
-													disabled={recalculatingWidth}
-													title={t('pages.patterns.recalculateTooltip') || 'Recalculate with new width'}
+													className="btn btn-copy"
+													onClick={handleCopyImage}
+													disabled={!currentFile?.patterns?.image_base64}
+													title={t('pages.patterns.copyImage') || 'Copy image to clipboard'}
 												>
-													<RefreshCw size={16} />
-													{t('pages.patterns.recalculate') || 'Recalculate'}
+													{copiedFeedback ? <Check size={16} /> : <Copy size={16} />}
+													{copiedFeedback ? t('pages.patterns.copyImage') || 'Copied!' : t('pages.patterns.copy') || 'Copy'}
 												</button>
 											</div>
 										</div>
