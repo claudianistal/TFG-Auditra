@@ -90,16 +90,23 @@ const PatternsPage = () => {
 		}
 	};
 
-	const handleRecalculateAutosimilarity = async () => {
+	const handleRecalculateAutosimilarity = async (newWidth = null) => {
 		if (!currentFile) {
 			setError(t('pages.patterns.noFileLoaded') || 'No file loaded');
 			return;
 		}
 
+		const widthToUse = newWidth !== null ? newWidth : width;
+
 		// Validate width
-		if (width < 128 || width > 2048) {
+		if (widthToUse < 128 || widthToUse > 2048) {
 			setError(t('pages.patterns.invalidWidth') || 'Width must be between 128 and 2048 bytes');
 			return;
+		}
+
+		// Update width state if a new width was provided
+		if (newWidth !== null) {
+			setWidth(newWidth);
 		}
 
 		setRecalculatingWidth(true);
@@ -107,7 +114,7 @@ const PatternsPage = () => {
 		const startTime = Date.now();
 
 		try {
-			const response = await getAutosimilarity(currentFile.id, width);
+			const response = await getAutosimilarity(currentFile.id, widthToUse);
 			const { image_base64, width_used, execution_time_ms } = response.data;
 
 			// Update only the bitmap, keep hex dumps
@@ -250,22 +257,13 @@ const PatternsPage = () => {
 														<button
 															key={preset}
 															className={`preset-btn ${width === preset ? 'preset-btn--active' : ''}`}
-															onClick={() => setWidth(preset)}
+														onClick={() => handleRecalculateAutosimilarity(preset)}
 															disabled={recalculatingWidth}
 														>
 															{preset}
 														</button>
 													))}
 												</div>
-												<button
-													className={`recalculate-btn ${recalculatingWidth ? 'recalculate-btn--loading' : ''}`}
-													onClick={handleRecalculateAutosimilarity}
-													disabled={recalculatingWidth}
-													title={t('pages.patterns.recalculateTooltip') || 'Recalculate with new width'}
-												>
-													<RefreshCw size={16} />
-													{t('pages.patterns.recalculate') || 'Recalculate'}
-												</button>
 											</div>
 										</div>
 
