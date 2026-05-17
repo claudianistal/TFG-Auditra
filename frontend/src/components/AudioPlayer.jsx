@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import './AudioPlayer.css';
+import './styles/AudioPlayer.css';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
 /**

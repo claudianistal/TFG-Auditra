@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './ConfirmationBanner.css';
+import './styles/ConfirmationBanner.css';
 import { CheckCircle, AlertCircle } from 'lucide-react';
 
 /**

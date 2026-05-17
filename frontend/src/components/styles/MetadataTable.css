@@ -176,6 +176,7 @@
 	border-bottom: 1px solid var(--card-border);
 	transition: background-color 0.2s ease;
 	user-select: text;
+	cursor: text;
 }
 
 .metadata-table tbody tr:last-child {
@@ -193,6 +194,7 @@
 	vertical-align: top;
 	word-break: break-word;
 	user-select: text;
+	cursor: text;
 }
 
 .metadata-table__value {
@@ -202,6 +204,7 @@
 	overflow-wrap: break-word;
 	display: table-cell;
 	user-select: text;
+	cursor: text;
 }
 
 /* Loading State */

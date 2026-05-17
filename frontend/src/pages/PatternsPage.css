@@ -486,6 +486,7 @@
 	padding: 1rem;
 	background: var(--card-bg);
 	user-select: text;
+	cursor: text;
 }
 
 .hex-dump-section__pre {

@@ -546,6 +546,7 @@
 	gap: 0.75rem;
 	animation: slideDown 0.2s ease;
 	user-select: text;
+	cursor: text;
 }
 
 @keyframes slideDown {
@@ -718,6 +719,8 @@
 	border-radius: 12px;
 	position: relative;
 	overflow: hidden;
+	user-select: text;
+	cursor: text;
 }
 
 .conclusion-box::before {
@@ -798,6 +801,7 @@
 .conclusion-box__rec-title svg {
 	flex-shrink: 0;
 	user-select: text;
+	cursor: text;
 }
 
 .conclusion-box__rec-list {
@@ -814,6 +818,7 @@
 	color: var(--text-muted);
 	line-height: 1.5;
 	user-select: text;
+	cursor: text;
 }
 
 /* Footer */
@@ -823,6 +828,7 @@
 	display: flex;
 	justify-content: center;
 	user-select: text;
+	cursor: text;
 }
 
 .conclusion-box__score-info {
