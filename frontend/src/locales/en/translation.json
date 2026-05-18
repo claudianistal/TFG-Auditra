@@ -106,7 +106,7 @@
     },
     "metadata": {
       "title": "Metadata Analysis",
-      "description": "This module extracts the complete technical information from your file using advanced forensic tools such as Mutagen, Wave, ExifTool, and FFprobe. View all extracted metadata to identify traces of manipulation, specific software, bitrate inconsistencies, and anomalies in the file architecture that may indicate AI generation.",
+      "description": "This module extracts the complete technical information from your file using advanced forensic tools and libraries such as Mutagen, Wave, ExifTool, and FFprobe. View all extracted metadata to identify traces of manipulation, specific software, inconsistencies, and anomalies in the file metadata that may indicate AI generation.",
       "noFileMessage": "Upload a file in the 'Upload Audio' section first.",
       "noFileLoaded": "No file loaded",
       "analyzeButton": "Analyze Metadata",
@@ -139,6 +139,12 @@
       },
       "autosimilarityTitle": "Content Map",
       "autosimilarityDesc": "Each pixel represents the value of one byte in the file: dark colors are low values (0x00) and light colors are high values (0xFF). Self-similarity reveals repetition patterns in the data. Natural audio shows gradual and varied transitions, while AI-generated synthetic audio tends to show more regular, repetitive patterns or uniform blocks that reveal its artificial processing.",
+      "whatToLookForTitle": "How to analyze self-similarity",
+      "whatToLookForIntro": "Natural audio is chaotic and diffuse, it does not exhibit regular patterns. AI-generated audio could be geometric, symmetric, and predictable.",
+      "whatToLookForItems": [
+        "Columns and rows (Straight lines): Specific byte blocks that repeat identically at different scales.",
+        "Grid pattern: Mathematically exact time division indicating that AI processes in fixed blocks (e.g: 20ms), leaving a cyclic fingerprint that doesn't exist in human speech."
+      ],
       "paddingTitle": "Padding Analysis",
       "paddingDesc": "Examines the first and last 1024 bytes of the file. In AI-generated audio, it is common to find sequences of repetitive bytes (padding), indicating automated processing. Natural audio typically does not exhibit this type of homogeneous pattern.",
       "copy": "Copy image",

@@ -9,16 +9,17 @@ const RiskScoreCard = ({ score, likelihood, color, analysisDate }) => {
 		if (!isoDate) return null;
 		try {
 			const date = new Date(isoDate);
-			const formattedDate = date.toLocaleDateString('es-ES', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit'
-			});
-			const formattedTime = date.toLocaleTimeString('es-ES', {
-				hour: '2-digit',
-				minute: '2-digit',
-				second: '2-digit'
-			});
+			// Extract UTC components without timezone conversion
+			const year = date.getUTCFullYear();
+			const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+			const day = String(date.getUTCDate()).padStart(2, '0');
+			const hours = String(date.getUTCHours()).padStart(2, '0');
+			const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+			const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+			
+			const formattedDate = `${day}/${month}/${year}`;
+			const formattedTime = `${hours}:${minutes}:${seconds}`;
+			
 			return { date: formattedDate, time: formattedTime };
 		} catch (e) {
 			return null;
@@ -57,7 +58,7 @@ const RiskScoreCard = ({ score, likelihood, color, analysisDate }) => {
 					{dateTimeInfo && (
 						<div className="risk-score-card__analysis-date">
 							<Clock size={14} />
-							<span className="risk-score-card__date-value">{dateTimeInfo.date} {dateTimeInfo.time}</span>
+							<span className="risk-score-card__date-value">{dateTimeInfo.date} {dateTimeInfo.time} <span className="risk-score-card__utc-label">UTC</span></span>
 						</div>
 					)}
 				</div>

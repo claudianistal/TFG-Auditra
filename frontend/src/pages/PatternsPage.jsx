@@ -19,6 +19,7 @@ const PatternsPage = () => {
 	const [error, setError] = useState(null);
 	const [width, setWidth] = useState(512);
 	const [activeTab, setActiveTab] = useState('autosimilarity'); // 'autosimilarity' or 'padding'
+	const [expandedWhatToLookFor, setExpandedWhatToLookFor] = useState(false);
 	const [confirmation, setConfirmation] = useState({
 		visible: false,
 		executionTime: 0,
@@ -276,7 +277,25 @@ const PatternsPage = () => {
 													{t('pages.patterns.autosimilarityDesc') || 'Autosimilitude analysis: Grayscale representation of byte values. Patterns reveal the statistical structure and characteristics of the audio data.'}
 												</p>
 											</div>
-
+										<button 
+											className={`what-to-look-for__toggle ${expandedWhatToLookFor ? 'what-to-look-for__toggle--expanded' : ''}`}
+											onClick={() => setExpandedWhatToLookFor(!expandedWhatToLookFor)}
+										>
+											<span className="what-to-look-for__title">{t('pages.patterns.whatToLookForTitle') || 'What to Look For'}</span>
+											<span className={`what-to-look-for__icon ${expandedWhatToLookFor ? 'what-to-look-for__icon--open' : ''}`}>
+												▶
+											</span>
+										</button>
+										{expandedWhatToLookFor && (
+											<div className="what-to-look-for__content">
+												<p>{t('pages.patterns.whatToLookForIntro') || 'Natural audio is chaotic and diffuse. AI-generated audio is geometric, symmetric, and predictable.'}</p>
+												<ul className="what-to-look-for__list">
+													{t('pages.patterns.whatToLookForItems', { returnObjects: true }).map((item, index) => (
+														<li key={index}>{item}</li>
+													))}
+												</ul>
+											</div>
+										)}
 											{/* Width selector - only visible in autosimilarity tab */}
 											<div className="patterns-width-selector">
 												<label>{t('pages.patterns.resolution') || 'Resolution (bytes per row)'}</label>

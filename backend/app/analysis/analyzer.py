@@ -142,5 +142,8 @@ class AIDetectionAnalyzer:
     
     @staticmethod
     def _get_iso_timestamp() -> str:
-        """Get current timestamp in ISO format."""
-        return datetime.now(timezone.utc).isoformat() + 'Z'
+        """Get current timestamp in ISO 8601 format with Z suffix."""
+        # Generate UTC timestamp and format it correctly for JavaScript Date parsing
+        utc_now = datetime.now(timezone.utc)
+        # Format: 2026-05-18T12:34:56.789Z (JavaScript compatible)
+        return utc_now.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'

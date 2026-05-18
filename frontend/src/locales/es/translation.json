@@ -106,7 +106,7 @@
     },
     "metadata": {
       "title": "Análisis de Metadatos",
-      "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias de bitrate y anomalías en la arquitectura del archivo que indiquen generación por IA.",
+      "description": "Este módulo extrae la información técnica completa de tu archivo mediante herramientas y librerías forenses avanzadas como Mutagen, Wave, ExifTool y FFprobe. Visualiza todos los metadatos extraídos para identificar rastros de manipulación, software específico, inconsistencias o anomalías en los metadatos del archivo que puedan indicar generación por IA.",
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "analyzeButton": "Analizar Metadatos",
@@ -118,7 +118,7 @@
       "noFileMessage": "Carga un archivo en la sección de 'Cargar Audio' primero.",
       "noFileLoaded": "Ningún archivo cargado",
       "resolution": "Resolución (bytes por fila)",
-      "resolutionDescription": "Pulsa los botones de abajo para cambiar la resolución y recalcular automáticamente la visualización",
+      "resolutionDescription": "Pulsa los botones para cambiar la resolución y recalcular automáticamente la visualización",
       "analyzeButton": "Analizar Patrones",
       "analyzing": "Analizando...",
       "recalculate": "Recalcular",
@@ -139,6 +139,12 @@
       },
       "autosimilarityTitle": "Mapa de Contenido",
       "autosimilarityDesc": "Cada píxel representa el valor de un byte del archivo: los colores oscuros son valores bajos (0x00) y los colores claros son valores altos (0xFF). La autosimilitud revela patrones de repetición en los datos. El audio natural muestra transiciones graduales y variadas, mientras que el audio sintético generado por IA tiende a mostrar patrones más regulares, repetitivos o bloques uniformes que revelan su procesamiento artificial.",
+      "whatToLookForTitle": "Cómo analizar la autosimilitud",
+      "whatToLookForIntro": "El audio natural es caótico y difuso, no sigue un orden. El audio generado por IA puede ser geométrico, simétrico y predecible.",
+      "whatToLookForItems": [
+        "Columnas y filas (Líneas rectas): Bloques específicos de bytes que se repiten idénticamente a diferentes escalas.",
+        "Patrón en rejilla: División matemática exacta del tiempo que indica que la IA procesa en bloques fijos (ej: 20ms), dejando una huella cíclica que no existe en habla humana."
+      ],
       "paddingTitle": "Análisis de Relleno",
       "paddingDesc": "Examina los primeros y últimos 1024 bytes del archivo. En el audio generado por IA, es común encontrar secuencias de bytes repetitivos (relleno), lo que indica procesamiento automatizado. El audio natural típicamente no presenta este tipo de patrones homogéneos.",
       "copy": "Copiar imagen",
