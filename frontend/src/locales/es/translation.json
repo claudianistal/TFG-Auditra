@@ -279,23 +279,24 @@
   },
   "conclusions": {
     "no_indicators": "No se detectaron indicadores de generación por IA. Este audio parece ser una grabación auténtica.",
-    "low_risk": "El análisis indica un bajo riesgo de generación por IA. Aunque se detectaron algunos indicadores menores, no hay evidencia concluyente de procesamiento artificial.",
-    "medium_risk": "El análisis indica un riesgo medio de generación por IA. Se detectaron varios indicadores sospechosos. Se recomienda un análisis más profundo.",
+    "low_risk": "El análisis indica un bajo riesgo de generación por IA. No hay evidencia concluyente de procesamiento artificial.",
+    "medium_risk": "El análisis indica un riesgo medio de generación por IA. El archivo es sospechoso y se recomienda un análisis más profundo.",
     "high_risk_critical": "El análisis indica un alto riesgo de generación por IA. Se detectaron indicadores críticos. Este audio muy probablemente fue generado por herramientas de síntesis o IA.",
     "high_risk_multiple": "El análisis indica un alto riesgo de generación por IA. Múltiples indicadores sugieren procesamiento artificial."
   },
   "recommendations": {
-    "padding_pattern": "El relleno con patrones de bytes repetitivos detectado es un indicador fuerte de procesamiento automatizado. Considere analizar archivos de la misma fuente para confirmar un patrón.",
-    "timestamp_consistency": "Se detectó una inconsistencia en los timestamps. El archivo puede haber sido manipulado o recodificado. Verifique la integridad del origen.",
-    "encoding_library": "Se detectó FFmpeg/Lavf como librería de codificación. Si bien es una herramienta legítima, también es común en herramientas de síntesis de audio. Analice junto con otros indicadores.",
-    "mono_audio": "El audio mono es menos común en grabaciones naturales. Típico en síntesis de voz o procesamiento automatizado.",
-    "codec_consistency": "Se detectó una inconsistencia entre el codec y el formato de archivo. Esto puede indicar manipulación o re-codificación del audio original.",
-    "file_size": "El tamaño del archivo presenta una desviación significativa respecto al bitrate y duración esperados. Esto puede indicar re-codificación o compresión adicional.",
-    "multiple_indicators": "Se detectaron múltiples indicadores. Le recomendamos obtener una segunda opinión mediante análisis con otras herramientas de detección de deepfakes.",
-    "no_indicators": "El audio no presenta indicadores típicos de generación por IA. Sin embargo, las técnicas de IA evolucionan constantemente.",
-    "sample_rate_anomaly": "La tasa de muestreo detectada ({{sample_rate}}Hz) es típica de audio generado por IA. Verifique si la fuente coincide con el dispositivo de grabación esperado.",
-    "atypical_bitrate": "Se detectó una tasa de bits anormalmente baja. Esto es común en servicios de IA basados en nube. Considere analizar la fuente del archivo.",
-    "precise_duration": "La duración del audio es matemáticamente exacta, lo cual es característico de audio generado por IA o procesado algorítmicamente."
+    "padding_pattern": "Se ha detectado un patrón de relleno hexadecimal artificial. Se recomienda inspeccionar la estructura binaria para descartar el uso de generadores algorítmicos, los cuales completan bloques de datos de forma predecible a diferencia de la codificación natural.",
+    "timestamp_consistency": "Anomalía cronológica detectada. Se recomienda tratar la evidencia como manipulada; el archivo ha sido recodificado o alterado tras su supuesta fecha de captura original.",
+    "encoding_library": "Presencia de librerías de codificación por software (ej. FFmpeg/Lavf) sin trazas de hardware de captura físico. Se sugiere contrastar este dato con el dispositivo de origen declarado en la investigación.",
+    "mono_audio": "Configuración de canal mono detectada. Dado que los dispositivos móviles actuales capturan en estéreo por defecto, este rasgo estructural es altamente compatible con motores de síntesis de voz (TTS) y procesamiento automatizado. Se sugiere contrastar este dato con el dispositivo de origen declarado en la investigación.",
+    "codec_consistency": "Discrepancia identificada entre el contenedor del archivo y la codificación real del flujo de audio. Este comportamiento es un fuerte indicador de recodificación forzada.",
+    "file_size": "Inconsistencia matemática entre la duración, el bitrate y el tamaño total en disco. Esta anomalía sugiere una alteración post-procesado, compresión no nativa o la inyección de metadatos.",
+    "self_similarity": "La matriz de autosimilitud revela alta redundancia a nivel de bytes. Se requiere máxima precaución, ya que la ausencia de entropía y variabilidad natural es característica de vocoders y redes neuronales generativas.",
+    "multiple_indicators": "La convergencia de múltiples anomalías estructurales y de metadatos eleva el nivel de riesgo a estado crítico. Se recomienda descartar la legitimidad de la evidencia o derivarla a un análisis pericial en profundidad.",
+    "no_indicators": "No se han detectado marcadores forenses estructurales asociados a generación sintética. No obstante, se aconseja mantener la debida diligencia, dado que las arquitecturas generativas avanzadas pueden evadir la detección estática.",
+    "sample_rate_anomaly": "Frecuencia de muestreo atípica para estándares de grabación de hardware de consumo (ej. 44.1kHz o 48kHz). Esta métrica suele coincidir con las limitaciones de salida nativas de los modelos de IA generativa.",
+    "atypical_bitrate": "Tasa de bits anómala o excesivamente constante. Este patrón es habitual en modelos de síntesis para reducir su coste computacional.",
+    "precise_duration": "El recorte temporal del archivo es matemáticamente exacto, lo cual es inusual en grabaciones humanas debido a la naturaleza impredecible de la captura. Este rasgo es común en archivos generados o procesados algorítmicamente."
   },
   "components": {
     "riskScoreCard": {

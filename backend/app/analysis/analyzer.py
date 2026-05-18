@@ -111,28 +111,30 @@ class AIDetectionAnalyzer:
         """
         recommendations = []
         
-        # Check for specific patterns and recommend actions based on 6 simplified indicators
-        if any(f['name'] == 'padding_pattern' for f in detected_factors):
-            recommendations.append('recommendations.padding_pattern')
+        found_indicators = []
         
-        if any(f['name'] == 'timestamp_consistency' for f in detected_factors):
-            recommendations.append('recommendations.timestamp_consistency')
+        # Check for specific patterns and recommend actions for all indicators
+        indicator_mappings = [
+            ('padding_pattern', 'recommendations.padding_pattern'),
+            ('timestamp_consistency', 'recommendations.timestamp_consistency'),
+            ('encoding_library', 'recommendations.encoding_library'),
+            ('mono_audio', 'recommendations.mono_audio'),
+            ('codec_consistency', 'recommendations.codec_consistency'),
+            ('file_size', 'recommendations.file_size'),
+            ('self_similarity', 'recommendations.self_similarity'),
+            ('sample_rate_anomaly', 'recommendations.sample_rate_anomaly'),
+            ('atypical_bitrate', 'recommendations.atypical_bitrate'),
+            ('precise_duration', 'recommendations.precise_duration'),
+        ]
         
-        if any(f['name'] == 'encoding_library' for f in detected_factors):
-            recommendations.append('recommendations.encoding_library')
-        
-        if any(f['name'] == 'mono_audio' for f in detected_factors):
-            recommendations.append('recommendations.mono_audio')
-        
-        if any(f['name'] == 'codec_consistency' for f in detected_factors):
-            recommendations.append('recommendations.codec_consistency')
-        
-        if any(f['name'] == 'file_size' for f in detected_factors):
-            recommendations.append('recommendations.file_size')
-        
+        for indicator_name, recommendation_key in indicator_mappings:
+            if any(f.get('name') == indicator_name for f in detected_factors):
+                recommendations.append(recommendation_key)
+                found_indicators.append(indicator_name)
+
         if len(detected_factors) > 4:
             recommendations.append('recommendations.multiple_indicators')
-        
+
         if not recommendations:
             recommendations.append('recommendations.no_indicators')
         
